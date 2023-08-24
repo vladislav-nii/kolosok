@@ -108,7 +108,7 @@ const filePath = path.join(__dirname, '../');
 app.use(express.static(filePath));
 
 
-app.listen(PORT, '192.168.1.111', () => {
+app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
   const currentPath = path.dirname(__filename);
 });
