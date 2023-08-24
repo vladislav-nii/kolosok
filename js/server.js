@@ -79,6 +79,10 @@ app.get("/users", async (req, res) => {
   res.send(users);
 });
 
+app.get("/", async (req, res) => {
+   console.log("dsacsdcsdcsdcsd");
+});
+
 // Удаление пользователя (для администратора)
 app.delete("/users/:id", async (req, res) => {
   const result = await User.findByIdAndDelete(req.params.id).exec();
