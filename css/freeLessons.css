@@ -1,0 +1,116 @@
+h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+p {
+    font-size: 18px;
+}
+
+form {
+    margin: 20px;
+    padding: 20px;
+    background-color: #FAFAFA;
+    opacity: 0.7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #999999;
+}
+
+input[type="submit"] {
+    background-color: #333;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #333;
+}
+
+
+
+/* список */
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+li {
+    margin-bottom: 5px;
+}
+.common-div {
+    display: inline-block;
+}
+
+.div1 {
+    float: left;
+    width: 50%;
+}
+
+.div2 {
+    text-align: left;
+    background-color: #fdfdfd;
+    height: 240px;
+    min-width: 50px;
+    float: right;
+    margin-top: 30px;
+    border-radius: 10px;
+    opacity: 0.7;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 15px;
+}
+.l {
+    font-size: 24px;
+    line-height: 130%;
+    margin-bottom: 20px;
+    font-family: 'Rubik', sans-serif;
+    background-color: #ff880093;
+    padding: 5px 7px;
+    border-radius: 11px;
+  }
+  .ll{
+    margin-top: 20px;
+    font-family: 'Rubik', sans-serif;
+    background-color: #ff880093;
+    padding: 5px 7px;
+    border-radius: 5px;
+
+  }
+  option{
+    font-family: 'Rubik', sans-serif;
+    background-color: #ff88003d;
+    padding: 5px 7px;
+  }
+  .ds {
+    font-size: 21px;
+    line-height: 130%;
+    color: #000000;
+
+  }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a2390c2f-66db-40f9-b00b-b478629f094d" name="duden_schule" url="http://31.31.198.45">
+        <fileTransfer host="31.31.198.45" port="21" rootFolder="/php-bin/duden-schule.ru">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
