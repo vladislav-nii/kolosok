@@ -110,6 +110,6 @@ app.post("/upload", async (req, res) => {
 app.use(express.static('../KONRAD-DUDEN-SCHULE-MAIN'));
 
 
-app.listen('', 'https://oprosnik.onrender.com',  () => {
-  console.log(`Сервер запущен на порту ${'5500'}`);
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT}`);
 });
