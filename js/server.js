@@ -107,7 +107,9 @@ app.post("/upload", async (req, res) => {
   });
 });
 
+app.use(express.static('../KONRAD-DUDEN-SCHULE-MAIN'));
 
-app.listen('443', '216.24.57.3', () => {
-  console.log(`Сервер запущен на порту ${'443'}`);
+
+app.listen('5500', '192.168.1.111',  () => {
+  console.log(`Сервер запущен на порту ${'5500'}`);
 });

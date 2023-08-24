@@ -67,7 +67,7 @@ function checkCookie() {
 
   if (username != '' || password != '') {
     async function getData() {
-      const response = await fetch('http://127.0.0.1:3000/login', {
+      const response = await fetch('http://192.168.1.111:5500/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -104,7 +104,7 @@ registerForm.addEventListener('submit', async (e) => {
   const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
   const isAdmin = false;
-  const response = await fetch('http://127.0.0.1:3000/register', {
+  const response = await fetch('http://192.168.1.111:5500/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, isAdmin, email }),
@@ -140,7 +140,7 @@ loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
-  const response = await fetch('http://127.0.0.1:3000/login', {
+  const response = await fetch('http://192.168.1.111:5500/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
