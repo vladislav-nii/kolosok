@@ -9,6 +9,8 @@ const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
 const multer = require("multer");
 const fs = require('fs');
+const path = require('path');
+
 
 
 
@@ -91,7 +93,7 @@ app.delete("/users/:id", async (req, res) => {
 
 
 // app.get('/', (req, res) => {
-//   const filePath = "/index.html";
+//  const filePath = path.join(__dirname, '../', 'index.html');
 //   console.log(filePath);
 //   fs.readFile(filePath, 'utf8', (err, content) => {
 //     if (err) {
@@ -102,10 +104,11 @@ app.delete("/users/:id", async (req, res) => {
 //     }
 //   });
 // });
+const filePath = path.join(__dirname, '../');
+app.use(express.static(filePath));
 
-app.use(express.static('../static'));
 
-
-app.listen(PORT, () => {
+app.listen(PORT, '192.168.1.111', () => {
   console.log(`Сервер запущен на порту ${PORT}`);
+  const currentPath = path.dirname(__filename);
 });
