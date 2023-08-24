@@ -103,7 +103,7 @@ app.delete("/users/:id", async (req, res) => {
 //   });
 // });
 
-app.use(express.static('../KONRAD-DUDEN-SCHULE-main/static'));
+app.use(express.static('../static'));
 
 
 app.listen(PORT, () => {
