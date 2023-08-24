@@ -90,20 +90,20 @@ app.delete("/users/:id", async (req, res) => {
 
 
 
-app.get('/', (req, res) => {
-  const filePath = '../index.html';
-  console.log(filePath);
-  fs.readFile(filePath, 'utf8', (err, content) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Внутренняя ошибка сервера');
-    } else {
-      res.send(content);
-    }
-  });
-});
+// app.get('/', (req, res) => {
+//   const filePath = "/index.html";
+//   console.log(filePath);
+//   fs.readFile(filePath, 'utf8', (err, content) => {
+//     if (err) {
+//       console.error(err);
+//       res.status(500).send('Внутренняя ошибка сервера');
+//     } else {
+//       res.send(content);
+//     }
+//   });
+// });
 
-//app.use(express.static('../KONRAD-DUDEN-SCHULE-main'));
+app.use(express.static('../KONRAD-DUDEN-SCHULE-main/static'));
 
 
 app.listen(PORT, () => {
