@@ -79,9 +79,6 @@ app.get("/users", async (req, res) => {
   res.send(users);
 });
 
-// app.get("/", async (req, res) => {
-//    console.log("dsacsdcsdcsdcsd");
-// });ес
 
 // Удаление пользователя (для администратора)
 app.delete("/users/:id", async (req, res) => {
@@ -91,27 +88,20 @@ app.delete("/users/:id", async (req, res) => {
 
 
 
-// app.post("/upload", async (req, res) => {
+app.get('/', (req, res) => {
+  const filePath = path.join(__dirname, '../KONRAD-DUDEN-SCHULE-MAIN', 'index.html');
 
+  fs.readFile(filePath, 'utf8', (err, content) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Внутренняя ошибка сервера');
+    } else {
+      res.send(content);
+    }
+  });
+});
 
-//   const options = {
-//     mode: "text",
-//     pythonOptions: ["-u"],
-//     scriptPath: "./",
-//   };
-
-
-//   PythonShell.run("./js/crop_predictor.py", options, (err, results) => {
-//     if (err) {
-//       res.status(500).send({ error: err });
-//     } else {
-//       const parsedResults = JSON.parse(results[0]);
-//       res.status(200).send(parsedResults);
-//     }
-//   });
-// });
-
-app.use(express.static(__dirname + '../KONRAD-DUDEN-SCHULE-MAIN'));
+// app.use(express.static(__dirname + '../KONRAD-DUDEN-SCHULE-MAIN'));
 
 
 app.listen(PORT, () => {
