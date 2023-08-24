@@ -89,7 +89,7 @@ app.delete("/users/:id", async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  const filePath = path.join(__dirname, '../KONRAD-DUDEN-SCHULE-main', 'index.html');
+  const filePath = path.join('index.html');
   console.log(filePath);
   fs.readFile(filePath, 'utf8', (err, content) => {
     if (err) {
