@@ -9,34 +9,40 @@
 </head>
 
 <body>
-    <div id="surveyContainer">
-        <script>
-            var json = {
-                "title": "Виды пшеницы",
-                "logoPosition": "right",
-                "pages": [
-                    {
-                        "name": "page1",
-                        "elements": [
-                            {
-                                "type": "checkbox",
-                                "name": "question1",
-                                "title": "Какие виды пшеницы существуют",
-                                "choices": [
-                                    "мягкая краснозерная яровая",
-                                    "твердая яровая",
-                                    "анатолийская"
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            };
-    
-            var survey = new Survey.Model(json);
-            survey.render("surveyContainer");
-        </script>
-    </div>
+    <div id="surveyContainer"></div>
+
+    <script>
+        var json = {
+            "title": "Виды пшеницы",
+            "logoPosition": "right",
+            "pages": [
+                {
+                    "name": "page1",
+                    "elements": [
+                        {
+                            "type": "checkbox",
+                            "name": "question1",
+                            "title": "Какие виды пшеницы существуют",
+                            "choices": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая",
+                                "анатолийская"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        var survey = new Survey.Model(json);
+        survey.render("surveyContainer");
+        survey.onComplete.add(result => {
+            console.log(result.data); // Ваши результаты опроса
+            for (const key in result.data) {
+                alert(key + " : " + result.data[key]);
+            }
+        });
+    </script>
 </body>
 
 </html>
