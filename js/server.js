@@ -122,7 +122,7 @@ app.use(express.static(filePath));
 //   console.log(`Сервер запущен на порту ${PORT}`);
 //   const currentPath = path.dirname(__filename);
 // });
-app.listen(PORT, 'https://oprosnik.onrender.com', () => {
+app.listen(PORT, 'https://oprosnik.onrender.com/', () => {
   console.log(`Сервер запущен на порту ${PORT}`);
   const currentPath = path.dirname(__filename);
 });
