@@ -67,7 +67,9 @@ function checkCookie() {
 
   if (username != '' || password != '') {
     async function getData() {
-      const response = await fetch('https://oprosnik.onrender.com/login', {
+      // const response = await fetch('https://oprosnik.onrender.com/login', {
+        const response = await fetch('http://localhost:5500/login', {
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -104,14 +106,19 @@ registerForm.addEventListener('submit', async (e) => {
   const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
   const isAdmin = false;
-  const response = await fetch('https://oprosnik.onrender.com/register', {
+  //const response = await fetch('https://oprosnik.onrender.com/register', {
+    const response = await fetch('http://localhost:5500/register', {
+
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, isAdmin, email }),
   });
   const data = await response.json();
-  if (data['index'] == '0') {
-    alert("Такой пользователь уже существует");
+
+ 
+
+  if (data.msg) {
+    alert(data.msg);
   } else {
     if (data.isAdmin) {
       // adminPanel.style.display = 'block';
@@ -140,7 +147,9 @@ loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
-  const response = await fetch('https://oprosnik.onrender.com/login', {
+  //const response = await fetch('https://oprosnik.onrender.com/login', {
+    const response = await fetch('http://localhost:5500/login', {
+
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),

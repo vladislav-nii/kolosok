@@ -23,6 +23,8 @@
     "node": "^20.1.0",
     "nodemon": "^2.0.22",
     "python-shell": "^5.0.0",
-    "simplecrypt": "^0.1.0"
+    "simplecrypt": "^0.1.0",
+    "survey-angular": "^1.9.104",
+    "surveyjs": "^4.0.2"
   }
 }

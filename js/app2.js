@@ -7,7 +7,7 @@ formData.append("avatar", fileField.files[0]);
 predForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const response = await fetch("http://127.0.0.1:3000/upload", {
+  const response = await fetch("https://oprosnik.onrender.com/upload", {
     method: "POST",
     headers: { "Content-Type": "multipart/form-data" },
     body: formData,

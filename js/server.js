@@ -39,9 +39,11 @@ const User = mongoose.model("users", userSchema);
 // Регистрация
 app.post("/register", async (req, res) => {
   const user = new User(req.body);
-  try {
-    const result = await user.save();
-    console.log(result);
+
+  const users = await User.find().exec();
+  const reset = users.find(item => item.email === user.email);
+
+  if (!reset) { const result = await user.save();
     if (user.username == adminLogin && user.password == adminPassword) {
       IsAdmin = true;
     } else {
@@ -52,13 +54,15 @@ app.post("/register", async (req, res) => {
       username: user.username,
       isAdmin: IsAdmin,
     });
-  } catch (err) {
-    res.send(err);
+  }
+  else {
+    res.send({msg:"пользовтель с такой почтой уже есть"});
   }
 });
 
 // Авторизация
 app.post("/login", async (req, res) => {
+
   const { username, password } = req.body;
   const user = await User.findOne({ username, password }).exec();
   if (user) {
@@ -92,23 +96,33 @@ app.delete("/users/:id", async (req, res) => {
 
 
 
-// app.get('/', (req, res) => {
-//  const filePath = path.join(__dirname, '../', 'index.html');
-//   console.log(filePath);
-//   fs.readFile(filePath, 'utf8', (err, content) => {
-//     if (err) {
-//       console.error(err);
-//       res.status(500).send('Внутренняя ошибка сервера');
-//     } else {
-//       res.send(content);
-//     }
-//   });
-// });
+app.get('/survey', (req, res) => {
+  console.log(`Сервер запущен на порту ${PORT}`);
+
+  res.sendFile(__dirname + '/survey.html');
+});
+
+app.get('/surveys', (req, res) => {
+  surveysPath = path.join(__dirname, '../surveys/surveysPage.html');
+  res.sendFile(surveysPath);
+});
+
+app.get('/surveys/survey1', (req, res) => {
+  surveysPath = path.join(__dirname, 'survey.html');
+  res.sendFile(surveysPath);
+});
+
+
+
 const filePath = path.join(__dirname, '../');
 app.use(express.static(filePath));
 
 
-app.listen(PORT, () => {
+// app.listen(PORT, () => {
+//   console.log(`Сервер запущен на порту ${PORT}`);
+//   const currentPath = path.dirname(__filename);
+// });
+app.listen(PORT, 'https://oprosnik.onrender.com', () => {
   console.log(`Сервер запущен на порту ${PORT}`);
   const currentPath = path.dirname(__filename);
 });

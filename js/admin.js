@@ -3,7 +3,7 @@ const fetchUsersBtn = document.getElementById('fetch-users');
 
 
 fetchUsersBtn.addEventListener('click', async () => {
-  const response = await fetch('http://127.0.0.1:3000/users');
+  const response = await fetch('https://oprosnik.onrender.com/users');
   const users = await response.json();
   userList.innerHTML = '';
   users.forEach((user) => {

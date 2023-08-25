@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Опрос SurveyJS</title>
+    <script src="https://unpkg.com/survey-angular/survey.angular.js"></script>
+    <link href="/node_modules/survey-angular/defaultV2.css" type="text/css" rel="stylesheet" />
+    <link href="/css/surveyForMobile.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="surveyContainer"></div>
+
+    <script>
+        var json = {
+            "title": "Виды пшеницы",
+            "logoPosition": "right",
+            "pages": [
+                {
+                    "name": "page1",
+                    "elements": [
+                        {
+                            "type": "checkbox",
+                            "name": "question1",
+                            "title": "Какие виды пшеницы существуют",
+                            "choices": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая",
+                                "анатолийская"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "maxTimeToFinish": 180,
+            "showTimerPanel": "top",
+            "widthMode": "responsive"
+        };
+
+        var survey = new Survey.Model(json);
+        survey.render("surveyContainer");
+    </script>
+</body>
+
+</html>

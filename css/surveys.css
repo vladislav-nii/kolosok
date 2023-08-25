@@ -1,0 +1,42 @@
+body{
+    margin: 5%;
+    background:url('../img.gif') repeat-y 100% 100% fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+button{
+    border-radius: 40px;
+    font-size: 64px;
+    background-color: #DAA520 !important;
+    font-family: "Bradley Hand", cursive;
+    font-weight: 900;
+    color: #424242;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 8%;
+    grid-row-gap: 3%;
+    height: 98vh;
+  }
+  
+  /* @media (min-width: 576px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  } */
+  
+  .grid-item {
+    background-color: #f2f2f2;
+    padding: 10px;
+    min-height: 600px;
+  }
