@@ -1,5 +1,6 @@
 /* Стили для мобильных устройств */
 @media (max-width: 480px) {
+
     /* Уменьшение размера шрифта */
     .sv_main .sv_q_title,
     .sv_main .sv_q_description,
@@ -7,45 +8,45 @@
     .sv_main .sv_q_dropdown_control,
     .sv_main .sv_q_radiogroup,
     .sv_main .sv_q_checkbox {
-      font-size: 14px;
+        font-size: 14px;
     }
-  
+
     /* Уменьшение отступов */
     .sv_main .sv_q .sv_q_title {
-      margin-bottom: 5px;
+        margin-bottom: 5px;
     }
-  
+
     .sv_main .sv_q .sv_q_description {
-      margin-bottom: 10px;
+        margin-bottom: 10px;
     }
-  
+
     .sv_main .sv_q .sv_q_radiogroup,
     .sv_main .sv_q .sv_q_checkbox {
-      margin-top: 5px;
-      margin-bottom: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
     }
-  
+
     .sv_main .sv_q .sv_q_text_root,
     .sv_main .sv_q .sv_q_dropdown_control {
-      margin-bottom: 10px;
+        margin-bottom: 10px;
     }
-  
+
     /* Уменьшение размеров элементов */
     .sv_main .sv_q_radiogroup .sv_q_radiogroup_item,
     .sv_main .sv_q_checkbox .sv_q_checkbox_item {
-      padding: 5px;
+        padding: 5px;
     }
-  
+
     /* Изменение расположения элементов */
     .sv_main .sv_q_checkbox .sv_q_checkbox_item label,
     .sv_main .sv_q_radiogroup .sv_q_radiogroup_item label {
-      display: block;
-      margin-left: 30px;
+        display: block;
+        margin-left: 30px;
     }
-  
+
     .sv_main .sv_q .sv_q_text_root input[type="text"],
     .sv_main .sv_q .sv_q_dropdown_control select {
-      width: 100%;
-      box-sizing: border-box;
+        width: 100%;
+        box-sizing: border-box;
     }
-  }
+}

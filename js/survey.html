@@ -5,7 +5,8 @@
     <title>Опрос SurveyJS</title>
     <script src="https://unpkg.com/survey-angular/survey.angular.js"></script>
     <link href="/node_modules/survey-angular/defaultV2.css" type="text/css" rel="stylesheet" />
-    <!-- <link href="/css/surveyForMobile.css" rel="stylesheet" /> -->
+    <script src="https://surveyjs.azureedge.net/1.9.14/survey-core.js"></script>
+    <link href="/css/surveyForMobile.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -13,6 +14,7 @@
 
     <script>
         var json = {
+            "maxWidth": '10px',
             "title": "Виды пшеницы",
             "logoPosition": "right",
             "pages": [
@@ -24,6 +26,10 @@
                             "type": "checkbox",
                             "name": "question1",
                             "title": "Какие виды пшеницы существуют",
+                            "correctAnswer": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая"
+                            ],
                             "choices": [
                                 "мягкая краснозерная яровая",
                                 "твердая яровая",
@@ -35,12 +41,36 @@
             ]
         };
 
+        function getResult(survey) {
+            var questions = survey.getQuizQuestions();
+            var correct = 0;
+            var numberOfQuestions = 0;
+            questions.forEach(function (question) {
+                if (!question.isEmpty()) {
+                    numberOfQuestions++;
+                    if (question.isAnswerCorrect())
+                        correct++;
+                }
+            });
+            var result = {};
+            result["correct_answers"] = correct;
+            result["no_of_questions"] = numberOfQuestions;
+
+            return result;
+        }
+
         var survey = new Survey.Model(json);
         survey.render("surveyContainer");
         survey.onComplete.add(result => {
             console.log(result.data); // Ваши результаты опроса
             for (const key in result.data) {
-                alert(key + " : " + result.data[key]);
+                //lert(key + " : " + result.data[key]);
+                if(getResult(survey)["correct_answers"]){
+                    alert("Ответы верны!")
+                }
+                else{
+                    alert("Ответы неверны!")
+                }
             }
         });
     </script>
