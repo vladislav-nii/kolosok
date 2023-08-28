@@ -112,6 +112,11 @@ app.get('/surveys/survey1', (req, res) => {
   res.sendFile(surveysPath);
 });
 
+app.get('/login2', (req, res) => {
+  login2Path = path.join(__dirname, '../login.html');
+  res.sendFile(login2Path);
+});
+
 
 
 const filePath = path.join(__dirname, '../');
