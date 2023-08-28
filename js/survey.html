@@ -35,6 +35,34 @@
                                 "твердая яровая",
                                 "анатолийская"
                             ]
+                        },
+                        {
+                            "type": "checkbox",
+                            "name": "question2",
+                            "title": "Какие виды пшеницы существуют",
+                            "correctAnswer": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая"
+                            ],
+                            "choices": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая",
+                                "анатолийская"
+                            ]
+                        },
+                        {
+                            "type": "checkbox",
+                            "name": "question3",
+                            "title": "Какие виды пшеницы существуют",
+                            "correctAnswer": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая"
+                            ],
+                            "choices": [
+                                "мягкая краснозерная яровая",
+                                "твердая яровая",
+                                "анатолийская"
+                            ]
                         }
                     ]
                 }
@@ -62,16 +90,17 @@
         var survey = new Survey.Model(json);
         survey.render("surveyContainer");
         survey.onComplete.add(result => {
+            alert('Верных ответов ' + getResult(survey)["correct_answers"] + ' из ' + getResult(survey)["no_of_questions"]);
             console.log(result.data); // Ваши результаты опроса
-            for (const key in result.data) {
-                //lert(key + " : " + result.data[key]);
-                if(getResult(survey)["correct_answers"]){
-                    alert("Ответы верны!")
-                }
-                else{
-                    alert("Ответы неверны!")
-                }
-            }
+            // for (const key in result.data) {
+            //     //lert(key + " : " + result.data[key]);
+            //     if(getResult(survey)["correct_answers"]){
+            //         alert("Ответы верны!")
+            //     }
+            //     else{
+            //         alert("Ответы неверны!")
+            //     }
+            // }
         });
     </script>
 </body>
