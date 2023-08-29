@@ -134,6 +134,11 @@ app.post("/allowTest/:id", async (req, res) =>{
   res.send(req.params.id);
 })
 
+app.post("/closeTest/:id", async (req, res) =>{
+  isAvailable[req.params.id - 1] = false;
+  res.send(req.params.id);
+})
+
 // Получение всех пользователей (для администратора)
 app.get("/users", async (req, res) => {
   const users = await User.find().exec();

@@ -3,6 +3,8 @@
 const fetchUsersBtn = document.getElementById('fetch-users');
 const userList = document.getElementById('user-list');
 const allowTest1Btn = document.getElementById('start-test1');
+const closeTest1Btn = document.getElementById('close-test1');
+
 const surveyButton = document.getElementById('survey1');
 
 
@@ -34,4 +36,14 @@ allowTest1Btn.addEventListener('click', async() =>{
   window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
   res = await fetch(`/allowTest/${1}`, { method: 'POST' });
+})
+
+closeTest1Btn.addEventListener('click', async() =>{
+  var message = {
+    type: 'changeStyle',
+        style: 'admin-style'
+  };
+  window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+
+  res = await fetch(`/closeTest/${1}`, { method: 'POST' });
 })
