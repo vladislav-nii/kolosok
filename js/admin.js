@@ -7,7 +7,7 @@ const surveyButton = document.getElementById('survey1');
 
 
 fetchUsersBtn.addEventListener('click', async () => {
-  const response = await fetch('http://localhost:5500/users');
+  const response = await fetch('https://oprosnik.onrender.com/users');
   const users = await response.json();
   userList.innerHTML = '';
   users.forEach((user) => {

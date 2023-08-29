@@ -47,7 +47,7 @@ loginForm.addEventListener('submit', async (e) => {
   const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
   //const response = await fetch('https://oprosnik.onrender.com/login', {
-  const response = await fetch('http://localhost:5500/login', {
+  const response = await fetch('https://oprosnik.onrender.com/login', {
 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -59,10 +59,10 @@ loginForm.addEventListener('submit', async (e) => {
     document.cookie = "password=" + encodeURIComponent(password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     if (data.isAdmin) {
       alert('Hello');
-      location.assign("http://localhost:5500/setting");
+      location.assign("https://oprosnik.onrender.com/setting");
     }
     else {
-      location.assign("http://localhost:5500/surveys");
+      location.assign("https://oprosnik.onrender.com/surveys");
     }
 
   } else {

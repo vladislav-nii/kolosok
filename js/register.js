@@ -59,8 +59,8 @@ registerForm.addEventListener('submit', async (e) => {
   const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
   const isAdmin = false;
-  //const response = await fetch('https://oprosnik.onrender.com/register', {
-  const response = await fetch('http://localhost:5500/register', {
+  const response = await fetch('https://oprosnik.onrender.com/register', {
+ // const response = await fetch('http://localhost:5500/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, isAdmin, email }),
@@ -75,7 +75,7 @@ registerForm.addEventListener('submit', async (e) => {
       adminSetting = document.getElementById("admin-setting");
       adminSetting.style.display = 'block';
     } else {
-      location.assign("http://localhost:5500/surveys");
+      location.assign("https://oprosnik.onrender.com/surveys");
     }
 
     if (data.username) {

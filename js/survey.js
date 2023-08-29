@@ -83,7 +83,7 @@ survey.onComplete.add(async(e) => {
     const result = JSON.stringify(getResult(survey));
     alert(email);
     //const response = await fetch('https://oprosnik.onrender.com/register', {
-    const response = await fetch('http://localhost:5500/result', {
+    const response = await fetch('https://oprosnik.onrender.com/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, result }),
