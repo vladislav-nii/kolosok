@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="css/login.css"> <!-- Подключение файла со стилями -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kolosok Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/avdira-textfonts" type="text/css" />
 </head>
 
 <body>
-    <div class="login-container">
-        <h1>Вход</h1>
-        <form>
-            <input type="text" placeholder="Имя пользователя">
-            <input type="password" placeholder="Пароль">
-            <button type="submit">Войти</button>
+
+    <div class="login_form_container">
+        <form id="login-form">
+            <div class="login_form">
+                <div class="logo">
+                    <!-- <img src="img/logo.jpg"> -->
+                </div>
+                <h2 class="hello">Добро пожаловать</h2>
+                <div class="input_group">
+                    <i class="fa fa-user"></i>
+                    <input type="text" placeholder="Логин" id="login-username" class="input_text" required/>
+                </div>
+                <div class="input_group">
+                    <i class="fa fa-unlock-alt"></i>
+                    <input type="password" placeholder="Пароль" id="login-password" class="input_text" required/>
+                </div>
+                <div class="button_group" id="login_button">
+                    <button type="submit">Войти</button>
+                </div>
+                <div class="fotter">
+                    <a href="http://localhost:5500/register">Зарегистрироваться</a>
+                </div>
+            </div>
         </form>
     </div>
+    <script src="js/login.js"></script>
 </body>
 
 </html>

@@ -1,9 +1,13 @@
-const fetchUsersBtn = document.getElementById('fetch-users');
+//const { response } = require("express");
 
+const fetchUsersBtn = document.getElementById('fetch-users');
+const userList = document.getElementById('user-list');
+const allowTest1Btn = document.getElementById('start-test1');
+const surveyButton = document.getElementById('survey1');
 
 
 fetchUsersBtn.addEventListener('click', async () => {
-  const response = await fetch('https://oprosnik.onrender.com/users');
+  const response = await fetch('http://localhost:5500/users');
   const users = await response.json();
   userList.innerHTML = '';
   users.forEach((user) => {
@@ -19,10 +23,15 @@ fetchUsersBtn.addEventListener('click', async () => {
     });
     li.appendChild(deleteBtn);
     userList.appendChild(li);
-  });
+  }); 
 });
 
+allowTest1Btn.addEventListener('click', async() =>{
+  var message = {
+    type: 'changeStyle',
+        style: 'admin-style'
+  };
+  window.postMessage(message, '*');
 
-function mainGo() {
-  location.assign("index.html");
-}
+  res = await fetch(`/allowTest/${1}`, { method: 'POST' });
+})
