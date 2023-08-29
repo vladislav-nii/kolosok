@@ -16,7 +16,3 @@ function handleMessage(event) {
 }
 window.addEventListener('message', handleMessage);
 
-function changeBorder () {
-    const survey1 = document.getElementById("survey1");
-    survey1.style.borderRadius = '0';
-}
