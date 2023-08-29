@@ -165,15 +165,26 @@ app.get('/surveys/', (req, res) => {
   }
 });
 
-app.get('/setting', (req, res) => {
-  const cookieValue = req.cookies.login;
-
-  if (cookieValue === 'admin') {
-    surveysPath = path.join(__dirname, '../setting.html');
-    res.sendFile(surveysPath);
-  } else {
-    res.redirect("/login");
+app.get('/setting', async (req, res) => {
+  const cookieValue = req.cookies.email;
+  console.log('asdfasdfasdf');
+  console.log(cookieValue);
+  const currentUser = await User.findOne({email: cookieValue}).exec()
+  if(currentUser){
+    if(currentUser.isAdmin){
+      surveysPath = path.join(__dirname, '../setting.html');
+      res.sendFile(surveysPath);
+    }
+    else{
+      res.redirect("/login");
+    }
   }
+  // if (cookieValue === 'admin') {
+  //   surveysPath = path.join(__dirname, '../setting.html');
+  //   res.sendFile(surveysPath);
+  // } else {
+  //   res.redirect("/login");
+  // }
 });
 
 
