@@ -9,7 +9,7 @@ function test1() {
 function handleMessage(event) {
     alert('message');
 
-    const survey1 = document.getElementById("survey1");
+    console.log(survey1);
     survey1.style.borderRadius = '1px';
 
 
