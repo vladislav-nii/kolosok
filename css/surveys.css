@@ -1,3 +1,9 @@
+*{
+  font-family: 'AvdiraRegular';
+    font-weight: normal;
+    font-style: normal;
+}
+
 body{
     margin: 5%;
     background:url('../img.gif') repeat-y 100% 100% fixed;
@@ -9,7 +15,6 @@ button{
     border-radius: 40px;
     font-size: 64px;
     background-color: #DAA520 !important;
-    font-family: "Bradley Hand", cursive;
     font-weight: 900;
     color: #424242;
     /* background: url('../img/lock.png') center no-repeat;
