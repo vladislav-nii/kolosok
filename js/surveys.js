@@ -9,12 +9,16 @@ function test1(){
 function handleMessage(event) {
     alert('message');
 
-    if (event.data && event.data.type === 'changeStyle') {
+    
         //alert('message');
         const survey1 = document.getElementById("survey1");
         survey1.style.borderRadius = '0';
-    }
+    
    
 }
 window.addEventListener('message', handleMessage);
 
+// function changeBorder () {
+//     const survey1 = document.getElementById("survey1");
+//     survey1.style.borderRadius = '0';
+// }
