@@ -135,7 +135,7 @@ app.post("/allowTest/:id", async (req, res) =>{
 })
 
 app.post("/closeTest/:id", async (req, res) =>{
-  isAvailable[req.params.id - 1] = false;
+  isAvailable[req.params.id - 1] = 0;
   res.send(isAvailable[req.params.id - 1]);
 })
 
