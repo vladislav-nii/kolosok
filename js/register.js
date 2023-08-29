@@ -66,7 +66,7 @@ registerForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({ username, password, isAdmin, email }),
   });
   const data = await response.json();
-
+  console.log(data);
   if (data.msg) {
     alert(data.msg);
   } else {
@@ -78,9 +78,9 @@ registerForm.addEventListener('submit', async (e) => {
       location.assign("https://oprosnik.onrender.com/surveys");
     }
 
-    if (data.username) {
-      document.cookie = "login=" + encodeURIComponent(username) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-      document.cookie = "password=" + encodeURIComponent(password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+    if (data.email) {
+      document.cookie = "email=" + (data.email) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+      document.cookie = "password=" + (data.password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     } else {
       alert("Такого пользователя не существует!");
     }

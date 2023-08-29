@@ -78,16 +78,13 @@ function getResult(survey) {
 var survey = new Survey.Model(json);
 survey.render("surveyContainer");
 survey.onComplete.add(async(e) => {
-    //e.preventDefault();
-    const email = document.cookie;
+    const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    console.log(document.cookie);
     const result = JSON.stringify(getResult(survey));
-    alert(email);
-    //const response = await fetch('https://oprosnik.onrender.com/register', {
     const response = await fetch('https://oprosnik.onrender.com/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, result }),
     });
-    //alert('Верных ответов ' + getResult(survey)["correct_answers"] + ' из ' + getResult(survey)["no_of_questions"]);
-    //console.log(result.data);
+    
 });

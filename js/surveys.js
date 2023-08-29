@@ -1,4 +1,4 @@
-//const survey1 = document.getElementById("survey1");
+const survey1 = document.getElementById("survey1");
 
 function test1() {
     window.location.href = 'https://oprosnik.onrender.com/surveys/survey1';
@@ -8,7 +8,7 @@ function test1() {
 
 function handleMessage(event) {
     alert('message');
-    survey1 = document.getElementById("survey1");
+    //survey1 = document.getElementById("survey1");
     console.log(survey1);
     survey1.style.borderRadius = '1px'; 
 

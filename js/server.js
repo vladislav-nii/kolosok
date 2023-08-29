@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 5500;
 const cors = require("cors");
 //const authRouter = require ('./authRouter.js')
-const adminLogin = "admin";
+const adminEmail = "v.mineev@refor.by";
 const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
 const multer = require("multer");
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   const requestedRoute = req.path;
   //console.log(requestedRoute);
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/')) {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results')) {
     return res.status(404).send('Страница не найдена');
   }
 
@@ -71,39 +71,38 @@ app.post("/register", async (req, res) => {
 
   if (!reset) {
     const result = await user.save();
-    if (user.username == adminLogin && user.password == adminPassword) {
+    if (user.email == adminEmail && user.password == adminPassword) {
       IsAdmin = true;
     } else {
       IsAdmin = false;
     }
     isLoggined = true;
     res.send({
-      message: "Успешная авторизация",
-      username: user.username,
+      password: user.password,
+      email: user.email,
       isAdmin: IsAdmin,
     });
   }
   else {
-    res.send({ msg: "пользовтель с такой почтой уже есть" });
+    res.send({ msg: "пользователь с такой почтой уже есть" });
   }
 });
 
 // Авторизация
 app.post("/login", async (req, res) => {
   //console.log(req);
-  const { username, password } = req.body;
-  const user = await User.findOne({ username, password }).exec();
+  const { email, password } = req.body;
+  const user = await User.findOne({ email, password }).exec();
   if (user) {
-    if (user.username == adminLogin && user.password == adminPassword) {
+    if (user.email == adminEmail && user.password == adminPassword) {
       IsAdmin = true;
-      //res.redirect("/setting");
     } else {
       IsAdmin = false;
     }
     isLoggined = true;
     res.send({
-      message: "Успешная авторизация",
-      username: user.username,
+      password: user.password,
+      email: user.email,
       isAdmin: IsAdmin,
     });
   } else {
@@ -112,13 +111,9 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/result", async (req, res) => {
-
-  //"asdfasdf")
-  //console.log(req.body);
   const result = new Result(req.body);
   const results = await Result.find().exec();
-  //console.log(result);
-  //console.log(results);
+
   if (result) {
     const saveResulst = await result.save();
     res.send({
@@ -153,10 +148,14 @@ app.delete("/users/:id", async (req, res) => {
   res.send(result);
 });
 
+app.get("/results", async (req, res) => {
+  const results = await Result.find().exec();
+  res.send(results);
+});
 
 
 app.get('/surveys/', (req, res) => {
-  const cookieValue = req.cookies.login;
+  const cookieValue = req.cookies.email;
 
   if (cookieValue) {
     surveysPath = path.join(__dirname, '../surveys/surveysPage.html');

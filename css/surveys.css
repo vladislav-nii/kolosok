@@ -12,8 +12,8 @@ button{
     font-family: "Bradley Hand", cursive;
     font-weight: 900;
     color: #424242;
-    background: url('../img/lock.png') center no-repeat;
-    background-size: contain;
+    /* background: url('../img/lock.png') center no-repeat;
+    background-size: contain; */
 }
 
 .grid-container {

@@ -44,19 +44,20 @@ const loginButton = document.getElementById("loginButton");
 
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const username = document.getElementById('login-username').value;
+  const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
   //const response = await fetch('https://oprosnik.onrender.com/login', {
   const response = await fetch('https://oprosnik.onrender.com/login', {
 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   });
   const data = await response.json();
-  if (data.username) {
-    document.cookie = "login=" + encodeURIComponent(username) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-    document.cookie = "password=" + encodeURIComponent(password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+  console.log(data);
+  if (data.email) {
+    document.cookie = "email=" + (data.email) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+    document.cookie = "password=" + (data.password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     if (data.isAdmin) {
       alert('Hello');
       location.assign("https://oprosnik.onrender.com/setting");
