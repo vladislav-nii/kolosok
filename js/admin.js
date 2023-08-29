@@ -31,7 +31,7 @@ allowTest1Btn.addEventListener('click', async() =>{
     type: 'changeStyle',
         style: 'admin-style'
   };
-  window.postMessage(message, '*');
+  window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
   res = await fetch(`/allowTest/${1}`, { method: 'POST' });
 })
