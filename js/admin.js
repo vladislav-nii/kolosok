@@ -46,4 +46,5 @@ closeTest1Btn.addEventListener('click', async() =>{
   window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
   res = await fetch(`/closeTest/${1}`, { method: 'POST' });
+  alert(res);
 })

@@ -136,7 +136,7 @@ app.post("/allowTest/:id", async (req, res) =>{
 
 app.post("/closeTest/:id", async (req, res) =>{
   isAvailable[req.params.id - 1] = false;
-  res.send(req.params.id);
+  res.send(isAvailable[req.params.id - 1]);
 })
 
 // Получение всех пользователей (для администратора)
