@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   const requestedRoute = req.path;
   //console.log(requestedRoute);
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/')) {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/')) {
     return res.status(404).send('Страница не найдена');
   }
 
