@@ -29,21 +29,21 @@ fetchUsersBtn.addEventListener('click', async () => {
 });
 
 allowTest1Btn.addEventListener('click', async() =>{
-  var message = {
-    type: 'changeStyle',
-        style: 'admin-style'
-  };
-  window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+  // var message = {
+  //   type: 'changeStyle',
+  //       style: 'admin-style'
+  // };
+  // window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
   res = await fetch(`/allowTest/${1}`, { method: 'POST' });
 })
 
 closeTest1Btn.addEventListener('click', async() =>{
-  var message = {
-    type: 'changeStyle',
-        style: 'admin-style'
-  };
-  window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+  // var message = {
+  //   type: 'changeStyle',
+  //       style: 'admin-style'
+  // };
+  // window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
   res = await fetch(`/closeTest/${1}`, { method: 'POST' });
   console.log(res);

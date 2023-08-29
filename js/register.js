@@ -21,7 +21,7 @@ const freeLessonsBtn = document.getElementById("btn-free");
 //   if (username != '' || password != '') {
 //     async function getData() {
 //        const response = await fetch('https://oprosnik.onrender.com/login', {
-//         //const response = await fetch('http://localhost:5500/login', {
+//         //const response = await fetch('https://oprosnik.onrender.com/login', {
 
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +60,7 @@ registerForm.addEventListener('submit', async (e) => {
   const password = document.getElementById('register-password').value;
   const isAdmin = false;
   const response = await fetch('https://oprosnik.onrender.com/register', {
- // const response = await fetch('http://localhost:5500/register', {
+ // const response = await fetch('https://oprosnik.onrender.com/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, isAdmin, email }),
