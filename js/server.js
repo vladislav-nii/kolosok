@@ -11,8 +11,9 @@ const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
-var isAvailable = [false, false, false, false, false, false, false, false];
+var isAvailable = [false, false, false, false, true, true, true, true];
 const cookieParser = require('cookie-parser');
+const { Double } = require("mongodb");
 
 
 
@@ -23,11 +24,11 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/surveys/survey1', '/result', '/users']; // Список допустимых маршрутов
+  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users']; // Список допустимых маршрутов
   const requestedRoute = req.path;
   //console.log(requestedRoute);
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results')) {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey')) {
     return res.status(404).send('Страница не найдена');
   }
 
@@ -52,6 +53,7 @@ const userSchema = new mongoose.Schema({
 const resultSchema = new mongoose.Schema({
   email: String,
   result: String,
+  time: String,
 });
 
 const Result = mongoose.model("results", resultSchema);
@@ -189,9 +191,9 @@ app.get('/setting', async (req, res) => {
 
 
 
-app.get('/surveys/survey1', (req, res) => {
-  if (isAvailable[0]) {
-    surveysPath = path.join(__dirname, 'survey.html');
+app.get('/surveys/survey:id', (req, res) => {
+  if (isAvailable[req.params.id - 1]) {
+    surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
     res.sendFile(surveysPath);
   }
   else {

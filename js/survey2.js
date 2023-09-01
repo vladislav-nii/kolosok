@@ -70,21 +70,36 @@ function getResult(survey) {
     });
     var result = {};
     result["correct_answers"] = correct;
-    result["no_of_questions"] = numberOfQuestions;
+    result["no_of_questions"] = numberOfQuestions; 
 
     return result;
 }
 
 var survey = new Survey.Model(json);
+
+survey.timestamps = {};
+
+survey
+    .onAfterRenderSurvey
+    .add(function (sender, options) {
+        sender.timestamps['started'] = Date.now();
+    });
+
 survey.render("surveyContainer");
-survey.onComplete.add(async(e) => {
+survey.onComplete.add(async (e) => {
+
+    e.timestamps['finished'] = Date.now();
+    e.timestamps['dif'] = (e.timestamps['finished'] - e.timestamps['started']) / 1000;
+    const time = e.timestamps['dif'];
+    console.log('time');
+    console.log(e.timestamps);
     const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     console.log(document.cookie);
     const result = JSON.stringify(getResult(survey));
     const response = await fetch('https://oprosnik.onrender.com/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, result }),
+        body: JSON.stringify({ email, result, time }),
     });
-    
+
 });

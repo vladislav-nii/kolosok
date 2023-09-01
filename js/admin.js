@@ -9,6 +9,16 @@ const resultList = document.getElementById('result-list');
 
 const surveyButton = document.getElementById('survey1');
 
+async function start(number){
+
+  res = await fetch(`/allowTest/${number}`, { method: 'POST' });
+}
+
+async function close(number){
+
+  res = await fetch(`/closeTest/${number}`, { method: 'POST' });
+}
+
 
 fetchUsersBtn.addEventListener('click', async () => {
   const response = await fetch('https://oprosnik.onrender.com/users');
@@ -30,26 +40,26 @@ fetchUsersBtn.addEventListener('click', async () => {
   }); 
 });
 
-allowTest1Btn.addEventListener('click', async() =>{
-  var message = {
-    type: 'changeStyle',
-        style: 'admin-style'
-  };
-  window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+// allowTest1Btn.addEventListener('click', async() =>{
+//   var message = {
+//     type: 'changeStyle',
+//         style: 'admin-style'
+//   };
+//   window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
-  res = await fetch(`/allowTest/${1}`, { method: 'POST' });
-})
+//   res = await fetch(`/allowTest/${1}`, { method: 'POST' });
+// })
 
-closeTest1Btn.addEventListener('click', async() =>{
-  var message = {
-    type: 'changeStyle',
-        style: 'admin-style'
-  };
-  window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+// closeTest1Btn.addEventListener('click', async() =>{
+//   var message = {
+//     type: 'changeStyle',
+//         style: 'admin-style'
+//   };
+//   window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
 
-  res = await fetch(`/closeTest/${1}`, { method: 'POST' });
-  //console.log(res);
-})
+//   res = await fetch(`/closeTest/${1}`, { method: 'POST' });
+//   //console.log(res);
+// })
 
 getResultsBtn.addEventListener('click', async() => {
   const response = await fetch('https://oprosnik.onrender.com/results');
