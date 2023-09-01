@@ -77,13 +77,10 @@ getResultsBtn.addEventListener('click', async() => {
     results.forEach((result) => {
       if(result.email === user.email){
         const li = document.createElement('li');
-        li.textContent = `${user.username}, тест №${result.test_id} : ${JSON.parse(result.result)["correct_answers"]} из ${JSON.parse(result.result)["no_of_questions"]} за ${result["time"]}с`;
+        li.textContent = `почта: ${user.email}, имя пользователя - ${user.username}, тест №${result.test_id} : ${JSON.parse(result.result)["correct_answers"]} из ${JSON.parse(result.result)["no_of_questions"]} за ${result["time"]}с`;
         total += JSON.parse(result.result)["no_of_questions"];
         correct += JSON.parse(result.result)["correct_answers"];
         resultList.appendChild(li);
-        //const worksheet = XLSX.utils.json_to_sheet([{ A: user.email, B: result.test_id }]);
-        //XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet 1');
-        //XLSX.writeFile(workbook, 'output.xlsx');
       }
     });
     // const li = document.createElement('li');

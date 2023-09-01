@@ -11,7 +11,7 @@ const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
-var isAvailable = [false, false, false, false, false, false, false, false];
+var isAvailable = [true, true, false, false, false, false, false, false];
 const cookieParser = require('cookie-parser');
 const { Double } = require("mongodb");
 
@@ -116,8 +116,9 @@ app.post("/login", async (req, res) => {
 app.post("/result", async (req, res) => {
   const result = new Result(req.body);
   const results = await Result.find().exec();
+  const test_id = req.body.test_id;
 
-  if (result) {
+  if (result && ((test_id != 1) && (test_id != 2))) {
     const saveResulst = await result.save();
     res.send({
       message: "Успешная авторизация",
@@ -197,12 +198,10 @@ app.post('/surveys/survey:id',async (req, res) => {
   searchUser = await Result.findOne({email: req.body.email, test_id: req.params.id}).exec();
   if (isAvailable[req.params.id - 1] && !(searchUser)) {
 
-    // surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
-    // res.sendFile(surveysPath);
+   
     res.send({answer: '1'});
   }
   else {
-    //res.redirect('/surveys/');
     res.send({answer: ''});
   }
 });
