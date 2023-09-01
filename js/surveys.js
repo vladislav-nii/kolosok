@@ -1,7 +1,20 @@
 const survey1 = document.getElementById("survey1");
 
-function test(number) {
-    window.location.href = `https://oprosnik.onrender.com/surveys/survey${number}`;
+async function test(number) {
+    //window.location.href = `https://oprosnik.onrender.com/surveys/survey${number}`;
+    const email = (document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
+    const response = await fetch(`/surveys/survey${number}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+    });
+    const res = await response.json();
+    if(res.answer){
+        window.location.href = `https://oprosnik.onrender.com/surveys/survey${number}`;
+    }
+    else{
+        await fetch(`/surveys/`, { method: 'GET' });
+    }
 }
 
 

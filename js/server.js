@@ -11,7 +11,7 @@ const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
-var isAvailable = [false, false, false, false, true, true, true, true];
+var isAvailable = [false, false, false, false, false, false, false, false];
 const cookieParser = require('cookie-parser');
 const { Double } = require("mongodb");
 
@@ -54,6 +54,7 @@ const resultSchema = new mongoose.Schema({
   email: String,
   result: String,
   time: String,
+  test_id: String,
 });
 
 const Result = mongoose.model("results", resultSchema);
@@ -133,6 +134,7 @@ app.post("/allowTest/:id", async (req, res) =>{
 
 app.post("/closeTest/:id", async (req, res) =>{
   isAvailable[req.params.id - 1] = false;
+  console.log('close Test');
   console.log(isAvailable[req.params.id - 1]);
   res.send(isAvailable[req.params.id - 1]);
 })
@@ -169,8 +171,6 @@ app.get('/surveys/', (req, res) => {
 
 app.get('/setting', async (req, res) => {
   const cookieValue = req.cookies.email;
-  console.log('asdfasdfasdf');
-  console.log(cookieValue);
   const currentUser = await User.findOne({email: cookieValue}).exec()
   if(currentUser){
     if(currentUser.isAdmin){
@@ -191,15 +191,26 @@ app.get('/setting', async (req, res) => {
 
 
 
-app.get('/surveys/survey:id', (req, res) => {
-  if (isAvailable[req.params.id - 1]) {
-    surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
-    res.sendFile(surveysPath);
+app.post('/surveys/survey:id',async (req, res) => {
+
+  console.log(Result.findOne({email: req.body.email, test_id: req.params.id}).exec());
+  searchUser = await Result.findOne({email: req.body.email, test_id: req.params.id}).exec();
+  if (isAvailable[req.params.id - 1] && !(searchUser)) {
+
+    // surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
+    // res.sendFile(surveysPath);
+    res.send({answer: '1'});
   }
   else {
-    res.redirect('/surveys/');
+    //res.redirect('/surveys/');
+    res.send({answer: ''});
   }
 });
+
+app.get('/surveys/survey:id', (req, res) => {
+  surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
+  res.sendFile(surveysPath);
+})
 
 app.get('/login', (req, res) => {
   login2Path = path.join(__dirname, '../login.html');

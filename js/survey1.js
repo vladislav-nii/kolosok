@@ -241,6 +241,7 @@ survey
 
 survey.render("surveyContainer");
 survey.onComplete.add(async (e) => {
+    const test_id = 1;
 
     e.timestamps['finished'] = Date.now();
     e.timestamps['dif'] = (e.timestamps['finished'] - e.timestamps['started']) / 1000;
@@ -253,7 +254,7 @@ survey.onComplete.add(async (e) => {
     const response = await fetch('https://oprosnik.onrender.com/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, result, time }),
+        body: JSON.stringify({ email, result, time,  test_id}),
     });
 
 });

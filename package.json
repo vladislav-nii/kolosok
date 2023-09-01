@@ -28,6 +28,7 @@
     "survey": "^0.3.5",
     "survey-angular": "^1.9.104",
     "survey-core": "^1.9.104",
-    "surveyjs": "^4.0.2"
+    "surveyjs": "^4.0.2",
+    "xlsx": "^0.18.5"
   }
 }
