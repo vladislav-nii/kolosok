@@ -325,7 +325,11 @@ var json = {
                 }
             ]
         }
-    ]
+    ],
+    "maxTimeToFinish": 300,
+    "showTimerPanel": "top",
+    "navigateToUrl": "https://kolosok.onrender.com/surveys/",
+    "widthMode": "responsive"
 };
 
 
