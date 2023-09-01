@@ -1,5 +1,5 @@
 //const { response } = require("express");
-const XLSX = require('xlsx');
+//const XLSX = require('xlsx');
 
 const fetchUsersBtn = document.getElementById('fetch-users');
 const userList = document.getElementById('user-list');
@@ -64,7 +64,7 @@ fetchUsersBtn.addEventListener('click', async () => {
 // })
 
 getResultsBtn.addEventListener('click', async() => {
-  const workbook = XLSX.utils.book_new();
+  //const workbook = XLSX.utils.book_new();
   const response = await fetch('https://oprosnik.onrender.com/results');
   const results = await response.json();
   const responce2 = await fetch('https://oprosnik.onrender.com/users');
@@ -81,9 +81,9 @@ getResultsBtn.addEventListener('click', async() => {
         total += JSON.parse(result.result)["no_of_questions"];
         correct += JSON.parse(result.result)["correct_answers"];
         resultList.appendChild(li);
-        const worksheet = XLSX.utils.json_to_sheet([{ A: user.email, B: result.test_id }]);
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet 1');
-        XLSX.writeFile(workbook, 'output.xlsx');
+        //const worksheet = XLSX.utils.json_to_sheet([{ A: user.email, B: result.test_id }]);
+        //XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet 1');
+        //XLSX.writeFile(workbook, 'output.xlsx');
       }
     });
     // const li = document.createElement('li');
