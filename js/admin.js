@@ -23,7 +23,7 @@ async function close_test(number){
 
 
 fetchUsersBtn.addEventListener('click', async () => {
-  const response = await fetch('https://oprosnik.onrender.com/users');
+  const response = await fetch('https://kolosok.onrender.com/users');
   const users = await response.json();
   userList.innerHTML = '';
   users.forEach((user) => {
@@ -47,7 +47,7 @@ fetchUsersBtn.addEventListener('click', async () => {
 //     type: 'changeStyle',
 //         style: 'admin-style'
 //   };
-//   window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+//   window.postMessage(message, 'https://kolosok.onrender.com/surveys/');
 
 //   res = await fetch(`/allowTest/${1}`, { method: 'POST' });
 // })
@@ -57,7 +57,7 @@ fetchUsersBtn.addEventListener('click', async () => {
 //     type: 'changeStyle',
 //         style: 'admin-style'
 //   };
-//   window.postMessage(message, 'https://oprosnik.onrender.com/surveys/');
+//   window.postMessage(message, 'https://kolosok.onrender.com/surveys/');
 
 //   res = await fetch(`/closeTest/${1}`, { method: 'POST' });
 //   //console.log(res);
@@ -65,9 +65,9 @@ fetchUsersBtn.addEventListener('click', async () => {
 
 getResultsBtn.addEventListener('click', async() => {
   //const workbook = XLSX.utils.book_new();
-  const response = await fetch('https://oprosnik.onrender.com/results');
+  const response = await fetch('https://kolosok.onrender.com/results');
   const results = await response.json();
-  const responce2 = await fetch('https://oprosnik.onrender.com/users');
+  const responce2 = await fetch('https://kolosok.onrender.com/users');
   const users = await responce2.json();
   console.log(results);
   resultList.innerHTML = '';
