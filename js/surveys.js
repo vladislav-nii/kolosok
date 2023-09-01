@@ -13,6 +13,7 @@ async function test(number) {
         window.location.href = `https://kolosok.onrender.com/surveys/survey${number}`;
     }
     else{
+        alert("Тест недоступен");
         await fetch(`/surveys/`, { method: 'GET' });
     }
 }
