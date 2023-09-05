@@ -21,6 +21,9 @@ async function close_test(number){
   
 }
 
+setInterval(() => {
+  location.reload();
+}, 1 * 10 * 1000); // 5 минут
 
 fetchUsersBtn.addEventListener('click', async () => {
   const response = await fetch('https://kolosok.onrender.com/users');
