@@ -10,6 +10,7 @@ const resultList = document.getElementById('result-list');
 
 const surveyButton = document.getElementById('survey1');
 
+
 async function start(number){
 
   res = await fetch(`/allowTest/${number}`, { method: 'POST' });
@@ -45,49 +46,6 @@ fetchUsersBtn.addEventListener('click', async () => {
   }); 
 });
 
-// allowTest1Btn.addEventListener('click', async() =>{
-//   var message = {
-//     type: 'changeStyle',
-//         style: 'admin-style'
-//   };
-//   window.postMessage(message, 'https://kolosok.onrender.com/surveys/');
-
-//   res = await fetch(`/allowTest/${1}`, { method: 'POST' });
-// })
-
-// closeTest1Btn.addEventListener('click', async() =>{
-//   var message = {
-//     type: 'changeStyle',
-//         style: 'admin-style'
-//   };
-//   window.postMessage(message, 'https://kolosok.onrender.com/surveys/');
-
-//   res = await fetch(`/closeTest/${1}`, { method: 'POST' });
-//   //console.log(res);
-// })
-
 getResultsBtn.addEventListener('click', async() => {
-  //const workbook = XLSX.utils.book_new();
-  const response = await fetch('https://kolosok.onrender.com/results');
-  const results = await response.json();
-  const responce2 = await fetch('https://kolosok.onrender.com/users');
-  const users = await responce2.json();
-  console.log(results);
-  resultList.innerHTML = '';
-  users.forEach((user) => {
-    let correct = 0;
-    let total = 0;
-    results.forEach((result) => {
-      if(result.email === user.email){
-        const li = document.createElement('li');
-        li.textContent = `почта: ${user.email}, имя пользователя - ${user.username}, тест №${result.test_id} : ${JSON.parse(result.result)["correct_answers"]} из ${JSON.parse(result.result)["no_of_questions"]} за ${result["time"]}с`;
-        total += JSON.parse(result.result)["no_of_questions"];
-        correct += JSON.parse(result.result)["correct_answers"];
-        resultList.appendChild(li);
-      }
-    });
-    // const li = document.createElement('li');
-    // li.textContent = `E-mail: ${user.email} : ${correct} из ${total}`;
-    //resultList.appendChild(li);
-  });
+  location.assign("https://kolosok.onrender.com/download-excel");
 })

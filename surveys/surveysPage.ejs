@@ -5,9 +5,15 @@
     <title>Страница опросов</title>
     <link rel="stylesheet" href="../css/surveys.css">
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/avdira-textfonts" type="text/css" />
+    <% if (!isAvailable[0]) { %>
+        <link rel="stylesheet" href="../css/locked.css">
+    <% } %>
 </head>
 
 <body>
+    <div id="btn-holder">
+        <button id="results-btn">Узнать результаты</button>
+    </div>
     <div class="grid-container">
         <button type="button" class="grid-item" id="survey1" onclick="test(1)">Тест 1</button>
         <button type="button" class="grid-item" id="survey2" onclick="test(2)">Тест 2</button>
@@ -23,5 +29,4 @@
     
     <script src="../js/surveys.js"></script>
 </body>
-
 </html>

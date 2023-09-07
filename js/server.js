@@ -15,6 +15,8 @@ var isAvailable = [true, true, false, false, false, false, false, false];
 const cookieParser = require('cookie-parser');
 const { Double } = require("mongodb");
 
+const ExcelJS = require('exceljs');
+
 
 
 const app = express();
@@ -24,7 +26,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users']; // Список допустимых маршрутов
+  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results']; // Список допустимых маршрутов
   const requestedRoute = req.path;
   //console.log(requestedRoute);
 
@@ -34,6 +36,9 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 mongoose.connect(
   "mongodb+srv://NIIinAPK:nii123@survey.yvbwk8s.mongodb.net/?retryWrites=true&w=majority",
@@ -61,8 +66,8 @@ const Result = mongoose.model("results", resultSchema);
 
 const User = mongoose.model("users", userSchema);
 
-app.get("/", function(request, response){
-     
+app.get("/", function (request, response) {
+
   // отправляем ответ
   response.send("<h2>Привет Express!</h2>");
 });
@@ -128,12 +133,12 @@ app.post("/result", async (req, res) => {
   }
 });
 
-app.post("/allowTest/:id", async (req, res) =>{
+app.post("/allowTest/:id", async (req, res) => {
   isAvailable[req.params.id - 1] = true;
   res.send(req.params.id);
 })
 
-app.post("/closeTest/:id", async (req, res) =>{
+app.post("/closeTest/:id", async (req, res) => {
   isAvailable[req.params.id - 1] = false;
   console.log('close Test');
   console.log(isAvailable[req.params.id - 1]);
@@ -163,8 +168,10 @@ app.get('/surveys/', (req, res) => {
   const cookieValue = req.cookies.email;
 
   if (cookieValue) {
-    surveysPath = path.join(__dirname, '../surveys/surveysPage.html');
-    res.sendFile(surveysPath);
+    //surveysPath = path.join(__dirname, '../surveys/surveysPage.ejs');
+    surveysPath = path.join(__dirname, '../surveys/surveysPage');
+    //res.sendFile(surveysPath)
+    res.render(surveysPath, { isAvailable });
   } else {
     res.redirect("/login");
   }
@@ -172,13 +179,13 @@ app.get('/surveys/', (req, res) => {
 
 app.get('/setting', async (req, res) => {
   const cookieValue = req.cookies.email;
-  const currentUser = await User.findOne({email: cookieValue}).exec()
-  if(currentUser){
-    if(currentUser.isAdmin){
+  const currentUser = await User.findOne({ email: cookieValue }).exec()
+  if (currentUser) {
+    if (currentUser.isAdmin) {
       surveysPath = path.join(__dirname, '../setting.html');
       res.sendFile(surveysPath);
     }
-    else{
+    else {
       res.redirect("/login");
     }
   }
@@ -192,23 +199,30 @@ app.get('/setting', async (req, res) => {
 
 
 
-app.post('/surveys/survey:id',async (req, res) => {
+app.post('/surveys/survey:id', async (req, res) => {
 
-  console.log(Result.findOne({email: req.body.email, test_id: req.params.id}).exec());
-  searchUser = await Result.findOne({email: req.body.email, test_id: req.params.id}).exec();
+  console.log(Result.findOne({ email: req.body.email, test_id: req.params.id }).exec());
+  searchUser = await Result.findOne({ email: req.body.email, test_id: req.params.id }).exec();
   if (isAvailable[req.params.id - 1] && !(searchUser)) {
 
-   
-    res.send({answer: '1'});
+
+    res.send({ answer: '1' });
   }
   else {
-    res.send({answer: ''});
+    res.send({ answer: '' });
   }
 });
 
-app.get('/surveys/survey:id', (req, res) => {
+app.get('/surveys/survey:id', async (req, res) => {
+  const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
-  res.sendFile(surveysPath);
+  if (isAvailable[req.params.id - 1] && !(searchUser)) {
+    res.sendFile(surveysPath);
+  }
+  else {
+    res.redirect("/surveys/");
+  }
 })
 
 app.get('/login', (req, res) => {
@@ -219,6 +233,74 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
   login2Path = path.join(__dirname, '../register.html');
   res.sendFile(login2Path);
+});
+
+app.get('/download-excel', async (req, res) => {
+  // Создание книги Excel и добавление данных
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Sheet 1');
+  worksheet.columns = [
+    { header: 'Почта', key: 'email' },
+    { header: 'Имя пользователя', key: 'username' },
+    { header: 'Номер теста', key: 'test_id' },
+    { header: 'Количество правильных ответов', key: 'correct' },
+    { header: 'Всего отвечено', key: 'total' },
+    { header: 'Время выполнения в секундах', key: 'time' },
+  ];
+
+  const users = await User.find().exec();
+  const results = await Result.find().exec();
+  let i = 2;
+  users.forEach((user) => {
+    let correct = 0;
+    let total = 0;
+    results.forEach((result) => {
+      if (result.email === user.email) {
+        worksheet.getRow(i).values = {
+            email: `${user.email}`,
+            username: `${user.username}`,
+            test_id: `${result.test_id}`,
+            correct: `${JSON.parse(result.result)["correct_answers"]}`,
+            total: `${JSON.parse(result.result)["no_of_questions"]}`,
+            time: `${result["time"]}`,
+        }
+        total += JSON.parse(result.result)["no_of_questions"];
+        correct += JSON.parse(result.result)["correct_answers"];
+        ++i;
+      }
+    });
+  });
+
+  // Установка HTTP-заголовков для скачивания файла
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', 'attachment; filename=results.xlsx');
+
+  //worksheet.autoFitColumns();
+  worksheet.columns.forEach(function (column, i) {
+    let maxLength = 0;
+    column["eachCell"]({ includeEmpty: true }, function (cell) {
+      var columnLength = cell.value ? cell.value.toString().length + 2 : 10;
+      if (columnLength > maxLength) {
+        maxLength = columnLength;
+      }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength;
+  });
+
+  // Сохранение книги в поток ответа
+  workbook.xlsx.write(res)
+    .then(() => {
+      res.end();
+    })
+    .catch((error) => {
+      console.log('Ошибка при сохранении данных:', error);
+      res.status(500).send('Произошла ошибка');
+    });
+});
+
+app.get('/user-results', (req, res) => {
+  resultsPath = path.join(__dirname, '../results.html');
+  res.sendFile(resultsPath);
 });
 
 app.listen(PORT, () => {
