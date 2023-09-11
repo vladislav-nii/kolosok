@@ -11,7 +11,7 @@ const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
-var isAvailable = [true, true, false, false, false, false, false, false];
+var isAvailable = [true, true, false, false, false, false, false, false, false, false];
 const cookieParser = require('cookie-parser');
 const { Double } = require("mongodb");
 
@@ -26,7 +26,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results']; // Список допустимых маршрутов
+  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event']; // Список допустимых маршрутов
   const requestedRoute = req.path;
   //console.log(requestedRoute);
 
@@ -140,8 +140,6 @@ app.post("/allowTest/:id", async (req, res) => {
 
 app.post("/closeTest/:id", async (req, res) => {
   isAvailable[req.params.id - 1] = false;
-  console.log('close Test');
-  console.log(isAvailable[req.params.id - 1]);
   res.send(isAvailable[req.params.id - 1]);
 })
 
@@ -201,7 +199,6 @@ app.get('/setting', async (req, res) => {
 
 app.post('/surveys/survey:id', async (req, res) => {
 
-  console.log(Result.findOne({ email: req.body.email, test_id: req.params.id }).exec());
   searchUser = await Result.findOne({ email: req.body.email, test_id: req.params.id }).exec();
   if (isAvailable[req.params.id - 1] && !(searchUser)) {
 
@@ -302,6 +299,24 @@ app.get('/user-results', (req, res) => {
   resultsPath = path.join(__dirname, '../results.html');
   res.sendFile(resultsPath);
 });
+
+app.get("/is-available", async (req, res) => {
+  res.send(isAvailable);
+});
+
+// app.get('/send-event', (req, res) => {
+//   // Отправка серверного события клиенту
+//   res.setHeader('Content-Type', 'text/event-stream');
+//   res.setHeader('Cache-Control', 'no-cache');
+//   res.setHeader('Connection', 'keep-alive');
+//   res.flushHeaders();
+
+//   res.write('event: update\n');  // Тип события
+//   res.write(`data: ${JSON.stringify({ message: 'Update requested' })}\n\n`); // Данные события
+
+//   // Закрытие соединения
+//   res.end();
+// });
 
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);

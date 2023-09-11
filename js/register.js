@@ -66,7 +66,6 @@ registerForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({ username, password, isAdmin, email }),
   });
   const data = await response.json();
-  console.log(data);
   if (data.msg) {
     alert(data.msg);
   } else {

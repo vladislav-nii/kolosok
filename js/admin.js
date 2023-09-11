@@ -10,21 +10,22 @@ const resultList = document.getElementById('result-list');
 
 const surveyButton = document.getElementById('survey1');
 
+const testStatusList = document.getElementById('test-status');
+
 
 async function start(number){
-
   res = await fetch(`/allowTest/${number}`, { method: 'POST' });
+  refreshStatusList();
 }
 
 async function close_test(number){
-
   res = await fetch(`/closeTest/${number}`, { method: 'POST' });
-  
+  refreshStatusList();
 }
 
 setInterval(() => {
   location.reload();
-}, 1 * 10 * 1000); // 5 минут
+}, 1 * 60 * 1000); // 5 минут
 
 fetchUsersBtn.addEventListener('click', async () => {
   const response = await fetch('https://kolosok.onrender.com/users');
@@ -49,3 +50,37 @@ fetchUsersBtn.addEventListener('click', async () => {
 getResultsBtn.addEventListener('click', async() => {
   location.assign("https://kolosok.onrender.com/download-excel");
 })
+
+async function createStatusList(){
+  const response = await fetch('https://kolosok.onrender.com/is-available');
+  const isAvailable = await response.json();
+
+  for(let i = 0; i < isAvailable.length; ++i){
+      const li = document.createElement('li');
+      li.textContent = `тест ${i + 1}`;
+      if(isAvailable[i]){
+          li.style.color = 'green';
+      }
+      else{
+          li.style.color = 'red';
+      }
+      testStatusList.appendChild(li);
+  }
+}
+
+async function refreshStatusList(){
+  const response = await fetch('https://kolosok.onrender.com/is-available');
+  const isAvailable = await response.json();
+
+  testStatusCollection = testStatusList.getElementsByTagName('li')
+
+  for(let i = 0; i < testStatusCollection.length; ++i){
+    if(isAvailable[i]){
+      testStatusCollection[i].style.color = 'green';
+    } else {
+      testStatusCollection[i].style.color = 'red';
+    }
+  }
+}
+
+createStatusList();
