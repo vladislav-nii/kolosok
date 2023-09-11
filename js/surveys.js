@@ -6,7 +6,7 @@ const surveysBtns = document.getElementsByClassName('grid-item');
 
 setInterval(() => {
     applyStyle();
-}, 5 * 1000); // 5 минут
+}, 5 * 1000);
 
 // eventSource.addEventListener('update', function(event) {
 //   const eventData = JSON.parse(event.data);
@@ -23,7 +23,7 @@ async function test(number) {
 
 resultsBtn.addEventListener('click', () => {
     console.log('click');
-    location.assign("https://kolosok.onrender.com/user-results");
+    location.assign("https://kolosok.onrender.com/user-results");  
 })
 
 async function applyStyle(){
@@ -31,13 +31,15 @@ async function applyStyle(){
     const isAvailable = await response.json();
     Array.from(surveysBtns).forEach((surveyBtn) => {
         if(!isAvailable[+surveyBtn.id.substring(6) - 1]){
-            surveyBtn.style.backgroundImage = 'url(../img/lock.png)';
+            surveyBtn.style.backgroundImage = 'url(../img/lock2.png)'; 
             surveyBtn.style.backgroundRepeat = 'no-repeat';
             surveyBtn.style.backgroundPosition = 'center center';
             surveyBtn.style.backgroundAttachments = 'fixed';
             surveyBtn.style.backgroundSize = 'contain';
+            surveyBtn.style.color = 'rgba(66, 66, 66, 0)';
         } else {
             surveyBtn.style.backgroundImage = '';
+            surveyBtn.style.color = 'rgba(66, 66, 66, 1)';
         }
     });
 }

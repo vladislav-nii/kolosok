@@ -26,7 +26,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event']; // Список допустимых маршрутов
+  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/']; // Список допустимых маршрутов
   const requestedRoute = req.path;
   //console.log(requestedRoute);
 
