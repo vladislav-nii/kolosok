@@ -13,7 +13,7 @@ async function onStart() {
             tr.innerHTML = `<td role="cell">${result.test_id}</td>
                     <td role="cell">${JSON.parse(result.result)["correct_answers"]}</td>
                     <td role="cell">${JSON.parse(result.result)["no_of_questions"]}</td>
-                    <td role="cell">${10}</td>
+                    <td role="cell">${JSON.parse(result.result)["total"]}</td>
                     <td role="cell">${result["time"]}</td>`
             tableBody.appendChild(tr);
         }

@@ -28,7 +28,6 @@ app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
   const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/']; // Список допустимых маршрутов
   const requestedRoute = req.path;
-  //console.log(requestedRoute);
 
   if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey')) {
     return res.status(404).send('Страница не найдена');
@@ -195,22 +194,10 @@ app.get('/setting', async (req, res) => {
   // }
 });
 
-
-
-app.post('/surveys/survey:id', async (req, res) => {
-
-  searchUser = await Result.findOne({ email: req.body.email, test_id: req.params.id }).exec();
-  if (isAvailable[req.params.id - 1] && !(searchUser)) {
-
-
-    res.send({ answer: '1' });
-  }
-  else {
-    res.send({ answer: '' });
-  }
-});
-
 app.get('/surveys/survey:id', async (req, res) => {
+  if(!req.headers.cookie){
+    return res.redirect('/login');
+  }
   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
@@ -241,7 +228,8 @@ app.get('/download-excel', async (req, res) => {
     { header: 'Имя пользователя', key: 'username' },
     { header: 'Номер теста', key: 'test_id' },
     { header: 'Количество правильных ответов', key: 'correct' },
-    { header: 'Всего отвечено', key: 'total' },
+    { header: 'Всего отвечено', key: 'no_of_questions' },
+    { header: 'Всего вопросов', key: 'total' },
     { header: 'Время выполнения в секундах', key: 'time' },
   ];
 
@@ -250,19 +238,22 @@ app.get('/download-excel', async (req, res) => {
   let i = 2;
   users.forEach((user) => {
     let correct = 0;
+    let no_of_questions = 0;
     let total = 0;
     results.forEach((result) => {
       if (result.email === user.email) {
         worksheet.getRow(i).values = {
-            email: `${user.email}`,
-            username: `${user.username}`,
-            test_id: `${result.test_id}`,
-            correct: `${JSON.parse(result.result)["correct_answers"]}`,
-            total: `${JSON.parse(result.result)["no_of_questions"]}`,
-            time: `${result["time"]}`,
+          email: `${user.email}`,
+          username: `${user.username}`,
+          test_id: `${result.test_id}`,
+          correct: `${JSON.parse(result.result)["correct_answers"]}`,
+          no_of_questions: `${JSON.parse(result.result)["no_of_questions"]}`,
+          total: `${JSON.parse(result.result)["total"]}`,
+          time: `${result["time"]}`,
         }
-        total += JSON.parse(result.result)["no_of_questions"];
         correct += JSON.parse(result.result)["correct_answers"];
+        no_of_questions += JSON.parse(result.result)["no_of_questions"];
+        total += JSON.parse(result.result)["total"];
         ++i;
       }
     });

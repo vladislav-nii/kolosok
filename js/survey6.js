@@ -259,16 +259,19 @@ function getResult(survey) {
     var questions = survey.getQuizQuestions();
     var correct = 0;
     var numberOfQuestions = 0;
+    var total = 0;
     questions.forEach(function (question) {
+        total++;
         if (!question.isEmpty()) {
             numberOfQuestions++;
             if (question.isAnswerCorrect())
                 correct++;
-        }
+        } 
     });
     var result = {};
     result["correct_answers"] = correct;
     result["no_of_questions"] = numberOfQuestions;
+    result["total"] = total;
 
     return result;
 }
