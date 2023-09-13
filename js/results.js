@@ -3,7 +3,7 @@ const backButton = document.getElementById('back-to-surveys');
 
 
 async function onStart() {
-    const responce = await fetch('https://kolosok.onrender.com/results');
+    const responce = await fetch('http://127.0.0.1:5500/results');
     const results = await responce.json();
 
     results.forEach((result) => {
@@ -25,7 +25,7 @@ onStart();
 backButton.addEventListener('click', () => {
     id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     if(!id){
-        location.assign(`https://kolosok.onrender.com/categories/`);
+        location.assign(`http://127.0.0.1:5500/categories/`);
     }
-    location.assign(`https://kolosok.onrender.com/categories/category${id}`);
+    location.assign(`http://127.0.0.1:5500/categories/category${id}`);
 });

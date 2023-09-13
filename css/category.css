@@ -22,10 +22,24 @@
 
 body{
     margin: 5%;
-    background:url('../img.gif') repeat-y 100% 100% fixed;
-    background-position: center;
+    background:url('../img/back3.png') repeat-y 100% 100% fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
     background-size: cover;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(17px);
 }
+
+/* body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(163, 156, 156, 0.384);
+} */
 
 button{
     border-radius: 40px;
