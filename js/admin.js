@@ -108,4 +108,14 @@ async function refreshStatusList() {
   }
 }
 
+async function refreshTime() {
+  inputs = document.getElementsByTagName('input');
+  const response = await fetch('https://kolosok.onrender.com/opening-time');
+  const openingTime = await response.json();
+  for(let i = 0; i < inputs.length; ++i){
+    inputs[i].value = openingTime[i];
+  }
+}
+
+refreshTime();
 createStatusList();
