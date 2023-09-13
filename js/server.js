@@ -186,7 +186,6 @@ app.get('/categories/', (req, res) => {
 });
 
 app.get('/categories/category:id', async (req, res) => {
-  console.log("assdfasdfasdfsadfasdf");
   if (!req.headers.cookie) {
     return res.redirect('/login');
   }
@@ -202,8 +201,6 @@ app.get('/categories/category:id/survey:num', async (req, res) => {
   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
   if (isAvailable[req.params.id - 1] && !(searchUser)) {
-    //res.sendFile(surveysPath);
-    console.log('hello');
     res.sendFile(surveysPath);
   }
   else {
