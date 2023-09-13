@@ -329,7 +329,7 @@ var json = {
     ],
     "maxTimeToFinish": 300,
     "showTimerPanel": "top",
-    "navigateToUrl": `http://127.0.0.1:5500/categories/category${category_id}`,
+    "navigateToUrl": `https://kolosok.onrender.com/categories/category${category_id}`,
     "widthMode": "responsive"
 };
 

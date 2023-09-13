@@ -204,7 +204,7 @@ app.get('/categories/category:id/survey:num', async (req, res) => {
     res.sendFile(surveysPath);
   }
   else {
-    res.redirect(`/categories/category${req.params.num}`);
+    res.redirect(`/categories/category${req.params.id}`);
   }
 });
 
