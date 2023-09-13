@@ -53,7 +53,7 @@ setInterval(() => {
 }, 1 * 60 * 1000); // 5 минут
 
 fetchUsersBtn.addEventListener('click', async () => {
-  const response = await fetch('http://127.0.0.1:5500/users');
+  const response = await fetch('https://kolosok.onrender.com/users');
   const users = await response.json();
   userList.innerHTML = '';
   users.forEach((user) => {
@@ -73,11 +73,11 @@ fetchUsersBtn.addEventListener('click', async () => {
 });
 
 getResultsBtn.addEventListener('click', async () => {
-  location.assign("http://127.0.0.1:5500/download-excel");
+  location.assign("https://kolosok.onrender.com/download-excel");
 })
 
 async function createStatusList() {
-  const response = await fetch('http://127.0.0.1:5500/is-available');
+  const response = await fetch('https://kolosok.onrender.com/is-available');
   const isAvailable = await response.json();
 
   for (let i = 0; i < isAvailable.length; ++i) {
@@ -94,7 +94,7 @@ async function createStatusList() {
 }
 
 async function refreshStatusList() {
-  const response = await fetch('http://127.0.0.1:5500/is-available');
+  const response = await fetch('https://kolosok.onrender.com/is-available');
   const isAvailable = await response.json();
 
   testStatusCollection = testStatusList.getElementsByTagName('li')

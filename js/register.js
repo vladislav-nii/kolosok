@@ -20,8 +20,8 @@ const freeLessonsBtn = document.getElementById("btn-free");
 
 //   if (username != '' || password != '') {
 //     async function getData() {
-//        const response = await fetch('http://127.0.0.1:5500/login', {
-//         //const response = await fetch('http://127.0.0.1:5500/login', {
+//        const response = await fetch('https://kolosok.onrender.com/login', {
+//         //const response = await fetch('https://kolosok.onrender.com/login', {
 
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -59,8 +59,8 @@ registerForm.addEventListener('submit', async (e) => {
   const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
   const isAdmin = false;
-  const response = await fetch('http://127.0.0.1:5500/register', {
- // const response = await fetch('http://127.0.0.1:5500/register', {
+  const response = await fetch('https://kolosok.onrender.com/register', {
+ // const response = await fetch('https://kolosok.onrender.com/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, isAdmin, email }),
@@ -74,7 +74,7 @@ registerForm.addEventListener('submit', async (e) => {
       adminSetting = document.getElementById("admin-setting");
       adminSetting.style.display = 'block';
     } else {
-      location.assign("http://127.0.0.1:5500/categories/");
+      location.assign("https://kolosok.onrender.com/categories/");
     }
 
     if (data.email) {

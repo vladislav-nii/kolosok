@@ -19,23 +19,23 @@ setInterval(() => {
 // });
 
 async function test(number) {
-    //window.location.href = `http://127.0.0.1:5500/surveys/survey${number}`;
+    //window.location.href = `https://kolosok.onrender.com/surveys/survey${number}`;
     category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     console.log(category_id);
-    window.location.href = `http://127.0.0.1:5500/categories/category${category_id}/survey${number}`;
+    window.location.href = `https://kolosok.onrender.com/categories/category${category_id}/survey${number}`;
 }
 
 resultsBtn.addEventListener('click', () => {
-    location.assign("http://127.0.0.1:5500/user-results");  
+    location.assign("https://kolosok.onrender.com/user-results");  
 })
 
 backBtn.addEventListener('click', () => {
-    location.assign("http://127.0.0.1:5500/categories");  
+    location.assign("https://kolosok.onrender.com/categories");  
 })
 
 async function applyStyle(){
-    const response = await fetch('http://127.0.0.1:5500/is-available');
-    const response2 = await fetch('http://127.0.0.1:5500/opening-time');
+    const response = await fetch('https://kolosok.onrender.com/is-available');
+    const response2 = await fetch('https://kolosok.onrender.com/opening-time');
     const isAvailable = await response.json();
     const openingTime = await response2.json();
     Array.from(surveysBtns).forEach((surveyBtn) => {
