@@ -198,13 +198,13 @@ app.get('/categories/category:id/survey:num', async (req, res) => {
     return res.redirect('/login');
   }
   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
+  searchUser = await Result.findOne({ email: userEmail, test_id: req.params.num }).exec();
   surveysPath = path.join(__dirname, `survey${req.params.num}.html`);
-  if (isAvailable[req.params.id - 1] && !(searchUser)) {
+  if (isAvailable[req.params.num - 1] && !(searchUser)) {
     res.sendFile(surveysPath);
   }
   else {
-    res.redirect(`/categories/category${req.params.id}`);
+    res.redirect(`/categories/category${req.params.num}`);
   }
 });
 
