@@ -199,7 +199,7 @@ app.get('/categories/category:id/survey:num', async (req, res) => {
   }
   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
-  surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
+  surveysPath = path.join(__dirname, `survey${req.params.num}.html`);
   if (isAvailable[req.params.id - 1] && !(searchUser)) {
     res.sendFile(surveysPath);
   }
