@@ -62,7 +62,7 @@ loginForm.addEventListener('submit', async (e) => {
       location.assign("https://kolosok.onrender.com/setting");
     }
     else {
-      location.assign("https://kolosok.onrender.com/surveys");
+      location.assign("https://kolosok.onrender.com/categories");
     }
 
   } else {

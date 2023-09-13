@@ -1,3 +1,4 @@
+var category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 var json = {
     "pages": [
         {
@@ -328,7 +329,7 @@ var json = {
     ],
     "maxTimeToFinish": 300,
     "showTimerPanel": "top",
-    "navigateToUrl": "https://kolosok.onrender.com/surveys/",
+    "navigateToUrl": `https://kolosok.onrender.com/categories/category${category_id}`,
     "widthMode": "responsive"
 };
 

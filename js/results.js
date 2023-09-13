@@ -23,5 +23,9 @@ async function onStart() {
 onStart();
 
 backButton.addEventListener('click', () => {
-    location.assign("https://kolosok.onrender.com/surveys/");
+    id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    if(!id){
+        location.assign(`https://kolosok.onrender.com/categories/`);
+    }
+    location.assign(`https://kolosok.onrender.com/categories/category${id}`);
 });

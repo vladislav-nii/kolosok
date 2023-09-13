@@ -12,31 +12,66 @@
 <body>
     <section class="auth">
         <div id="admin-panel">
-            <h1>Панель администратора</h1>
-            <button id="fetch-users">Посмотреть всех пользователей</button>
+            <h3>Панель администратора</h3>
+            <button class='admin-btn' id="fetch-users">Посмотреть всех пользователей </button>
             <ul id="user-list"></ul>
-            <ul id="test-status"></ul>
-            <button id="start-test1" onclick="start(1)">Запустить тест 1</button>
-            <button id="close_test-test1" onclick="close_test(1)">Завершить тест 1</button>
-            <button id="start-test2" onclick="start(2)">Запустить тест 2</button>
-            <button id="close_test-test2" onclick="close_test(2)">Завершить тест 2</button>
-            <button id="start-test3" onclick="start(3)">Запустить тест 3</button>
-            <button id="close_test-test3" onclick="close_test(3)">Завершить тест 3</button>
-            <button id="start-test4" onclick="start(4)">Запустить тест 4</button>
-            <button id="close_test-test4" onclick="close_test(4)">Завершить тест 4</button>
-            <button id="start-test5" onclick="start(5)">Запустить тест 5</button>
-            <button id="close_test-test5" onclick="close_test(5)">Завершить тест 5</button>
-            <button id="start-test6" onclick="start(6)">Запустить тест 6</button>
-            <button id="close_test-test6" onclick="close_test(6)">Завершить тест 6</button>
-            <button id="start-test7" onclick="start(7)">Запустить тест 7</button>
-            <button id="close_test-test7" onclick="close_test(7)">Завершить тест 7</button>
-            <button id="start-test8" onclick="start(8)">Запустить тест 8</button>
-            <button id="close_test-test8" onclick="close_test(8)">Завершить тест 8</button>
-            <button id="start-test9" onclick="start(9)">Запустить тест 9</button>
-            <button id="close_test-test9" onclick="close_test(9)">Завершить тест 9</button>
-            <button id="start-test10" onclick="start(10)">Запустить тест 10</button>
-            <button id="close_test-test10" onclick="close_test(10)">Завершить тест 10</button>
-            <button id="get-results" >Получить результаты</button>
+            <ul id="test-status"></ul>  
+            <button class='admin-btn' id="start-test1" onclick="start(1)">Запустить тест 1 </button>
+            <input type="time" id="time-set1" oninput="setTime(1, this.value)"/>
+             
+            <button class='admin-btn' id="close_test-test1" onclick="close_test(1)">Завершить тест 1 </button>
+            <br>
+            <br>
+            <button class='admin-btn' id="start-test2" onclick="start(2)">Запустить тест 2 </button>
+            <input type="time" id="time-set2" oninput="setTime(2, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test2" onclick="close_test(2)">Завершить тест 2 </button>
+            <br>
+            <br>
+            <button class='admin-btn' id="start-test3" onclick="start(3)">Запустить тест 3 </button>
+            <input type="time" id="time-set3"oninput="setTime(3, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test3" onclick="close_test(3)">Завершить тест 3 </button>
+            <br>
+            <br>
+            <button class='admin-btn' id="start-test4" onclick="start(4)">Запустить тест 4 </button>
+            <input type="time" id="time-set4" oninput="setTime(4, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test4" onclick="close_test(4)">Завершить тест 4 </button>
+            <br>
+            <br>
+            <button class='admin-btn' id="start-test5" onclick="start(5)">Запустить тест 5 </button>
+            <input type="time" id="time-set5" oninput="setTime(5, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test5" onclick="close_test(5)">Завершить тест 5 </button>
+            <br><br>
+            <button class='admin-btn' id="start-test6" onclick="start(6)">Запустить тест 6 </button>
+            <input type="time" id="time-set6" oninput="setTime(6, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test6" onclick="close_test(6)">Завершить тест 6 </button>
+            <br><br>
+            <button class='admin-btn' id="start-test7" onclick="start(7)">Запустить тест 7 </button>
+            <input type="time" id="time-set7" oninput="setTime(7, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test7" onclick="close_test(7)">Завершить тест 7 </button>
+            <br><br>
+            <button class='admin-btn' id="start-test8" onclick="start(8)">Запустить тест 8 </button>
+            <input type="time" id="time-set8" oninput="setTime(8, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test8" onclick="close_test(8)">Завершить тест 8 </button>
+            <br><br>
+            <button class='admin-btn' id="start-test9" onclick="start(9)">Запустить тест 9 </button>
+            <input type="time" id="time-set9" oninput="setTime(9, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test9" onclick="close_test(9)">Завершить тест 9 </button>
+            <br><br>
+            <button class='admin-btn' id="start-test10" onclick="start(10)">Запустить тест 10 </button>
+            <input type="time" id="time-set10" oninput="setTime(10, this.value)"/>
+
+            <button class='admin-btn' id="close_test-test10" onclick="close_test(10)">Завершить тест 10 </button>
+            <br><br>
+            
+            <button class='admin-btn' id="get-results" >Получить результаты </button>
             <ul id="result-list"></ul>
         </div>
         <!-- <script src="js/app.js"></script> -->

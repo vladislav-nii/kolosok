@@ -1,4 +1,6 @@
 const resultsBtn = document.getElementById('results-btn');
+const backBtn = document.getElementById('categories-btn');
+
 const surveysBtns = document.getElementsByClassName('grid-item');
 
 //const eventSource = new EventSource('/send-event');
@@ -17,29 +19,45 @@ setInterval(() => {
 // });
 
 async function test(number) {
-    const email = (document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
-    window.location.href = `https://kolosok.onrender.com/surveys/survey${number}`;
+    //window.location.href = `https://kolosok.onrender.com/surveys/survey${number}`;
+    category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    console.log(category_id);
+    window.location.href = `https://kolosok.onrender.com/categories/category${category_id}/survey${number}`;
 }
 
 resultsBtn.addEventListener('click', () => {
-    console.log('click');
     location.assign("https://kolosok.onrender.com/user-results");  
+})
+
+backBtn.addEventListener('click', () => {
+    location.assign("https://kolosok.onrender.com/categories");  
 })
 
 async function applyStyle(){
     const response = await fetch('https://kolosok.onrender.com/is-available');
+    const response2 = await fetch('https://kolosok.onrender.com/opening-time');
     const isAvailable = await response.json();
+    const openingTime = await response2.json();
     Array.from(surveysBtns).forEach((surveyBtn) => {
-        if(!isAvailable[+surveyBtn.id.substring(6) - 1]){
-            surveyBtn.style.backgroundImage = 'url(../img/lock2.png)'; 
-            surveyBtn.style.backgroundRepeat = 'no-repeat';
-            surveyBtn.style.backgroundPosition = 'center center';
-            surveyBtn.style.backgroundAttachments = 'fixed';
-            surveyBtn.style.backgroundSize = 'contain';
-            surveyBtn.style.color = 'rgba(66, 66, 66, 0)';
+        const btn = surveyBtn.getElementsByTagName('button').item(0);
+        const id = +btn.id.substring(6) - 1;
+        const label = surveyBtn.getElementsByTagName('label').item(0);
+        if(!isAvailable[id]){
+            btn.style.backgroundImage = 'url(../img/lock3.png)'; 
+            btn.style.backgroundRepeat = 'no-repeat';
+            btn.style.backgroundPosition = 'center center';
+            btn.style.backgroundAttachments = 'fixed';
+            btn.style.backgroundSize = 'contain';
+            btn.style.color = 'rgba(66, 66, 66, 0)';
+
+            const dateNow = Date.now();
+            label.innerText = openingTime[id];
+            label.style.visibility = 'visible';
         } else {
-            surveyBtn.style.backgroundImage = '';
-            surveyBtn.style.color = 'rgba(66, 66, 66, 1)';
+            btn.style.backgroundImage = '';
+            btn.style.color = 'rgba(66, 66, 66, 1)';
+
+            label.style.visibility = 'hidden';
         }
     });
 }

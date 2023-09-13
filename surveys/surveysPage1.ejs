@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Страница опросов</title>
+    <link rel="stylesheet" href="../css/surveys.css">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/avdira-textfonts" type="text/css" />
+    <% if (!isAvailable[0]) { %>
+        <link rel="stylesheet" href="../css/locked.css">
+    <% } %>
+</head>
+
+<body>
+    <div id="btn-holder">
+       <button id="categories-btn">К категориям</button>
+       <button id="results-btn">Узнать результаты</button>
+    </div>
+    <div class="grid-container">
+        <div class="grid-item">
+            <button type="button" id="survey1" onclick="test(1)">Тест 1</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey2" onclick="test(2)">Тест 2</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey3" onclick="test(3)">Тест 3</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey4" onclick="test(4)">Тест 4</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey5" onclick="test(5)">Тест 5</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey6" onclick="test(6)">Тест 6</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey7" onclick="test(7)">Тест 7</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey8" onclick="test(8)">Тест 8</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey9" onclick="test(9)">Тест 9</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item">
+            <button type="button" id="survey10" onclick="test(10)">Тест 10</button>
+            <label>12:30</label>
+        </div>
+    </div>
+    
+    <script src="../js/surveys.js"></script>
+</body>
+</html>

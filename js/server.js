@@ -12,10 +12,12 @@ const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
 var isAvailable = [true, true, false, false, false, false, false, false, false, false];
+var openingTime = ['11:00', '12:00', '13:00', '14:00', '13:00', '15:00', '12:00', '13:20', '13:20', '13:20'];
 const cookieParser = require('cookie-parser');
 const { Double } = require("mongodb");
 
 const ExcelJS = require('exceljs');
+const { time } = require("console");
 
 
 
@@ -26,10 +28,10 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/']; // Список допустимых маршрутов
+  const allowedRoutes = ['/setTime','/categories/','/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey')) {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories')) {
     return res.status(404).send('Страница не найдена');
   }
 
@@ -142,6 +144,17 @@ app.post("/closeTest/:id", async (req, res) => {
   res.send(isAvailable[req.params.id - 1]);
 })
 
+
+
+//установка времени в массив админом
+app.post("/setTime", async (req, res) => {
+  const timeStart = req.body.time;
+  const id = req.body.id;
+  openingTime[id - 1] = timeStart;
+
+  res.send("super");
+})
+
 // Получение всех пользователей (для администратора)
 app.get("/users", async (req, res) => {
   const users = await User.find().exec();
@@ -160,17 +173,41 @@ app.get("/results", async (req, res) => {
   res.send(results);
 });
 
-
-app.get('/surveys/', (req, res) => {
+app.get('/categories/', (req, res) => {
   const cookieValue = req.cookies.email;
 
   if (cookieValue) {
-    //surveysPath = path.join(__dirname, '../surveys/surveysPage.ejs');
-    surveysPath = path.join(__dirname, '../surveys/surveysPage');
-    //res.sendFile(surveysPath)
-    res.render(surveysPath, { isAvailable });
+    //surveysPath = path.join(__dirname, '../surveys/.ejs');
+    surveysPath = path.join(__dirname, '../category/category.ejs');
+    res.render(surveysPath);
   } else {
     res.redirect("/login");
+  }
+});
+
+app.get('/categories/category:id', async (req, res) => {
+  console.log("assdfasdfasdfsadfasdf");
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  categoriesPath = path.join(__dirname, `../surveys/surveysPage${req.params.id}.ejs`);
+  res.render(categoriesPath, {isAvailable});
+});
+
+app.get('/categories/category:id/survey:num', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
+  surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
+  if (isAvailable[req.params.id - 1] && !(searchUser)) {
+    //res.sendFile(surveysPath);
+    console.log('hello');
+    res.sendFile(surveysPath);
+  }
+  else {
+    res.redirect(`/categories/category${req.params.id}`);
   }
 });
 
@@ -194,21 +231,7 @@ app.get('/setting', async (req, res) => {
   // }
 });
 
-app.get('/surveys/survey:id', async (req, res) => {
-  if(!req.headers.cookie){
-    return res.redirect('/login');
-  }
-  const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
-  surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
-  if (isAvailable[req.params.id - 1] && !(searchUser)) {
-    res.sendFile(surveysPath);
-  }
-  else {
-    res.redirect("/surveys/");
-  }
-})
-
+// 
 app.get('/login', (req, res) => {
   login2Path = path.join(__dirname, '../login.html');
   res.sendFile(login2Path);
@@ -291,8 +314,12 @@ app.get('/user-results', (req, res) => {
   res.sendFile(resultsPath);
 });
 
-app.get("/is-available", async (req, res) => {
+app.get('/is-available', async (req, res) => {
   res.send(isAvailable);
+});
+
+app.get('/opening-time', (req, res) => {
+  res.send(openingTime);
 });
 
 // app.get('/send-event', (req, res) => {
@@ -313,3 +340,35 @@ app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
   const currentPath = path.dirname(__filename);
 });
+
+
+
+//app.get('/surveys/', (req, res) => {
+  //   const cookieValue = req.cookies.email;
+  
+  //   if (cookieValue) {
+  //     //surveysPath = path.join(__dirname, '../surveys/.ejs');
+  //     surveysPath = path.join(__dirname, '../surveys/surveysPage1');
+  //     //res.sendFile(surveysPath)
+  //     res.render(surveysPath, { isAvailable });
+  //   } else {
+  //     res.redirect("/login");
+  //   }
+  // });
+  
+  // app.get('/surveys/survey:id', async (req, res) => {
+  //   if (!req.headers.cookie) {
+  //     return res.redirect('/login');
+  //   }
+  //   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  //   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
+  //   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
+  //   if (isAvailable[req.params.id - 1] && !(searchUser)) {
+  //     res.sendFile(surveysPath);
+  //   }
+  //   else {
+  //     res.redirect("/surveys/");
+  //   }
+  // })
+  
+  

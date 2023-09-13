@@ -74,7 +74,7 @@ registerForm.addEventListener('submit', async (e) => {
       adminSetting = document.getElementById("admin-setting");
       adminSetting.style.display = 'block';
     } else {
-      location.assign("https://kolosok.onrender.com/surveys");
+      location.assign("https://kolosok.onrender.com/categories/");
     }
 
     if (data.email) {
