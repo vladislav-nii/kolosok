@@ -1,1 +1,1 @@
-location.assign("https://kolosok.onrender.com/login");
+location.assign("http://localhost:5500/login");
