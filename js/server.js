@@ -28,7 +28,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/setTime', '/main', '/categories/', '/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
+  const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
   if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories')) {
@@ -179,6 +179,14 @@ app.get('/main', (req, res) => {
   }
   const mainPath = path.join(__dirname, '../main.html');
   res.sendFile(mainPath);
+})
+
+app.get('/game', (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  const gamePath = path.join(__dirname, '../game.html');
+  res.sendFile(gamePath);
 })
 
 app.get('/categories/', (req, res) => {
