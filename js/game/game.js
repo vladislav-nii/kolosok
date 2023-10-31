@@ -15,8 +15,7 @@ const cvs = document.getElementById("canvas");
 const ctx = cvs.getContext("2d");
 
 cvs.width = window.innerWidth;
-cvs.height =
-  window.innerHeight - document.getElementById("btn-holder").clientHeight - 200;
+cvs.height = (window.innerHeight < 900) ? 900 : window.innerHeight - document.getElementById("btn-holder").clientHeight - 200;
 
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
