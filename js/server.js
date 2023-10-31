@@ -289,7 +289,6 @@ app.get('/user-game-results', async(req, res) => {
       userGameResults.push(gameResult);
     }
   });
-  console.log(userGameResults);
   res.send(userGameResults);
 });
 

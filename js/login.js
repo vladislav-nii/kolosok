@@ -54,7 +54,6 @@ loginForm.addEventListener('submit', async (e) => {
     body: JSON.stringify({ email, password }),
   });
   const data = await response.json();
-  console.log(data);
   if (data.email) {
     document.cookie = "email=" + (data.email) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     document.cookie = "password=" + (data.password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";

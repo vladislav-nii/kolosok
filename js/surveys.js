@@ -21,7 +21,6 @@ setInterval(() => {
 async function test(number) {
     //window.location.href = `https://kolosok.onrender.com/surveys/survey${number}`;
     category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    console.log(category_id);
     window.location.href = `https://kolosok.onrender.com/categories/category${category_id}/survey${number}`;
 }
 
