@@ -134,13 +134,8 @@ bg.onload = () => {
                         results.forEach((result) => {
                             score += Number(result.result);
                         });
-                        // console.log(score);
 
-                        document
-                            .getElementById("resultContainer")
-                            .innerHTML =
-                            `<p>Your score is ${score}</p>`;
-                        document.getElementById("resultContainer").style.display = 'block';
+                        showResults();
                     }
                 });
             }
