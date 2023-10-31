@@ -133,8 +133,9 @@ bg.onload = () => {
               score += Number(result.result);
             });
             console.log(score);
+
             document
-              .getElementById("surveyContainer")
+              .getElementById("resultContainer")
               .insertAdjacentHTML(
                 "beforeend",
                 `<p>Your score is ${score}</p>` 

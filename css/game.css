@@ -96,7 +96,7 @@ html{
 }
 
 
-#surveyContainer {
+#resultContainer {
     background-color: #f8f8f8;
     border: 2px solid #ccc;
     padding: 20px;
@@ -105,7 +105,7 @@ html{
     margin-top: 20px;
   }
   
-  #surveyContainer p {
+  #resultContainer p {
     font-size: 18px;
     color: #333;
     margin: 0;
