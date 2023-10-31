@@ -132,14 +132,14 @@ bg.onload = () => {
               console.log(result);
               score += Number(result.result);
             });
-            console.log(score);
+            // console.log(score);
 
             document
               .getElementById("resultContainer")
               .insertAdjacentHTML(
                 "beforeend",
                 `<p>Your score is ${score}</p>` 
-              );
+              ).style.display = 'block';
           }
         });
       }
