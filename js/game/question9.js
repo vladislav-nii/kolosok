@@ -1,38 +1,44 @@
 //var category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
 export const json = {
+  locale: "ru",
+  logoPosition: "right",
   pages: [
     {
       name: "page1",
       elements: [
         {
           type: "radiogroup",
-          name: "question2",
-          title: "Что называют «парным молоком»?",
-          correctAnswer: "Item 2",
+          name: "question1",
+          title: {
+            ru: "Для минимизации потерь урожая, уборку следует начинать при достижении зерна влажностью",
+          },
+          correctAnswer: "Item 1",
           choices: [
             {
               value: "Item 1",
-              text: "слегка подогретое молоко, когда только начинает идти пар",
+              text: {
+                ru: "14-16 %",
+              },
             },
             {
               value: "Item 2",
-              text: "молоко, которое только что дала корова",
+              text: {
+                ru: "17-20 %",
+              },
             },
             {
               value: "Item 3",
-              text: "молоко, после кипячения",
-            },
-            {
-              value: "Item 4",
-              text: "нет верного варианта ответа",
+              text: {
+                ru: "35-25 %",
+              },
             },
           ],
         },
       ],
     },
   ],
-  maxTimeToFinish: 300,
+  maxTimeToFinish: 30,
   showTimerPanel: "top",
   widthMode: "responsive",
 };

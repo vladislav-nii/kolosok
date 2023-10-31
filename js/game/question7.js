@@ -38,6 +38,9 @@ export const json = {
       ],
     },
   ],
+  maxTimeToFinish: 30,
+  showTimerPanel: "top",
+  widthMode: "responsive",
 };
 
 export const multiplier = 1;
