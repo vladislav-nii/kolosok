@@ -138,7 +138,7 @@ bg.onload = () => {
               .getElementById("surveyContainer")
               .insertAdjacentHTML(
                 "beforeend",
-                `<div>Your score is ${score}</div>`
+                `<p>Your score is ${score}</p>` 
               );
           }
         });

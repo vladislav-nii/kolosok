@@ -94,3 +94,19 @@ html{
 #footer {
     margin-bottom: 20px;
 }
+
+
+#surveyContainer {
+    background-color: #f8f8f8;
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  #surveyContainer p {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+  }
