@@ -37,7 +37,7 @@ body{
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(165, 165, 165, 0.9);
 }
 
 button{
@@ -75,7 +75,7 @@ label{
     grid-column-gap: 12%;
     grid-row-gap: 5%;
     height: 98vh;
-    margin: 10%;
+    margin: 7%;
   }
   
   .grid-item {

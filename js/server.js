@@ -28,7 +28,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/register', '/login', '/surveys/', '/setting', '/result', '/users', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
+  const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
   if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories')) {
@@ -63,9 +63,19 @@ const resultSchema = new mongoose.Schema({
   test_id: String,
 });
 
+const gameResultSchema = new mongoose.Schema({
+  email: String,
+  game_id: String,
+  question_id: String,
+  result: String,
+  time: String,
+});
+
 const Result = mongoose.model("results", resultSchema);
 
 const User = mongoose.model("users", userSchema);
+
+const GameResult = mongoose.model("game_results", gameResultSchema);
 
 app.get("/", function (request, response) {
 
@@ -127,12 +137,19 @@ app.post("/result", async (req, res) => {
   if (result && ((test_id != 1) && (test_id != 2))) {
     const saveResulst = await result.save();
     res.send({
-      message: "Успешная авторизация",
+      message: "Результат успешно записан",
     });
   } else {
-    res.status(401).send({ message: "Неверное имя пользователя или пароль" });
+    res.status(401).send({ message: "Ошибка при записи результата" });
   }
 });
+
+app.post("/gameResult", async (req, res) => {
+  const gameResult = new GameResult(req.body);
+  //const gameResults = await GameResult.find().exec();
+  await gameResult.save();
+  res.send("Game result is saved");
+})
 
 app.post("/allowTest/:id", async (req, res) => {
   isAvailable[req.params.id - 1] = true;
@@ -187,6 +204,14 @@ app.get('/game', (req, res) => {
   }
   const gamePath = path.join(__dirname, '../game.html');
   res.sendFile(gamePath);
+})
+
+app.get('/about', (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  const aboutPath = path.join(__dirname, '../about.html');
+  res.sendFile(aboutPath);
 })
 
 app.get('/categories/', (req, res) => {
@@ -253,6 +278,19 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
   login2Path = path.join(__dirname, '../register.html');
   res.sendFile(login2Path);
+});
+
+app.get('/user-game-results', async(req, res) => {
+  const gameResults = await GameResult.find().exec();
+  const email = req.cookies.email;
+  const userGameResults = [];
+  gameResults.forEach(gameResult => {
+    if(gameResult.email === email){
+      userGameResults.push(gameResult);
+    }
+  });
+  console.log(userGameResults);
+  res.send(userGameResults);
 });
 
 app.get('/download-excel', async (req, res) => {

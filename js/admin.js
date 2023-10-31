@@ -53,7 +53,7 @@ setInterval(() => {
 }, 1 * 60 * 1000); // 5 минут
 
 fetchUsersBtn.addEventListener('click', async () => {
-  const response = await fetch('http://localhost:5500/users');
+  const response = await fetch('https://kolosok.onrender.com/users');
   const users = await response.json();
   userList.innerHTML = '';
   users.forEach((user) => {
@@ -73,11 +73,11 @@ fetchUsersBtn.addEventListener('click', async () => {
 });
 
 getResultsBtn.addEventListener('click', async () => {
-  location.assign("http://localhost:5500/download-excel");
+  location.assign("https://kolosok.onrender.com/download-excel");
 })
 
 async function createStatusList() {
-  const response = await fetch('http://localhost:5500/is-available');
+  const response = await fetch('https://kolosok.onrender.com/is-available');
   const isAvailable = await response.json();
 
   for (let i = 0; i < isAvailable.length; ++i) {
@@ -94,7 +94,7 @@ async function createStatusList() {
 }
 
 async function refreshStatusList() {
-  const response = await fetch('http://localhost:5500/is-available');
+  const response = await fetch('https://kolosok.onrender.com/is-available');
   const isAvailable = await response.json();
 
   testStatusCollection = testStatusList.getElementsByTagName('li')
@@ -110,7 +110,7 @@ async function refreshStatusList() {
 
 async function refreshTime() {
   inputs = document.getElementsByTagName('input');
-  const response = await fetch('http://localhost:5500/opening-time');
+  const response = await fetch('https://kolosok.onrender.com/opening-time');
   const openingTime = await response.json();
   for(let i = 0; i < inputs.length; ++i){
     inputs[i].value = openingTime[i];
