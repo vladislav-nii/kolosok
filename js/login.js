@@ -47,7 +47,7 @@ loginForm.addEventListener('submit', async (e) => {
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
   //const response = await fetch('https://kolosok.onrender.com/login', {
-  const response = await fetch('https://kolosok.onrender.com/login', {
+  const response = await fetch('https://kolosok.onrender.com/main', {
 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
