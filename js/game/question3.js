@@ -14,6 +14,7 @@ export const json = {
             ru: "Какие оптимальные сроки сева под яровую пшеницу в средних широтах Беларуси?",
           },
           correctAnswer: "Item 1",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

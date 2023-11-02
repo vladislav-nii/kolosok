@@ -47,7 +47,7 @@ async function applyStyle(){
             btn.style.backgroundPosition = 'center center';
             btn.style.backgroundAttachments = 'fixed';
             btn.style.backgroundSize = 'contain';
-            btn.style.color = 'rgba(66, 66, 66, 0)';
+            btn.style.color = 'rgba(66, 66, 66, 0.4)';
 
             const dateNow = Date.now();
             label.innerText = openingTime[id];

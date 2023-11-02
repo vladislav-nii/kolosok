@@ -14,6 +14,7 @@ export const json = {
             ru: "Какие удобрения вносят под предпосевную культивацию?",
           },
           correctAnswer: "Item 3",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

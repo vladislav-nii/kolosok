@@ -14,6 +14,7 @@ export const json = {
             ru: "Норма высева яровой пшеницы на суглинистых почвах",
           },
           correctAnswer: "Item 2",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

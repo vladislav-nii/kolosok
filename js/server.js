@@ -7,17 +7,14 @@ const cors = require("cors");
 const adminEmail = "admin@refor.by";
 const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
-const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
 var isAvailable = [true, true, false, false, false, false, false, false, false, false];
 var openingTime = ['11:00', '12:00', '13:00', '14:00', '13:00', '15:00', '12:00', '13:20', '13:20', '13:20'];
 const cookieParser = require('cookie-parser');
-const { Double } = require("mongodb");
 
 const ExcelJS = require('exceljs');
-const { time } = require("console");
 
 
 
@@ -31,7 +28,7 @@ app.use((req, res, next) => {
   const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main'))  {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main') && !requestedRoute.startsWith('/gameResults/'))  {
     return res.status(404).send('Страница не найдена');
   }
 
@@ -134,7 +131,8 @@ app.post("/result", async (req, res) => {
   const results = await Result.find().exec();
   const test_id = req.body.test_id;
 
-  if (result && ((test_id != 1) && (test_id != 2))) {
+  // if (result && ((test_id != 1) && (test_id != 2))) {
+  if (result) {
     const saveResulst = await result.save();
     res.send({
       message: "Результат успешно записан",
@@ -182,6 +180,14 @@ app.get("/users", async (req, res) => {
 // Удаление пользователя (для администратора)
 app.delete("/users/:id", async (req, res) => {
   const result = await User.findByIdAndDelete(req.params.id).exec();
+  res.send(result);
+});
+
+app.delete("/gameResults/:user", async (req, res) => {
+  console.log("delete");
+
+  //const result = await GameResult.findByIdAndDelete(req.params.id).exec();
+  const result = await GameResult.deleteMany({email: req.params.user}).exec();
   res.send(result);
 });
 

@@ -14,6 +14,7 @@ export const json = {
             ru: "Основная обработка после пропашных культур состоит из",
           },
           correctAnswer: "Item 3",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

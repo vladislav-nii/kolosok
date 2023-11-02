@@ -14,6 +14,7 @@ export const json = {
             ru: "Для минимизации потерь урожая, уборку следует начинать при достижении зерна влажностью",
           },
           correctAnswer: "Item 1",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

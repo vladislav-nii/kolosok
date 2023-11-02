@@ -46,6 +46,20 @@ html{
     justify-content: center; */
 }
 
+button{
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: #DAA520 !important;
+    /* font-weight: 900; */
+    color: #424242;
+    opacity: 0.9;
+    height: 100px;
+    width: 90%;
+    margin-bottom: 10px;
+    /* background: url('../img/lock.png') center no-repeat;
+    background-size: contain; */
+}
+
 .back {
     width: 20%;
     height: 60px;
