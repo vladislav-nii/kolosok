@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories')) {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main'))  {
     return res.status(404).send('Страница не найдена');
   }
 
