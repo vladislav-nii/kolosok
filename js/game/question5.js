@@ -14,6 +14,7 @@ export const json = {
             ru: "Глубина заделки на легких почвах",
           },
           correctAnswer: "Item 1",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

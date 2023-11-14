@@ -261,14 +261,38 @@ async function showResults() {
     });
 
     if (results.length == 10) {
-        document.getElementById('header').style.display='none';
-        document
-        .getElementById("resultContainer")
-            .innerHTML =
-            `<p>Вы набрали ${score} ${scklonenie(score)}</p>`;
-        
-        document.getElementById("resultContainer").style.display = 'block';
-        cvs.style.display='none';
+        document.getElementById('header').style.display = 'none';
+        //document
+        // .getElementById("resultContainer")
+        //     .innerHTML =
+        //     `<p>Вы набрали ${score} ${scklonenie(score)}</p>`;
+
+        const resultsArr = Array.from(results);
+
+        const resultContainer = document.getElementById("resultContainer");
+        resultContainer.innerHTML =
+            `<p>Ваш урожай составил ${Math.round(score * 7.86 * 100) / 100} цейнтнеров с га по сорту "Дарья"</p>
+            <p>---------------------</p>
+            <p> Вопрос 0: ${Number(resultsArr[0].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 1: ${Number(resultsArr[1].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 2: ${Number(resultsArr[2].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 3: ${Number(resultsArr[3].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 4: ${Number(resultsArr[4].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 5: ${Number(resultsArr[5].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 6: ${Number(resultsArr[6].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 7: ${Number(resultsArr[7].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 8: ${Number(resultsArr[8].result) ? "Верно" : "Неверно"}</p>`;
+        const btn = document.createElement("button");
+        btn.textContent = "Сбросить результаты";
+        resultContainer.appendChild(btn);
+        btn.addEventListener("click", async (ev) => {
+            const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            console.log(email);
+            await fetch(`/gameResults/${email}`, { method: 'DELETE' });
+            location.reload();
+        })
+        resultContainer.style.display = 'block';
+        cvs.style.display = 'none';
     }
 }
 

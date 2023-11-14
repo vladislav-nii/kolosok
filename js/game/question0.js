@@ -14,6 +14,7 @@ export const json = {
             ru: "Какие рекомендуемые параметры агрохимических показателей почвенного плодородия минеральных почв необходимы?",
           },
           correctAnswer: "Item 2",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

@@ -14,6 +14,7 @@ export const json = {
             ru: "Фосфорные и калийные удобрения лучше вносить",
           },
           correctAnswer: "Item 1",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",

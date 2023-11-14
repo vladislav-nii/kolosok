@@ -14,6 +14,7 @@ export const json = {
             ru: "Лучший предшественник для яровой пшеницы из ниже перечисленных – это",
           },
           correctAnswer: "Item 3",
+          isRequired: "true",
           choices: [
             {
               value: "Item 1",
