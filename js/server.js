@@ -185,6 +185,14 @@ app.delete("/users/:id", async (req, res) => {
   res.send(result);
 });
 
+app.delete("/gameResults/:user", async (req, res) => {
+  console.log("delete");
+
+  //const result = await GameResult.findByIdAndDelete(req.params.id).exec();
+  const result = await GameResult.deleteMany({email: req.params.user}).exec();
+  res.send(result);
+});
+
 app.get("/results", async (req, res) => {
   const results = await Result.find().exec();
   res.send(results);
