@@ -13,8 +13,8 @@ async function choosingCategory(number) {
 async function applyStyle(){
     Array.from(categoriesButtons).forEach((categoriesButton) => {
         const btn = categoriesButton;
-        const id = +btn.id.substring(8);
-        if(id > 1){
+        const id = +btn.id.substring(8, btn.id.length);
+        if(id > 2){
             btn.style.backgroundImage = 'url(../img/lock3.png)'; 
             btn.style.backgroundRepeat = 'no-repeat';
             btn.style.backgroundPosition = 'center center';

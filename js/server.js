@@ -7,14 +7,17 @@ const cors = require("cors");
 const adminEmail = "admin@refor.by";
 const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
+const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 var isLoggined = false;
-var isAvailable = [true, true, false, false, false, false, false, false, false, false];
+var isAvailable = [true, true, false, false, false, false, false, false, false, false, true];
 var openingTime = ['11:00', '12:00', '13:00', '14:00', '13:00', '15:00', '12:00', '13:20', '13:20', '13:20'];
 const cookieParser = require('cookie-parser');
+const { Double } = require("mongodb");
 
 const ExcelJS = require('exceljs');
+const { time } = require("console");
 
 
 
@@ -28,7 +31,7 @@ app.use((req, res, next) => {
   const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main') && !requestedRoute.startsWith('/gameResults/'))  {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/main')) {
     return res.status(404).send('Страница не найдена');
   }
 
@@ -131,8 +134,7 @@ app.post("/result", async (req, res) => {
   const results = await Result.find().exec();
   const test_id = req.body.test_id;
 
-  // if (result && ((test_id != 1) && (test_id != 2))) {
-  if (result) {
+  if (result && ((test_id != 1) && (test_id != 2))) {
     const saveResulst = await result.save();
     res.send({
       message: "Результат успешно записан",
@@ -183,14 +185,6 @@ app.delete("/users/:id", async (req, res) => {
   res.send(result);
 });
 
-app.delete("/gameResults/:user", async (req, res) => {
-  console.log("delete");
-
-  //const result = await GameResult.findByIdAndDelete(req.params.id).exec();
-  const result = await GameResult.deleteMany({email: req.params.user}).exec();
-  res.send(result);
-});
-
 app.get("/results", async (req, res) => {
   const results = await Result.find().exec();
   res.send(results);
@@ -201,6 +195,7 @@ app.get('/main', (req, res) => {
     return res.redirect('/login');
   }
   const mainPath = path.join(__dirname, '../main.html');
+  console.log(mainPath);
   res.sendFile(mainPath);
 })
 
@@ -267,15 +262,8 @@ app.get('/setting', async (req, res) => {
       res.redirect("/login");
     }
   }
-  // if (cookieValue === 'admin') {
-  //   surveysPath = path.join(__dirname, '../setting.html');
-  //   res.sendFile(surveysPath);
-  // } else {
-  //   res.redirect("/login");
-  // }
 });
 
-// 
 app.get('/login', (req, res) => {
   login2Path = path.join(__dirname, '../login.html');
   res.sendFile(login2Path);
@@ -378,53 +366,7 @@ app.get('/opening-time', (req, res) => {
   res.send(openingTime);
 });
 
-// app.get('/send-event', (req, res) => {
-//   // Отправка серверного события клиенту
-//   res.setHeader('Content-Type', 'text/event-stream');
-//   res.setHeader('Cache-Control', 'no-cache');
-//   res.setHeader('Connection', 'keep-alive');
-//   res.flushHeaders();
-
-//   res.write('event: update\n');  // Тип события
-//   res.write(`data: ${JSON.stringify({ message: 'Update requested' })}\n\n`); // Данные события
-
-//   // Закрытие соединения
-//   res.end();
-// });
-
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
   const currentPath = path.dirname(__filename);
 });
-
-
-
-//app.get('/surveys/', (req, res) => {
-  //   const cookieValue = req.cookies.email;
-  
-  //   if (cookieValue) {
-  //     //surveysPath = path.join(__dirname, '../surveys/.ejs');
-  //     surveysPath = path.join(__dirname, '../surveys/surveysPage1');
-  //     //res.sendFile(surveysPath)
-  //     res.render(surveysPath, { isAvailable });
-  //   } else {
-  //     res.redirect("/login");
-  //   }
-  // });
-  
-  // app.get('/surveys/survey:id', async (req, res) => {
-  //   if (!req.headers.cookie) {
-  //     return res.redirect('/login');
-  //   }
-  //   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  //   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
-  //   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
-  //   if (isAvailable[req.params.id - 1] && !(searchUser)) {
-  //     res.sendFile(surveysPath);
-  //   }
-  //   else {
-  //     res.redirect("/surveys/");
-  //   }
-  // })
-  
-  
