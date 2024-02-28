@@ -25,10 +25,10 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time']; // Список допустимых маршрутов
+  const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time', '/education', '/excursion']; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main') && !requestedRoute.startsWith('/gameResults/'))  {
+  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main') && !requestedRoute.startsWith('/gameResults/') && !requestedRoute.startsWith('/education') && !requestedRoute.startsWith('/excursion') && !requestedRoute.startsWith('/games') && !requestedRoute.startsWith('/account-data'))  {
     return res.status(404).send('Страница не найдена');
   }
 
@@ -51,6 +51,13 @@ const userSchema = new mongoose.Schema({
   password: String,
   isAdmin: Boolean,
   email: String,
+  name: String,
+  surname: String,
+  patronymic: String,
+  birthDate: String,
+  stateEducationalInstitution: String,
+  faculty: String,
+  group: String,
 });
 
 const resultSchema = new mongoose.Schema({
@@ -58,6 +65,7 @@ const resultSchema = new mongoose.Schema({
   result: String,
   time: String,
   test_id: String,
+  category: String,
 });
 
 const gameResultSchema = new mongoose.Schema({
@@ -204,13 +212,13 @@ app.get('/main', (req, res) => {
   res.sendFile(mainPath);
 })
 
-app.get('/game', (req, res) => {
-  if (!req.headers.cookie) {
-    return res.redirect('/login');
-  }
-  const gamePath = path.join(__dirname, '../game.html');
-  res.sendFile(gamePath);
-})
+// app.get('/game', (req, res) => {
+//   if (!req.headers.cookie) {
+//     return res.redirect('/login');
+//   }
+//   const gamePath = path.join(__dirname, '../game.html');
+//   res.sendFile(gamePath);
+// })
 
 app.get('/about', (req, res) => {
   if (!req.headers.cookie) {
@@ -254,6 +262,82 @@ app.get('/categories/category:id/survey:num', async (req, res) => {
     res.redirect(`/categories/category${req.params.id}`);
   }
 });
+
+app.get('/education', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  educationPath = path.join(__dirname, '../education/education.ejs');
+    res.render(educationPath);
+});
+
+app.get('/excursion', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  excursionPath = path.join(__dirname, '../excursion/excursion.ejs');
+    res.render(excursionPath);
+});
+
+app.get('/excursion/:excursion', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  excursionPath = path.join(__dirname, `../excursions/${req.params.excursion}/${req.params.excursion}.ejs`);
+  res.render(excursionPath);
+  //res.render(categoriesPath, {isAvailable});
+});
+
+app.get('/excursion/:excursion/:category', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  excurisonPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/${req.params.category}.ejs`);
+  //console.log(excursionPath);
+  res.render(excurisonPath);
+});
+
+app.get('/excursion/:excursion/:category/test:id', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  excurisonPath = path.join(__dirname, `../excursions/category${req.params.excrusion}/${req.params.category}.ejs`);
+  //res.render(categoriesPath, {isAvailable});
+});
+
+app.get('/excursion/:excursion/:category/results', (req, res) => {
+  console.log("!HEllllooooo");
+  resultsPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/${req.params.category}/results.html`);
+  res.sendFile(resultsPath);
+});
+
+app.get('/games', async(req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  gamesPath = path.join(__dirname, '../games/games.ejs');
+  res.render(gamesPath);
+});
+
+app.get('/games/:id', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  gamePath = path.join(__dirname, `../${req.params.id}.html`);
+  //res.render(categoriesPath, {isAvailable});
+  console.log(gamePath);
+  res.sendFile(gamePath);
+  //res.render(gamePath);
+});
+
+app.get('/account-data/:email', async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect('/login');
+  }
+  searchUser = await User.findOne({ email: req.params.email}).exec();
+  //console.log(searchUser);
+  res.send(searchUser);
+})
 
 app.get('/setting', async (req, res) => {
   const cookieValue = req.cookies.email;

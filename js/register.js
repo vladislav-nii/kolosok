@@ -20,8 +20,8 @@ const freeLessonsBtn = document.getElementById("btn-free");
 
 //   if (username != '' || password != '') {
 //     async function getData() {
-//        const response = await fetch('https://kolosok.onrender.com/login', {
-//         //const response = await fetch('https://kolosok.onrender.com/login', {
+//        const response = await fetch('http://127.0.0.1:5500/login', {
+//         //const response = await fetch('http://127.0.0.1:5500/login', {
 
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -58,12 +58,19 @@ registerForm.addEventListener('submit', async (e) => {
   const email = document.getElementById('register-email').value;
   const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
+  const name = document.getElementById('register-name').value;
+  const surname = document.getElementById('register-surname').value;
+  const patronymic = document.getElementById('register-patronymic').value;
+  const birthDate = document.getElementById('register-birthdate').value;
+  const stateEducationalInstitution = document.getElementById('register-state-educational-institution').value;
+  const faculty = document.getElementById('register-faculty').value;
+  const group = document.getElementById('register-group').value;
   const isAdmin = false;
-  const response = await fetch('https://kolosok.onrender.com/register', {
- // const response = await fetch('https://kolosok.onrender.com/register', {
+  const response = await fetch('http://127.0.0.1:5500/register', {
+ // const response = await fetch('http://127.0.0.1:5500/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password, isAdmin, email }),
+    body: JSON.stringify({ username, password, isAdmin, email, name, surname, patronymic, birthDate, stateEducationalInstitution, faculty, group }),
   });
   const data = await response.json();
   if (data.msg) {
@@ -74,7 +81,7 @@ registerForm.addEventListener('submit', async (e) => {
       adminSetting = document.getElementById("admin-setting");
       adminSetting.style.display = 'block';
     } else {
-      location.assign("https://kolosok.onrender.com/main");
+      location.assign("http://127.0.0.1:5500/main");
     }
 
     if (data.email) {

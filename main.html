@@ -11,17 +11,90 @@
 </head>
 
 <body>
-    <div id="btn-holder">
-        <h2 id="main">Главное меню</h2>
+    <div id="btn-holder" >
+        <div><h2 id="main">Главное меню</h2></div>
+       
+        <div class="user-acc-class">
+            <button class="user-acc" data-easy-toggle="#modalWin" data-easy-class="show"></button>
+        </div>
+
+
+
+        <div id="modalWin" class="modal">
+            <div class="modal-window"> 
+                    <div class="container" >
+                        <div class="account-info">
+                        <label for="username">Имя пользователя:</label>
+                        <span id="username"></span>
+                        </div>
+                
+                        <div class="account-info">
+                        <label for="email">Почта:</label>
+                        <span id="email"></span>
+                        </div>
+
+                        <div class="account-info">
+                            <label for="name">Имя:</label>
+                            <span id="name"></span>
+                        </div>
+
+                        <div class="account-info">
+                            <label for="surname">Фамилия:</label>
+                            <span id="surname"></span>
+                        </div>
+
+                        <div class="account-info">
+                            <label for="patronymic">Отчество:</label>
+                            <span id="patronymic"></span>
+                        </div>
+                
+                        <div class="account-info">
+                        <label for="birthdate">Дата рождения:</label>
+                        <span id="birthdate"></span>
+                        </div>
+
+                        <div class="account-info">
+                            <label for="state-educational-institution">Учреждение образования:</label>
+                            <span id="state-educational-institution"></span>
+                        </div>
+
+                        <div class="account-info">
+                            <label for="faculty">Факультет:</label>
+                            <span id="faculty"></span>
+                        </div>
+                
+                        <div class="account-info">
+                        <label for="group">Номер группы:</label>
+                        <span id="group"></span>
+                        </div>
+
+            </div> 
+            
+            <div class="overlay" data-easy-toggle="#modalWin" data-easy-class="show"></div>
+        </div>
+            
+        </div>
+
     </div>
     <div class="grid-container">
-        <button type="button" class="grid-item" id="studies_btn">Учеба</button>
-        <button type="button" class="grid-item" id="game_btn">Игра</button>
+        <button type="button" class="grid-item" id="education_btn">Обучение</button>
+        <button type="button" class="grid-item" id="excursion_btn">Экскурсия</button>
+        <button type="button" class="grid-item" id="agrotests_btn">Агротесты</button>
+        <button type="button" class="grid-item" id="games_btn">Игры</button>
         <button type="button" class="grid-item" id="stats_btn">Статистика</button>
+        <button type="button" class="grid-item" id="settings_btn">Настройки</button>
         <button type="button" class="grid-item" id="about_btn">О платформе</button>
         <button type="button" class="grid-item" id="logout_btn">Выйти</button>
     </div>
     
     <script src="./js/main.js"></script>
+    <script src="./js/account.js"></script>
+    <script type="module">(function(){'use strict';document.addEventListener('click',EasyTogglerHandler);function EasyTogglerHandler(event){const EY_BTN=event.target.closest('[data-easy-toggle]');
+        if(EY_BTN){event.preventDefault();let ey_target=EY_BTN.getAttribute('data-easy-toggle');let ey_class=EY_BTN.getAttribute('data-easy-class');
+        try{document.querySelector(ey_target).classList.toggle(ey_class)}catch(ey_error){console.warn('EasyToggler.js : Блок '+ey_target+' не существует')}}
+        if(!EY_BTN){let ey_rcoe_block_targets=document.querySelectorAll('[data-easy-rcoe]');Array.from(ey_rcoe_block_targets).forEach.call(ey_rcoe_block_targets,function(ey_rcoe_block_target)
+        {let ey_rcoe_block=ey_rcoe_block_target.getAttribute('data-easy-toggle'),ey_rcoe_block_class=ey_rcoe_block_target.getAttribute('data-easy-class');
+        if(!event.target.closest(ey_rcoe_block)){try{document.querySelector(ey_rcoe_block).classList.remove(ey_rcoe_block_class)}
+        catch(ey_error){console.warn('EasyToggler.js : Блок '+ey_rcoe_block+' не существует')}}})}}})()</script>
 </body>
 </html>
