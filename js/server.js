@@ -306,8 +306,7 @@ app.get('/excursion/:excursion/:category/test:id', async (req, res) => {
 });
 
 app.get('/excursion/:excursion/:category/results', (req, res) => {
-  console.log("!HEllllooooo");
-  resultsPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/${req.params.category}/results.html`);
+  resultsPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/results.html`);
   res.sendFile(resultsPath);
 });
 

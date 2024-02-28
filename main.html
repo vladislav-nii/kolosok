@@ -22,14 +22,17 @@
 
         <div id="modalWin" class="modal">
             <div class="modal-window"> 
+                
                     <div class="container" >
-                        <div class="account-info">
-                        <label for="username">Имя пользователя:</label>
-                        <span id="username"></span>
+                        <div class="btn-close-holder">
+                            <button class="btn-close" data-easy-toggle="#modalWin" data-easy-class="show"> </button> 
+                        </div>
+
+                        <div class="account-info" id="name-acc">
+                            <span id="username"></span>
                         </div>
                 
-                        <div class="account-info">
-                        <label for="email">Почта:</label>
+                        <div class="account-info" id="email-acc">
                         <span id="email"></span>
                         </div>
 
@@ -54,7 +57,7 @@
                         </div>
 
                         <div class="account-info">
-                            <label for="state-educational-institution">Учреждение образования:</label>
+                            <label for="state-educational-institution">УО:</label>
                             <span id="state-educational-institution"></span>
                         </div>
 
@@ -67,12 +70,12 @@
                         <label for="group">Номер группы:</label>
                         <span id="group"></span>
                         </div>
+                        
+                    </div>
+                    
+            </div>
+        <div class="overlay" data-easy-toggle="#modalWin" data-easy-class="show"></div>
 
-            </div> 
-            
-            <div class="overlay" data-easy-toggle="#modalWin" data-easy-class="show"></div>
-        </div>
-            
         </div>
 
     </div>

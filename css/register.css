@@ -149,3 +149,10 @@ h2 {
     text-shadow: 0 0 10px #00ccff;
 
 }
+
+.input_text.required {
+    content: ' *';
+    color: red;
+  }
+
+ 
