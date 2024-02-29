@@ -150,9 +150,5 @@ h2 {
 
 }
 
-.input_text.required {
-    content: ' *';
-    color: red;
-  }
 
  

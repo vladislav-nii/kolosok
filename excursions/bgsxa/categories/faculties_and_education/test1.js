@@ -307,7 +307,7 @@ var json = {
      }
     ],
     "showTitle": false,
-    "navigateToUrl": `http://127.0.0.1:5500/excursion/bgsxa/${bgsxa_category}`,
+    "navigateToUrl": `https://kolosok.onrender.com/excursion/bgsxa/${bgsxa_category}`,
     "maxTimeToFinish": 300,
     "showTimerPanel": "top",
     "widthMode": "responsive"
