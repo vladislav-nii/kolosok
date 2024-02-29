@@ -1,4 +1,4 @@
-const name = document.getElementById('name');
+fconst name = document.getElementById('name');
 const surname  = document.getElementById('surname');
 const patronymic = document.getElementById('patronymic');
 const birthDate = document.getElementById('birthdate');

@@ -3,6 +3,7 @@ const excursionButton = document.getElementById("excursion_btn");
 const agrotestsButton = document.getElementById("agrotests_btn");
 const gamesButton = document.getElementById("games_btn");
 const statsButton = document.getElementById("stats_btn");
+const settingButton = document.getElementById("settings_btn");
 const aboutButton = document.getElementById("about_btn");
 const logoutButton = document.getElementById("logout_btn"); 
 
@@ -39,6 +40,12 @@ async function applyStyle() {
     statsButton.style.backgroundAttachments = 'fixed';
     statsButton.style.backgroundSize = 'contain';
     statsButton.style.color = 'rgba(66, 66, 66, 0.4)';
+    settingButton.style.backgroundImage = 'url(../img/lock3.png)';
+    settingButton.style.backgroundRepeat = 'no-repeat';
+    settingButton.style.backgroundPosition = 'center center';
+    settingButton.style.backgroundAttachments = 'fixed';
+    settingButton.style.backgroundSize = 'contain';
+    settingButton.style.color = 'rgba(66, 66, 66, 0.4)';
 }
 
 applyStyle();
