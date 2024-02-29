@@ -301,7 +301,9 @@ app.get('/excursion/:excursion/:category/test:id', async (req, res) => {
   if (!req.headers.cookie) {
     return res.redirect('/login');
   }
-  excurisonPath = path.join(__dirname, `../excursions/category${req.params.excrusion}/${req.params.category}.ejs`);
+  console.log("HELLOOOOOO!!!!");
+  testPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/${req.params.category}/test${req.params.id}.html`);
+  res.sendFile(testPath);
   //res.render(categoriesPath, {isAvailable});
 });
 

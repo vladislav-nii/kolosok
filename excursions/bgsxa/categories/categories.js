@@ -6,13 +6,13 @@ const bgsxa_category = document.cookie.replace(/(?:(?:^|.*;\s*)bgsxa_category\s*
 
 async function test(number) {
     //window.location.href = `http://127.0.0.1:5500/surveys/survey${number}`;
-    window.location.href = `http://127.0.0.1:5500/excursion/bgsxa/${bgsxa_category}/${number}`;
-}
+    window.location.href = `http://127.0.0.1:5500/excursion/bgsxa/${bgsxa_category}/test${number}`;
+};
 
 resultsBtn.addEventListener('click', () => {
     location.assign(`http://127.0.0.1:5500/excursion/bgsxa/${bgsxa_category}/results`);
-})
+});
 
 backBtn.addEventListener('click', () => {
     location.assign("http://127.0.0.1:5500/excursion/bgsxa");  
-})
+});
