@@ -136,6 +136,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/result", async (req, res) => {
   const result = new Result(req.body);
+  console.log(result);
   const results = await Result.find().exec();
   const test_id = req.body.test_id;
 
@@ -390,6 +391,7 @@ app.get('/download-excel', async (req, res) => {
   worksheet.columns = [
     { header: 'Почта', key: 'email' },
     { header: 'Имя пользователя', key: 'username' },
+    { header: 'Категория', key: 'category'},
     { header: 'Номер теста', key: 'test_id' },
     { header: 'Количество правильных ответов', key: 'correct' },
     { header: 'Всего отвечено', key: 'no_of_questions' },
@@ -409,6 +411,7 @@ app.get('/download-excel', async (req, res) => {
         worksheet.getRow(i).values = {
           email: `${user.email}`,
           username: `${user.username}`,
+          category: `${result.category}`,
           test_id: `${result.test_id}`,
           correct: `${JSON.parse(result.result)["correct_answers"]}`,
           no_of_questions: `${JSON.parse(result.result)["no_of_questions"]}`,
