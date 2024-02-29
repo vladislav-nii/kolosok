@@ -83,3 +83,7 @@ label{
     /* padding: 10px; */
     min-height: 400px;
   }
+
+  .grid-item.bgsxacat{
+    height: 400px;
+  }
