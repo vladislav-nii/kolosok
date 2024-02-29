@@ -8,28 +8,28 @@ const logoutButton = document.getElementById("logout_btn");
 
 
 educationButton.addEventListener("click", (ev) => {
-    location.assign("http://127.0.0.1:5500/education/");
+    location.assign("https://kolosok.onrender.com/education/");
 });
 
 excursionButton.addEventListener("click", (ev) => {
-    location.assign("http://127.0.0.1:5500/excursion/");
+    location.assign("https://kolosok.onrender.com/excursion/");
 });
 
 agrotestsButton.addEventListener("click", (ev) => {
-    location.assign("http://127.0.0.1:5500/categories/");
+    location.assign("https://kolosok.onrender.com/categories/");
 });
 
 gamesButton.addEventListener("click", (ev) => {
-    location.assign("http://127.0.0.1:5500/games");
+    location.assign("https://kolosok.onrender.com/games");
 });
 
 aboutButton.addEventListener("click", (ev) => {
-    location.assign("http://127.0.0.1:5500/about");
+    location.assign("https://kolosok.onrender.com/about");
 });
 
 logoutButton.addEventListener("click", (ev) => {
     document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-    location.assign("http://127.0.0.1:5500/login");
+    location.assign("https://kolosok.onrender.com/login");
 });
 
 async function applyStyle() {
