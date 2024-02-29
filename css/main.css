@@ -208,3 +208,11 @@
     display: flex;
     justify-content: flex-end;
   }
+
+
+  .account-info.line {
+    border-bottom: 5px solid rgb(223, 215, 215);
+    padding: 0px;
+    margin: 0px;
+  }
+  

@@ -55,6 +55,8 @@ const freeLessonsBtn = document.getElementById("btn-free");
 
 registerForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  if(document.getElementById('checkboxPrivace').checked) {
   const email = document.getElementById('register-email').value;
   const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
@@ -92,7 +94,10 @@ registerForm.addEventListener('submit', async (e) => {
     }
 
   }
+}
 });
+
+
 
 
 
