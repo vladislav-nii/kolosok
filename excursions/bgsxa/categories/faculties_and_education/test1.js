@@ -362,7 +362,7 @@ survey.onComplete.add(async (e) => {
     const response = await fetch('https://kolosok.onrender.com/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, result, time,  test_id, bgsxa_category}),
+        body: JSON.stringify({ email, result, time,  test_id, "category": bgsxa_category}),
     });
 
 });
