@@ -7,36 +7,96 @@ const cors = require("cors");
 const adminEmail = "admin@refor.by";
 const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 var isLoggined = false;
-var isAvailable = [true, true, false, false, false, false, false, false, false, false];
-var openingTime = ['11:00', '12:00', '13:00', '14:00', '13:00', '15:00', '12:00', '13:20', '13:20', '13:20'];
-const cookieParser = require('cookie-parser');
+var isAvailable = [
+  true,
+  true,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+];
+var openingTime = [
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "13:00",
+  "15:00",
+  "12:00",
+  "13:20",
+  "13:20",
+  "13:20",
+];
+const cookieParser = require("cookie-parser");
 
-const ExcelJS = require('exceljs');
-
-
+const ExcelJS = require("exceljs");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(path.join(__dirname, "../")));
 app.use((req, res, next) => {
-  const allowedRoutes = ['/setTime', '/main', '/game', '/categories/', '/about', '/register', '/login', '/surveys/', '/setting', '/result', '/gameResult', '/users', '/user-game-results', '/download-excel', '/user-results', '/is-available', '/send-event', '/', '/opening-time', '/education', '/excursion']; // Список допустимых маршрутов
+  const allowedRoutes = [
+    "/setTime",
+    "/main",
+    "/game",
+    "/categories/",
+    "/about",
+    "/register",
+    "/login",
+    "/surveys/",
+    "/setting",
+    "/result",
+    "/gameResult",
+    "/users",
+    "/user-game-results",
+    "/download-excel",
+    "/user-results",
+    "/is-available",
+    "/send-event",
+    "/",
+    "/opening-time",
+    "/education",
+    "/excursion",
+  ]; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
-  if (!allowedRoutes.includes(requestedRoute) && !requestedRoute.startsWith('/users') && !requestedRoute.startsWith('/allowTest/') && !requestedRoute.startsWith('/closeTest/') && !requestedRoute.startsWith('/results') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/categories') && !requestedRoute.startsWith('/surveys/survey') && !requestedRoute.startsWith('/main') && !requestedRoute.startsWith('/gameResults/') && !requestedRoute.startsWith('/education') && !requestedRoute.startsWith('/excursion') && !requestedRoute.startsWith('/games') && !requestedRoute.startsWith('/account-data'))  {
-    return res.status(404).send('Страница не найдена');
+  if (
+    !allowedRoutes.includes(requestedRoute) &&
+    !requestedRoute.startsWith("/users") &&
+    !requestedRoute.startsWith("/allowTest/") &&
+    !requestedRoute.startsWith("/closeTest/") &&
+    !requestedRoute.startsWith("/results") &&
+    !requestedRoute.startsWith("/surveys/survey") &&
+    !requestedRoute.startsWith("/categories") &&
+    !requestedRoute.startsWith("/surveys/survey") &&
+    !requestedRoute.startsWith("/main") &&
+    !requestedRoute.startsWith("/gameResults/") &&
+    !requestedRoute.startsWith("/education") &&
+    !requestedRoute.startsWith("/excursion") &&
+    !requestedRoute.startsWith("/games") &&
+    !requestedRoute.startsWith("/account-data") &&
+    !requestedRoute.startsWith("/polls") &&
+    !requestedRoute.startsWith("/poll-result") &&
+    !requestedRoute.startsWith("/download-poll-results")
+  ) {
+    return res.status(404).send("Страница не найдена");
   }
 
   next();
 });
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 mongoose.connect(
   "mongodb+srv://NIIinAPK:nii123@survey.yvbwk8s.mongodb.net/?retryWrites=true&w=majority",
@@ -76,14 +136,23 @@ const gameResultSchema = new mongoose.Schema({
   time: String,
 });
 
+const pollResultSchema = new mongoose.Schema({
+  email: String,
+  poll: [new mongoose.Schema({
+    title: String,
+    displayValue: String,
+  })]
+});
+
 const Result = mongoose.model("results", resultSchema);
 
 const User = mongoose.model("users", userSchema);
 
 const GameResult = mongoose.model("game_results", gameResultSchema);
 
-app.get("/", function (request, response) {
+const PollResult = mongoose.model("poll_results", pollResultSchema);
 
+app.get("/", function (request, response) {
   // отправляем ответ
   response.send("<h2>Привет Express!</h2>");
 });
@@ -91,7 +160,7 @@ app.get("/", function (request, response) {
 app.post("/register", async (req, res) => {
   const user = new User(req.body);
   const users = await User.find().exec();
-  const reset = users.find(item => item.email === user.email);
+  const reset = users.find((item) => item.email === user.email);
 
   if (!reset) {
     const result = await user.save();
@@ -106,8 +175,7 @@ app.post("/register", async (req, res) => {
       email: user.email,
       isAdmin: IsAdmin,
     });
-  }
-  else {
+  } else {
     res.send({ msg: "пользователь с такой почтой уже есть" });
   }
 });
@@ -151,24 +219,45 @@ app.post("/result", async (req, res) => {
   }
 });
 
+app.post("/poll-result", async (req, res) => {
+  console.log("POLL RESULT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  console.log(req.body);
+  var pollResult = req.body;
+  for (var i = 0; i < pollResult.poll.length; ++i){
+    delete pollResult.poll[i].name;
+    delete pollResult.poll[i].value;
+    delete pollResult.poll[i].isNode;
+    delete pollResult.poll[i].data;
+  }
+  console.log(pollResult);
+  const result = new PollResult(pollResult);
+  try {
+    const saveResulst = await result.save();
+    res.send({
+      message: "Результат успешно записан",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Ошибка при записи');
+  }
+});
+
 app.post("/gameResult", async (req, res) => {
   const gameResult = new GameResult(req.body);
   //const gameResults = await GameResult.find().exec();
   await gameResult.save();
   res.send("Game result is saved");
-})
+});
 
 app.post("/allowTest/:id", async (req, res) => {
   isAvailable[req.params.id - 1] = true;
   res.send(req.params.id);
-})
+});
 
 app.post("/closeTest/:id", async (req, res) => {
   isAvailable[req.params.id - 1] = false;
   res.send(isAvailable[req.params.id - 1]);
-})
-
-
+});
 
 //установка времени в массив админом
 app.post("/setTime", async (req, res) => {
@@ -177,14 +266,13 @@ app.post("/setTime", async (req, res) => {
   openingTime[id - 1] = timeStart;
 
   res.send("super");
-})
+});
 
 // Получение всех пользователей (для администратора)
 app.get("/users", async (req, res) => {
   const users = await User.find().exec();
   res.send(users);
 });
-
 
 // Удаление пользователя (для администратора)
 app.delete("/users/:id", async (req, res) => {
@@ -196,7 +284,7 @@ app.delete("/gameResults/:user", async (req, res) => {
   console.log("delete");
 
   //const result = await GameResult.findByIdAndDelete(req.params.id).exec();
-  const result = await GameResult.deleteMany({email: req.params.user}).exec();
+  const result = await GameResult.deleteMany({ email: req.params.user }).exec();
   res.send(result);
 });
 
@@ -205,13 +293,13 @@ app.get("/results", async (req, res) => {
   res.send(results);
 });
 
-app.get('/main', (req, res) => {
+app.get("/main", (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  const mainPath = path.join(__dirname, '../main.html');
+  const mainPath = path.join(__dirname, "../main.html");
   res.sendFile(mainPath);
-})
+});
 
 // app.get('/game', (req, res) => {
 //   if (!req.headers.cookie) {
@@ -221,109 +309,144 @@ app.get('/main', (req, res) => {
 //   res.sendFile(gamePath);
 // })
 
-app.get('/about', (req, res) => {
+app.get("/about", (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  const aboutPath = path.join(__dirname, '../about.html');
+  const aboutPath = path.join(__dirname, "../about.html");
   res.sendFile(aboutPath);
-})
+});
 
-app.get('/categories/', (req, res) => {
+app.get("/categories/", (req, res) => {
   const cookieValue = req.cookies.email;
 
   if (cookieValue) {
     //surveysPath = path.join(__dirname, '../surveys/.ejs');
-    surveysPath = path.join(__dirname, '../category/category.ejs');
+    surveysPath = path.join(__dirname, "../category/category.ejs");
     res.render(surveysPath);
   } else {
     res.redirect("/login");
   }
 });
 
-app.get('/categories/category:id', async (req, res) => {
+app.get("/categories/category:id", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  categoriesPath = path.join(__dirname, `../surveys/surveysPage${req.params.id}.ejs`);
-  res.render(categoriesPath, {isAvailable});
+  categoriesPath = path.join(
+    __dirname,
+    `../surveys/surveysPage${req.params.id}.ejs`
+  );
+  res.render(categoriesPath, { isAvailable });
 });
 
-app.get('/categories/category:id/survey:num', async (req, res) => {
+app.get("/categories/category:id/survey:num", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  searchUser = await Result.findOne({ email: userEmail, test_id: req.params.num }).exec();
+  const userEmail = req.headers.cookie.replace(
+    /(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+  searchUser = await Result.findOne({
+    email: userEmail,
+    test_id: req.params.num,
+  }).exec();
   surveysPath = path.join(__dirname, `survey${req.params.num}.html`);
-  if (isAvailable[req.params.num - 1] && !(searchUser)) {
+  if (isAvailable[req.params.num - 1] && !searchUser) {
     res.sendFile(surveysPath);
-  }
-  else {
+  } else {
     res.redirect(`/categories/category${req.params.id}`);
   }
 });
 
-app.get('/education', async (req, res) => {
+app.get("/education", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  educationPath = path.join(__dirname, '../education/education.ejs');
-    res.render(educationPath);
+  educationPath = path.join(__dirname, "../education/education.ejs");
+  res.render(educationPath);
 });
 
-app.get('/excursion', async (req, res) => {
+app.get("/excursion", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  excursionPath = path.join(__dirname, '../excursion/excursion.ejs');
-    res.render(excursionPath);
+  excursionPath = path.join(__dirname, "../excursion/excursion.ejs");
+  res.render(excursionPath);
 });
 
-app.get('/excursion/:excursion', async (req, res) => {
+app.get("/excursion/:excursion", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  excursionPath = path.join(__dirname, `../excursions/${req.params.excursion}/${req.params.excursion}.ejs`);
+  excursionPath = path.join(
+    __dirname,
+    `../excursions/${req.params.excursion}/${req.params.excursion}.ejs`
+  );
   res.render(excursionPath);
   //res.render(categoriesPath, {isAvailable});
 });
 
-app.get('/excursion/:excursion/:category', async (req, res) => {
+app.get("/excursion/:excursion/:category", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  excurisonPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/${req.params.category}.ejs`);
+  excurisonPath = path.join(
+    __dirname,
+    `../excursions/${req.params.excursion}/categories/${req.params.category}.ejs`
+  );
   //console.log(excursionPath);
   res.render(excurisonPath);
 });
 
-app.get('/excursion/:excursion/:category/test:id', async (req, res) => {
+app.get("/excursion/:excursion/:category/test:id", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  console.log("HELLOOOOOO!!!!");
-  testPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/${req.params.category}/test${req.params.id}.html`);
+  testPath = path.join(
+    __dirname,
+    `../excursions/${req.params.excursion}/categories/${req.params.category}/test${req.params.id}.html`
+  );
   res.sendFile(testPath);
   //res.render(categoriesPath, {isAvailable});
 });
 
-app.get('/excursion/:excursion/:category/results', (req, res) => {
-  resultsPath = path.join(__dirname, `../excursions/${req.params.excursion}/categories/results.html`);
+app.get("/excursion/:excursion/:category/results", (req, res) => {
+  resultsPath = path.join(
+    __dirname,
+    `../excursions/${req.params.excursion}/categories/results.html`
+  );
   res.sendFile(resultsPath);
 });
 
-app.get('/games', async(req, res) => {
+app.get("/polls", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  gamesPath = path.join(__dirname, '../games/games.ejs');
+  pollPath = path.join(__dirname, "../polls/polls.ejs");
+  res.render(pollPath);
+});
+
+app.get("/polls/poll:id", async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect("/login");
+  }
+  pollPath = path.join(__dirname, `../polls/poll${req.params.id}.html`);
+  res.sendFile(pollPath);
+});
+
+app.get("/games", async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect("/login");
+  }
+  gamesPath = path.join(__dirname, "../games/games.ejs");
   res.render(gamesPath);
 });
 
-app.get('/games/:id', async (req, res) => {
+app.get("/games/:id", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
   gamePath = path.join(__dirname, `../${req.params.id}.html`);
   //res.render(categoriesPath, {isAvailable});
@@ -332,24 +455,23 @@ app.get('/games/:id', async (req, res) => {
   //res.render(gamePath);
 });
 
-app.get('/account-data/:email', async (req, res) => {
+app.get("/account-data/:email", async (req, res) => {
   if (!req.headers.cookie) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
-  searchUser = await User.findOne({ email: req.params.email}).exec();
+  searchUser = await User.findOne({ email: req.params.email }).exec();
   //console.log(searchUser);
   res.send(searchUser);
-})
+});
 
-app.get('/setting', async (req, res) => {
+app.get("/setting", async (req, res) => {
   const cookieValue = req.cookies.email;
-  const currentUser = await User.findOne({ email: cookieValue }).exec()
+  const currentUser = await User.findOne({ email: cookieValue }).exec();
   if (currentUser) {
     if (currentUser.isAdmin) {
-      surveysPath = path.join(__dirname, '../setting.html');
+      surveysPath = path.join(__dirname, "../setting.html");
       res.sendFile(surveysPath);
-    }
-    else {
+    } else {
       res.redirect("/login");
     }
   }
@@ -361,42 +483,106 @@ app.get('/setting', async (req, res) => {
   // }
 });
 
-// 
-app.get('/login', (req, res) => {
-  login2Path = path.join(__dirname, '../login.html');
+//
+app.get("/login", (req, res) => {
+  login2Path = path.join(__dirname, "../login.html");
   res.sendFile(login2Path);
 });
 
-app.get('/register', (req, res) => {
-  login2Path = path.join(__dirname, '../register.html');
+app.get("/register", (req, res) => {
+  login2Path = path.join(__dirname, "../register.html");
   res.sendFile(login2Path);
 });
 
-app.get('/user-game-results', async(req, res) => {
+app.get("/user-game-results", async (req, res) => {
   const gameResults = await GameResult.find().exec();
   const email = req.cookies.email;
   const userGameResults = [];
-  gameResults.forEach(gameResult => {
-    if(gameResult.email === email){
+  gameResults.forEach((gameResult) => {
+    if (gameResult.email === email) {
       userGameResults.push(gameResult);
     }
   });
   res.send(userGameResults);
 });
 
-app.get('/download-excel', async (req, res) => {
+app.get("/download-poll-results", async (req, res) => {
   // Создание книги Excel и добавление данных
   const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Sheet 1');
+  const worksheet = workbook.addWorksheet("Sheet 1");
   worksheet.columns = [
-    { header: 'Почта', key: 'email' },
-    { header: 'Имя пользователя', key: 'username' },
-    { header: 'Категория', key: 'category'},
-    { header: 'Номер теста', key: 'test_id' },
-    { header: 'Количество правильных ответов', key: 'correct' },
-    { header: 'Всего отвечено', key: 'no_of_questions' },
-    { header: 'Всего вопросов', key: 'total' },
-    { header: 'Время выполнения в секундах', key: 'time' },
+    { header: "", key: "col1" },
+    { header: "", key: "col2" },
+  ];
+
+  const users = await User.find().exec();
+  const results = await PollResult.find().exec();
+  console.log(results);
+  let i = 1;
+  users.forEach((user) => {
+    results.forEach((result) => {
+      if (result.email === user.email) {
+        worksheet.getRow(i).values = {
+          col1: `${user.email}`,
+          col2: `${user.username}`,
+        };
+        ++i;
+        result.poll.forEach((question) => {
+          worksheet.getRow(i).values = {
+            col1: `${question.title}`,
+            col2: `${question.displayValue}`,
+          }
+          ++i
+        });
+        ++i;
+      }
+    });
+  });
+
+  // Установка HTTP-заголовков для скачивания файла
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Disposition", "attachment; filename=results.xlsx");
+
+  //worksheet.autoFitColumns();
+  worksheet.columns.forEach(function (column, i) {
+    let maxLength = 0;
+    column["eachCell"]({ includeEmpty: true }, function (cell) {
+      var columnLength = cell.value ? cell.value.toString().length + 2 : 10;
+      if (columnLength > maxLength) {
+        maxLength = columnLength;
+      }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength;
+  });
+
+  // Сохранение книги в поток ответа
+  workbook.xlsx
+    .write(res)
+    .then(() => {
+      res.end();
+    })
+    .catch((error) => {
+      console.log("Ошибка при сохранении данных:", error);
+      res.status(500).send("Произошла ошибка");
+    });
+});
+
+app.get("/download-excel", async (req, res) => {
+  // Создание книги Excel и добавление данных
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Sheet 1");
+  worksheet.columns = [
+    { header: "Почта", key: "email" },
+    { header: "Имя пользователя", key: "username" },
+    { header: "Категория", key: "category" },
+    { header: "Номер теста", key: "test_id" },
+    { header: "Количество правильных ответов", key: "correct" },
+    { header: "Всего отвечено", key: "no_of_questions" },
+    { header: "Всего вопросов", key: "total" },
+    { header: "Время выполнения в секундах", key: "time" },
   ];
 
   const users = await User.find().exec();
@@ -417,7 +603,7 @@ app.get('/download-excel', async (req, res) => {
           no_of_questions: `${JSON.parse(result.result)["no_of_questions"]}`,
           total: `${JSON.parse(result.result)["total"]}`,
           time: `${result["time"]}`,
-        }
+        };
         correct += JSON.parse(result.result)["correct_answers"];
         no_of_questions += JSON.parse(result.result)["no_of_questions"];
         total += JSON.parse(result.result)["total"];
@@ -427,8 +613,11 @@ app.get('/download-excel', async (req, res) => {
   });
 
   // Установка HTTP-заголовков для скачивания файла
-  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.setHeader('Content-Disposition', 'attachment; filename=results.xlsx');
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Disposition", "attachment; filename=results.xlsx");
 
   //worksheet.autoFitColumns();
   worksheet.columns.forEach(function (column, i) {
@@ -443,26 +632,27 @@ app.get('/download-excel', async (req, res) => {
   });
 
   // Сохранение книги в поток ответа
-  workbook.xlsx.write(res)
+  workbook.xlsx
+    .write(res)
     .then(() => {
       res.end();
     })
     .catch((error) => {
-      console.log('Ошибка при сохранении данных:', error);
-      res.status(500).send('Произошла ошибка');
+      console.log("Ошибка при сохранении данных:", error);
+      res.status(500).send("Произошла ошибка");
     });
 });
 
-app.get('/user-results', (req, res) => {
-  resultsPath = path.join(__dirname, '../results.html');
+app.get("/user-results", (req, res) => {
+  resultsPath = path.join(__dirname, "../results.html");
   res.sendFile(resultsPath);
 });
 
-app.get('/is-available', async (req, res) => {
+app.get("/is-available", async (req, res) => {
   res.send(isAvailable);
 });
 
-app.get('/opening-time', (req, res) => {
+app.get("/opening-time", (req, res) => {
   res.send(openingTime);
 });
 
@@ -485,34 +675,30 @@ app.listen(PORT, () => {
   const currentPath = path.dirname(__filename);
 });
 
-
-
 //app.get('/surveys/', (req, res) => {
-  //   const cookieValue = req.cookies.email;
-  
-  //   if (cookieValue) {
-  //     //surveysPath = path.join(__dirname, '../surveys/.ejs');
-  //     surveysPath = path.join(__dirname, '../surveys/surveysPage1');
-  //     //res.sendFile(surveysPath)
-  //     res.render(surveysPath, { isAvailable });
-  //   } else {
-  //     res.redirect("/login");
-  //   }
-  // });
-  
-  // app.get('/surveys/survey:id', async (req, res) => {
-  //   if (!req.headers.cookie) {
-  //     return res.redirect('/login');
-  //   }
-  //   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  //   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
-  //   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
-  //   if (isAvailable[req.params.id - 1] && !(searchUser)) {
-  //     res.sendFile(surveysPath);
-  //   }
-  //   else {
-  //     res.redirect("/surveys/");
-  //   }
-  // })
-  
-  
+//   const cookieValue = req.cookies.email;
+
+//   if (cookieValue) {
+//     //surveysPath = path.join(__dirname, '../surveys/.ejs');
+//     surveysPath = path.join(__dirname, '../surveys/surveysPage1');
+//     //res.sendFile(surveysPath)
+//     res.render(surveysPath, { isAvailable });
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
+
+// app.get('/surveys/survey:id', async (req, res) => {
+//   if (!req.headers.cookie) {
+//     return res.redirect('/login');
+//   }
+//   const userEmail = req.headers.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+//   searchUser = await Result.findOne({ email: userEmail, test_id: req.params.id }).exec();
+//   surveysPath = path.join(__dirname, `survey${req.params.id}.html`);
+//   if (isAvailable[req.params.id - 1] && !(searchUser)) {
+//     res.sendFile(surveysPath);
+//   }
+//   else {
+//     res.redirect("/surveys/");
+//   }
+// })

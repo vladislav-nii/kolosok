@@ -1,6 +1,7 @@
 const educationButton = document.getElementById("education_btn");
 const excursionButton = document.getElementById("excursion_btn");
 const agrotestsButton = document.getElementById("agrotests_btn");
+const pollsButton = document.getElementById("polls_btn");
 const gamesButton = document.getElementById("games_btn");
 const statsButton = document.getElementById("stats_btn");
 const settingButton = document.getElementById("settings_btn");
@@ -18,6 +19,10 @@ excursionButton.addEventListener("click", (ev) => {
 
 agrotestsButton.addEventListener("click", (ev) => {
     location.assign("https://kolosok.onrender.com/categories/");
+});
+
+pollsButton.addEventListener("click", (ev) => {
+    location.assign("https://kolosok.onrender.com/polls");
 });
 
 gamesButton.addEventListener("click", (ev) => {

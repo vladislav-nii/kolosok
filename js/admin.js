@@ -6,6 +6,7 @@ const userList = document.getElementById('user-list');
 const allowTest1Btn = document.getElementById('start-test1');
 const closeTest1Btn = document.getElementById('close-test1');
 const getResultsBtn = document.getElementById('get-results');
+const getPollResultsBtn = document.getElementById('get-poll-results');
 const resultList = document.getElementById('result-list');
 
 const surveyButton = document.getElementById('survey1');
@@ -74,6 +75,10 @@ fetchUsersBtn.addEventListener('click', async () => {
 
 getResultsBtn.addEventListener('click', async () => {
   location.assign("https://kolosok.onrender.com/download-excel");
+})
+
+getPollResultsBtn.addEventListener('click', async() => {
+  location.assign("https://kolosok.onrender.com/download-poll-results");
 })
 
 async function createStatusList() {
