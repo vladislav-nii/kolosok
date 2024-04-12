@@ -10,32 +10,32 @@ const logoutButton = document.getElementById("logout_btn");
 
 
 educationButton.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/education/");
+    location.assign("http://127.0.0.1:5500/education/");
 });
 
 excursionButton.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/excursion/");
+    location.assign("http://127.0.0.1:5500/excursion/");
 });
 
 agrotestsButton.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/categories/");
+    location.assign("http://127.0.0.1:5500/categories/");
 });
 
 pollsButton.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/polls");
+    location.assign("http://127.0.0.1:5500/polls");
 });
 
 gamesButton.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/games");
+    location.assign("http://127.0.0.1:5500/games");
 });
 
 aboutButton.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/about");
+    location.assign("http://127.0.0.1:5500/about");
 });
 
 logoutButton.addEventListener("click", (ev) => {
     document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-    location.assign("https://kolosok.onrender.com/login");
+    location.assign("http://127.0.0.1:5500/login");
 });
 
 async function applyStyle() {

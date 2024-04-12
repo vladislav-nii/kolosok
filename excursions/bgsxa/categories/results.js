@@ -6,7 +6,7 @@ const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^
 
 
 async function onStart() {
-    const responce = await fetch('https://kolosok.onrender.com/results/');
+    const responce = await fetch('http://127.0.0.1:5500/results/');
     const results = await responce.json();
 
     results.forEach((result) => {
@@ -28,7 +28,7 @@ onStart();
 backButton.addEventListener('click', () => {
     
     if(!bgsxa_category){
-        location.assign(`https://kolosok.onrender.com/excursion/bgsxa/`);
+        location.assign(`http://127.0.0.1:5500/excursion/bgsxa/`);
     }
-    location.assign(`https://kolosok.onrender.com/excursion/bgsxa/${bgsxa_category}`);
+    location.assign(`http://127.0.0.1:5500/excursion/bgsxa/${bgsxa_category}`);
 });
