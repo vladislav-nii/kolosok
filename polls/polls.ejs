@@ -15,15 +15,28 @@
     </div>
     <div class="grid-container">
         <div class="grid-item bgsxacat">
-            <button type="button" id="survey1" onclick="test(1)">Опрос</button>
+            <button type="button" id="survey1" onclick="test(1)">Агроклассы</button>
             <label>12:30</label>
         </div>
         <div class="grid-item bgsxacat">
-            <button type="button" id="survey2" onclick="test(2)">Опрос 2</button>
+            <button type="button" id="survey2" onclick="test(2)">Барьеры цифровизации</button>
+            <label>12:30</label>
+        </div>
+        <div class="grid-item bgsxacat">
+            <button type="button" id="survey3" onclick="test(3)">Развитие цифровизации</button>
             <label>12:30</label>
         </div>
     </div>
     
+    <script>
+        const button = document.getElementById("survey1");
+        button.style.backgroundImage = 'url(../img/lock3.png)';
+        button.style.backgroundRepeat = 'no-repeat';
+        button.style.backgroundPosition = 'center center';
+        button.style.backgroundAttachments = 'fixed';
+        button.style.backgroundSize = 'contain';
+        button.style.color = 'rgba(66, 66, 66, 0.4)';
+    </script>
     <script src="../../../../polls/polls.js"></script>
 </body>
 </html>

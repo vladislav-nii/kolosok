@@ -447,6 +447,9 @@ app.get("/polls/poll:id", async (req, res) => {
   // if (!req.headers.cookie) {
   //   return res.redirect("/login");
   // }
+  if(req.params.id === 1){
+    res.redirect("kolosok.onrender.com/polls");
+  }
   pollPath = path.join(__dirname, `../polls/poll${req.params.id}.html`);
   res.sendFile(pollPath);
 });
