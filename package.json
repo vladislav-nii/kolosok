@@ -31,6 +31,7 @@
     "survey-angular": "^1.9.104",
     "survey-core": "^1.9.104",
     "surveyjs": "^4.0.2",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "xlsx-chart": "^0.4.3"
   }
 }

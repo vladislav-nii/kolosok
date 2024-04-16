@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const mongodb = require('mongodb');
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 5500;
 const cors = require("cors");
@@ -9,6 +10,8 @@ const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
 const fs = require("fs");
 const path = require("path");
+var XLSXChart = require ("xlsx-chart");
+
 var isLoggined = false;
 var isAvailable = [
   true,
@@ -137,10 +140,19 @@ const gameResultSchema = new mongoose.Schema({
 });
 
 const pollResultSchema = new mongoose.Schema({
+  name: String,
   email: String,
-  poll: [new mongoose.Schema({
+  questions: [new mongoose.Schema({
     title: String,
+    name: String,
+    value: [String],
     displayValue: String,
+    data: [new mongoose.Schema({
+      name: String,
+      title: String,
+      value: String,
+      displayValue: String,
+    })]
   })]
 });
 
@@ -221,15 +233,18 @@ app.post("/result", async (req, res) => {
 
 app.post("/poll-result", async (req, res) => {
   console.log("POLL RESULT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  console.log(req.body);
+  //console.log(req.body);
+  // req.body.questions.forEach(question => {
+  //   console.log(question.data);
+  // });
   var pollResult = req.body;
-  for (var i = 0; i < pollResult.poll.length; ++i){
-    delete pollResult.poll[i].name;
-    delete pollResult.poll[i].value;
-    delete pollResult.poll[i].isNode;
-    delete pollResult.poll[i].data;
+  for (var i = 0; i < pollResult.questions.length; ++i){
+    //delete pollResult.poll[i].name;
+    //delete pollResult.poll[i].value;
+    delete pollResult.questions[i].isNode;
+    //delete pollResult.questions[i].data;
   }
-  console.log(pollResult);
+  //console.log(pollResult);
   const result = new PollResult(pollResult);
   try {
     const saveResulst = await result.save();
@@ -421,17 +436,17 @@ app.get("/excursion/:excursion/:category/results", (req, res) => {
 });
 
 app.get("/polls", async (req, res) => {
-  if (!req.headers.cookie) {
-    return res.redirect("/login");
-  }
+  // if (!req.headers.cookie) {
+  //   return res.redirect("/login");
+  // }
   pollPath = path.join(__dirname, "../polls/polls.ejs");
   res.render(pollPath);
 });
 
 app.get("/polls/poll:id", async (req, res) => {
-  if (!req.headers.cookie) {
-    return res.redirect("/login");
-  }
+  // if (!req.headers.cookie) {
+  //   return res.redirect("/login");
+  // }
   pollPath = path.join(__dirname, `../polls/poll${req.params.id}.html`);
   res.sendFile(pollPath);
 });
@@ -507,67 +522,186 @@ app.get("/user-game-results", async (req, res) => {
 });
 
 app.get("/download-poll-results", async (req, res) => {
+
+  const agg = [ 
+    { 
+      '$unwind': { 
+        'path': '$questions' 
+      } 
+    }, { 
+      '$unwind': { 
+        'path': '$questions.data' 
+      } 
+    }, { 
+      '$group': { 
+        '_id': { 
+          'name': '$name',  
+          'question_title': '$questions.title',  
+          'value': '$questions.data.value' 
+        },  
+        'count': { 
+          '$count': {} 
+        } 
+      } 
+    }, { 
+      '$group': { 
+        '_id': { 
+          'name': '$_id.name',  
+          'question_title': '$_id.question_title' 
+        },  
+        'answers': { 
+          '$push': { 
+            'item': '$_id.value',  
+            'count': '$count' 
+          } 
+        } 
+      } 
+    }, { 
+      '$group': { 
+        '_id': '$_id.name',  
+        'questions': { 
+          '$push': { 
+            'title': '$_id.question_title',  
+            'answers': '$answers' 
+          } 
+        } 
+      } 
+    } 
+  ];
+  
+  const client = await mongodb.MongoClient.connect(
+    "mongodb+srv://NIIinAPK:nii123@survey.yvbwk8s.mongodb.net/?retryWrites=true&w=majority",
+  );
+  const coll = client.db('test').collection('poll_results');
+  const cursor = coll.aggregate(agg);
+  const results = await cursor.toArray();
+  await client.close();
+
   // Создание книги Excel и добавление данных
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Sheet 1");
   worksheet.columns = [
     { header: "", key: "col1" },
     { header: "", key: "col2" },
+    { header: "", key: "col3" },
+    { header: "", key: "col4" },
   ];
 
-  const users = await User.find().exec();
-  const results = await PollResult.find().exec();
-  console.log(results);
+  var opts = {charts: []};
   let i = 1;
-  users.forEach((user) => {
-    results.forEach((result) => {
-      if (result.email === user.email) {
+  results.forEach((result) => {
+    worksheet.getRow(i).values = {
+      col1: `${result._id}`,
+    };
+    ++i;
+    result.questions.forEach(question => {
+      const fields = [];
+      const values = [];
+      worksheet.getRow(i).values = {
+        col2: `${question.title}`,
+      };
+      i+=2;
+      question.answers.forEach(answer => {
+        fields.push(answer.item);
+        values.push(Number.parseInt(answer.count));
         worksheet.getRow(i).values = {
-          col1: `${user.email}`,
-          col2: `${user.username}`,
+          col2: `${answer.item}`,
+          col3: `${answer.count}`
         };
         ++i;
-        result.poll.forEach((question) => {
-          worksheet.getRow(i).values = {
-            col1: `${question.title}`,
-            col2: `${question.displayValue}`,
-          }
-          ++i
-        });
-        ++i;
+      });
+      ++i;
+      // values.reduce(function(a, b){
+      //   return a + b;
+      // }, 0);
+      var sum = 0;
+      values.forEach(value => {
+        sum+=value;
+      });
+      for(var j = 0; j < values.length; ++j){
+        values[j] = Math.round((values[j]/sum)*100);
       }
+      console.log(__dirname);
+      console.log(__dirname + "/mult.xlsx")
+      opts.charts.push({
+        chart: "bar",
+        templatePath: __dirname + "/mult.xlsx",
+        titles: [
+          "%"
+        ],
+        fields: fields,
+        data: {
+          "%": Object.assign({}, ...fields.map((n, i) => ({ [n]: values[i] }))),
+        },
+        chartTitle: `${question.title}`
+      });
     });
+    ++i;
   });
+
+  var xlsxChart = new XLSXChart ();
+  xlsxChart.generate (opts, function (err, data) {
+    res.set ({
+      "Content-Type": "application/vnd.ms-excel",
+      "Content-Disposition": "attachment; filename=char.xlsx",
+      "Content-Length": data.length
+    });
+    res.status (200).send (data);
+  });
+
+  //const users = await User.find().exec();
+  //const results = await PollResult.find().exec();
+  // console.log(results);
+  // let i = 1;
+  // users.forEach((user) => {
+  //   results.forEach((result) => {
+  //     if (result.email === user.email) {
+  //       worksheet.getRow(i).values = {
+  //         col1: `${user.email}`,
+  //         col2: `${user.username}`,
+  //       };
+  //       ++i;
+  //       result.poll.forEach((question) => {
+  //         worksheet.getRow(i).values = {
+  //           col1: `${question.title}`,
+  //           col2: `${question.displayValue}`,
+  //         }
+  //         ++i
+  //       });
+  //       ++i;
+  //     }
+  //   });
+  // });
 
   // Установка HTTP-заголовков для скачивания файла
-  res.setHeader(
-    "Content-Type",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  );
-  res.setHeader("Content-Disposition", "attachment; filename=results.xlsx");
+  // res.setHeader(
+  //   "Content-Type",
+  //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  // );
+  // res.setHeader("Content-Disposition", "attachment; filename=results.xlsx");
 
   //worksheet.autoFitColumns();
-  worksheet.columns.forEach(function (column, i) {
-    let maxLength = 0;
-    column["eachCell"]({ includeEmpty: true }, function (cell) {
-      var columnLength = cell.value ? cell.value.toString().length + 2 : 10;
-      if (columnLength > maxLength) {
-        maxLength = columnLength;
-      }
-    });
-    column.width = maxLength < 10 ? 10 : maxLength;
-  });
+  // worksheet.columns.forEach(function (column, i) {
+  //   let maxLength = 0;
+  //   column["eachCell"]({ includeEmpty: true }, function (cell) {
+  //     var columnLength = cell.value ? cell.value.toString().length + 2 : 10;
+  //     if (columnLength > maxLength) {
+  //       maxLength = columnLength;
+  //     }
+  //   });
+  //   column.width = maxLength < 10 ? 10 : maxLength;
+  // });
 
-  // Сохранение книги в поток ответа
-  workbook.xlsx
-    .write(res)
-    .then(() => {
-      res.end();
-    })
-    .catch((error) => {
-      console.log("Ошибка при сохранении данных:", error);
-      res.status(500).send("Произошла ошибка");
-    });
+  // // Сохранение книги в поток ответа
+  // workbook.xlsx
+  //   .write(res)
+  //   .then(() => {
+  //     res.end();
+  //   })
+  //   .catch((error) => {
+  //     console.log("Ошибка при сохранении данных:", error);
+  //     res.status(500).send("Произошла ошибка");
+  //   });
 });
 
 app.get("/download-excel", async (req, res) => {
