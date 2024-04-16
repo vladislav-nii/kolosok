@@ -51,7 +51,7 @@ var bgsxa_category = document.cookie.replace(
     //console.log(survey.getPlainData());
     const name = "Опрос 3"
     const result = JSON.stringify(getResult(survey));
-    const response = await fetch("http://127.0.0.1:5500/poll-result", {
+    const response = await fetch("https://kolosok.onrender.com/poll-result", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, questions: survey.getPlainData() }),

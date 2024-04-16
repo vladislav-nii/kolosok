@@ -20,8 +20,8 @@ const freeLessonsBtn = document.getElementById("btn-free");
 
 //   if (username != '' || password != '') {
 //     async function getData() {
-//        const response = await fetch('http://127.0.0.1:5500/login', {
-//         //const response = await fetch('http://127.0.0.1:5500/login', {
+//        const response = await fetch('https://kolosok.onrender.com/login', {
+//         //const response = await fetch('https://kolosok.onrender.com/login', {
 
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -68,8 +68,8 @@ registerForm.addEventListener('submit', async (e) => {
   const faculty = document.getElementById('register-faculty').value;
   const group = document.getElementById('register-group').value;
   const isAdmin = false;
-  const response = await fetch('http://127.0.0.1:5500/register', {
- // const response = await fetch('http://127.0.0.1:5500/register', {
+  const response = await fetch('https://kolosok.onrender.com/register', {
+ // const response = await fetch('https://kolosok.onrender.com/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, isAdmin, email, name, surname, patronymic, birthDate, stateEducationalInstitution, faculty, group }),
@@ -83,7 +83,7 @@ registerForm.addEventListener('submit', async (e) => {
       adminSetting = document.getElementById("admin-setting");
       adminSetting.style.display = 'block';
     } else {
-      location.assign("http://127.0.0.1:5500/main");
+      location.assign("https://kolosok.onrender.com/main");
     }
 
     if (data.email) {
