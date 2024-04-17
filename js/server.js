@@ -448,7 +448,7 @@ app.get("/polls/poll:id", async (req, res) => {
   //   return res.redirect("/login");
   // }
   if(req.params.id === '1'){
-    res.redirect("http://127.0.0.1:5500/polls");
+    res.redirect("https://kolosok.onrender.com/polls");
   }
   pollPath = path.join(__dirname, `../polls/poll${req.params.id}.html`);
   res.sendFile(pollPath);

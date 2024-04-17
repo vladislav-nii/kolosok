@@ -12,7 +12,7 @@ const cookieEmail = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*)
 
 
 async function fillFields(){
-    const response = await fetch(`http://127.0.0.1:5500/account-data/${cookieEmail}`);
+    const response = await fetch(`https://kolosok.onrender.com/account-data/${cookieEmail}`);
     response.json().then(result => {
         name.innerText = result.name;
         surname.innerText = result.surname;
