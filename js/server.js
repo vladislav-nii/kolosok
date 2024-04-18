@@ -622,7 +622,7 @@ app.get("/download-poll-results", async (req, res) => {
         sum+=value;
       });
       for(var j = 0; j < values.length; ++j){
-        values[j] = Math.round((values[j]/sum)*100);
+        values[j] = ((values[j]/sum)*100).toFixed(2);
       }
       console.log(__dirname);
       console.log(__dirname + "/mult.xlsx")
