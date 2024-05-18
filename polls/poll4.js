@@ -285,7 +285,7 @@ var bgsxa_category = document.cookie.replace(
          }
         ],
         "maxSelectedChoices": 2,
-        "minSelectedChoices": 2
+        "minSelectedChoices": 1
        },
        {
         "type": "radiogroup",
