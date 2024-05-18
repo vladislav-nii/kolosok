@@ -121,7 +121,6 @@ var bgsxa_category = document.cookie.replace(
   
   survey.render("surveyContainer");
   survey.onComplete.add(async (e) => {
-    const test_id = 1;
   
     e.timestamps["finished"] = Date.now();
     e.timestamps["dif"] =
@@ -137,11 +136,15 @@ var bgsxa_category = document.cookie.replace(
     //console.log(survey.getPlainData());
     const name = "Опрос 3"
     const result = JSON.stringify(getResult(survey));
-    const response = await fetch("https://kolosok.onrender.com/poll-result", {
+    console.log(JSON.stringify({ name, email, questions: survey.getPlainData() }));
+    const response = await fetch("https://kolosok.onrender.com/poll-result/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, questions: survey.getPlainData() }),
       // body: JSON.stringify({ email, result, time,  test_id, "category": bgsxa_category}),
     });
+    response.ok;
+    const obj = await response.json();
+    alert(obj);
   });
   

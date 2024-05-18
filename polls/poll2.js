@@ -75,7 +75,6 @@ var bgsxa_category = document.cookie.replace(
   
   survey.render("surveyContainer");
   survey.onComplete.add(async (e) => {
-    const test_id = 1;
   
     e.timestamps["finished"] = Date.now();
     e.timestamps["dif"] =

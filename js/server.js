@@ -233,7 +233,7 @@ app.post("/result", async (req, res) => {
 
 app.post("/poll-result", async (req, res) => {
   console.log("POLL RESULT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  //console.log(req.body);
+  console.log(JSON.stringify(req.body));
   // req.body.questions.forEach(question => {
   //   console.log(question.data);
   // });
