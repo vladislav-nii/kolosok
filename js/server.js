@@ -540,7 +540,7 @@ app.get("/download-poll-results", async (req, res) => {
         '_id': { 
           'name': '$name',  
           'question_title': '$questions.title',  
-          'value': '$questions.data.value' 
+          'value': '$questions.data.displayValue' 
         },  
         'count': { 
           '$count': {} 
@@ -600,6 +600,7 @@ app.get("/download-poll-results", async (req, res) => {
     result.questions.forEach(question => {
       const fields = [];
       const values = [];
+      const values2 = [];
       worksheet.getRow(i).values = {
         col2: `${question.title}`,
       };
@@ -622,6 +623,7 @@ app.get("/download-poll-results", async (req, res) => {
         sum+=value;
       });
       for(var j = 0; j < values.length; ++j){
+        values2.push(values[j]);
         values[j] = ((values[j]/sum)*100).toFixed(2);
       }
       console.log(__dirname);
@@ -630,11 +632,13 @@ app.get("/download-poll-results", async (req, res) => {
         chart: "bar",
         templatePath: __dirname + "/mult.xlsx",
         titles: [
-          "%"
+          "%",
+          //"количество"
         ],
         fields: fields,
         data: {
           "%": Object.assign({}, ...fields.map((n, i) => ({ [n]: values[i] }))),
+          //"количество": Object.assign({}, ...fields.map((n, i) => ({ [n]: values2[i] }))),
         },
         chartTitle: `${question.title}`
       });

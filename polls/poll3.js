@@ -149,8 +149,5 @@ var bgsxa_category = document.cookie.replace(
       body: JSON.stringify({ name, email, questions: survey.getPlainData() }),
       // body: JSON.stringify({ email, result, time,  test_id, "category": bgsxa_category}),
     });
-    response.ok;
-    const obj = await response.json();
-    alert(obj);
   });
   
