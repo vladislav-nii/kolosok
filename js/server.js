@@ -113,6 +113,8 @@ mongoose.connect(
 
 const userSchema = new mongoose.Schema({
   //username: String,
+  id_card: String,
+  creation_date: Date,
   password: String,
   isAdmin: Boolean,
   email: String,
@@ -170,8 +172,25 @@ app.get("/", function (request, response) {
   // отправляем ответ
   response.send("<h2>Привет Express!</h2>");
 });
+
+app.get("/lastIdCard", async (req, res) => {
+  const lastUser = await User.find().exec();
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  console.log(lastUser);
+  response.send(lastUser);
+  //res.send("");
+});
 // Регистрация
 app.post("/register", async (req, res) => {
+  
+  const lastIdCard = (await User.find().sort({_id:-1}).limit(1)).at(0).id_card;
+  if(lastIdCard){
+    const new_str  = (parseInt(lastIdCard.substring(2)) + 1).toString();
+    req.body.id_card = "fn" + new_str.padStart(3, "0");
+  }
+  else{
+    req.body.id_card = "fn001";
+  }
   const user = new User(req.body);
   const users = await User.find().exec();
   const reset = users.find((item) => item.email === user.email);

@@ -68,11 +68,13 @@ registerForm.addEventListener('submit', async (e) => {
   //const faculty = document.getElementById('register-faculty').value;
   //const group = document.getElementById('register-group').value;
   const isAdmin = false;
+
+  const creation_date = new Date();
   const response = await fetch('/register', {
  // const response = await fetch('/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password, isAdmin, email, name, surname, birthDate}),
+    body: JSON.stringify({ password, isAdmin, email, name, surname, birthDate, creation_date}),
   });
   const data = await response.json();
   if (data.msg) {
