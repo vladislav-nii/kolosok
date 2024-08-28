@@ -8,8 +8,8 @@ const loginButton = document.getElementById("loginButton");
 
 //   if (username != '' || password != '') {
 //     async function getData() {
-//        const response = await fetch('https://kolosok.onrender.com/login', {
-//         //const response = await fetch('https://kolosok.onrender.com/login', {
+//        const response = await fetch('/login', {
+//         //const response = await fetch('/login', {
 
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -46,8 +46,8 @@ loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
-  //const response = await fetch('https://kolosok.onrender.com/login', {
-  const response = await fetch('https://kolosok.onrender.com/login', {
+  //const response = await fetch('/login', {
+  const response = await fetch('/login', {
 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -59,10 +59,10 @@ loginForm.addEventListener('submit', async (e) => {
     document.cookie = "password=" + (data.password) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     if (data.isAdmin) {
       alert('Hello');
-      location.assign("https://kolosok.onrender.com/setting");
+      location.assign("/setting");
     }
     else {
-      location.assign("https://kolosok.onrender.com/main");
+      location.assign("/main");
     }
 
   } else {

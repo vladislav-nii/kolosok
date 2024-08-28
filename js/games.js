@@ -2,14 +2,14 @@ const backBtn = document.getElementById("back");
 const gameButtons = document.getElementsByClassName("grid-item");
 
 backBtn.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/main");
+    location.assign("/main");
 })
 
 var map = new Map();
 map.set(1, "harvest")
 
 async function choosingCategory(number) {
-    window.location.href = `https://kolosok.onrender.com/games/${map.get(number)}`;
+    window.location.href = `/games/${map.get(number)}`;
     document.cookie = "category_id=" + (number) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
 }
 

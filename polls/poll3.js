@@ -93,7 +93,7 @@ var bgsxa_category = document.cookie.replace(
      }
     ],
     "showTitle": false,
-    "navigateToUrl": "https://kolosok.onrender.com/polls",
+    "navigateToUrl": "/polls",
     "widthMode": "responsive"
    };
   
@@ -143,7 +143,7 @@ var bgsxa_category = document.cookie.replace(
     const name = "Опрос 3"
     const result = JSON.stringify(getResult(survey));
     console.log(JSON.stringify({ name, email, questions: survey.getPlainData() }));
-    const response = await fetch("https://kolosok.onrender.com/poll-result/", {
+    const response = await fetch("/poll-result/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, questions: survey.getPlainData() }),

@@ -249,7 +249,7 @@ var json ={
  ], 
  "maxTimeToFinish": 300,
     "showTimerPanel": "top",
-    "navigateToUrl": `https://kolosok.onrender.com/categories/category${category_id}`,
+    "navigateToUrl": `/categories/category${category_id}`,
     "widthMode": "responsive"
 };
 
@@ -299,7 +299,7 @@ survey.onComplete.add(async (e) => {
     const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     console.log(document.cookie);
     const result = JSON.stringify(getResult(survey));
-    const response = await fetch('https://kolosok.onrender.com/result', {
+    const response = await fetch('/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, result, time,  test_id}),

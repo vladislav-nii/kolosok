@@ -2,12 +2,12 @@
 // import { conductSurvey as conductSurvey2 } from "./question2.js";
 
 const userGameResults = await(
-    await fetch("https://kolosok.onrender.com/user-game-results")
+    await fetch("/user-game-results")
 ).json();
 
 const back = document.getElementById("back");
 back.addEventListener("click", (ev) => {
-    location.assign("https://kolosok.onrender.com/main");
+    location.assign("/main");
 });
 
 const holder = document.getElementById("game-canvas-holder");
@@ -80,7 +80,7 @@ bg.onload = () => {
                 )
             ) {
                 const userGameResultsNow = await (
-                    await fetch("https://kolosok.onrender.com/user-game-results")
+                    await fetch("/user-game-results")
                 ).json();
                 if (userGameResultsNow.length != Number(button.text)) {
                     return;
@@ -118,7 +118,7 @@ bg.onload = () => {
 
                     holder.style.display = "flex";
 
-                    const response = await fetch("https://kolosok.onrender.com/gameResult", {
+                    const response = await fetch("/gameResult", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ email, result, time, game_id, question_id }),
@@ -128,7 +128,7 @@ bg.onload = () => {
                     if (Number(button.text) === buttons.length - 1) {
                         holder.style.display = "none";
                         const results = await (
-                            await fetch("https://kolosok.onrender.com/user-game-results")
+                            await fetch("/user-game-results")
                         ).json();
                         var score = 0;
                         results.forEach((result) => {
@@ -219,7 +219,7 @@ function getResult(survey) {
 async function refresh() {
     //console.log("refreshing...");
     const results = await (
-        await fetch("https://kolosok.onrender.com/user-game-results")
+        await fetch("/user-game-results")
     ).json();
 
     buttons.forEach(async (button) => {
@@ -253,7 +253,7 @@ function toggleVisibility(button) {
 
 async function showResults() {
     const results = await (
-        await fetch("https://kolosok.onrender.com/user-game-results")
+        await fetch("/user-game-results")
     ).json();
     var score = 0;
     results.forEach((result) => {

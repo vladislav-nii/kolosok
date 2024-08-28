@@ -40,6 +40,7 @@ var openingTime = [
 const cookieParser = require("cookie-parser");
 
 const ExcelJS = require("exceljs");
+const { randomUUID } = require("crypto");
 
 const app = express();
 
@@ -102,25 +103,26 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 mongoose.connect(
-  "mongodb+srv://NIIinAPK:nii123@survey.yvbwk8s.mongodb.net/?retryWrites=true&w=majority",
+  "mongodb+srv://stanislavrefor:ZlF0Hq6btsMPK6jm@cluster0.cuite.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    //pkFactory: {createPk: () => new }
   }
 );
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  //username: String,
   password: String,
   isAdmin: Boolean,
   email: String,
   name: String,
   surname: String,
-  patronymic: String,
+  // patronymic: String,
   birthDate: String,
-  stateEducationalInstitution: String,
-  faculty: String,
-  group: String,
+  // stateEducationalInstitution: String,
+  // faculty: String,
+  // group: String,
 });
 
 const resultSchema = new mongoose.Schema({
@@ -448,7 +450,7 @@ app.get("/polls/poll:id", async (req, res) => {
   //   return res.redirect("/login");
   // }
   if(req.params.id === '1'){
-    res.redirect("https://kolosok.onrender.com/polls");
+    res.redirect(`https:///polls`);
   }
   pollPath = path.join(__dirname, `../polls/poll${req.params.id}.html`);
   res.sendFile(pollPath);

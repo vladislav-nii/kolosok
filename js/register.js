@@ -20,8 +20,8 @@ const freeLessonsBtn = document.getElementById("btn-free");
 
 //   if (username != '' || password != '') {
 //     async function getData() {
-//        const response = await fetch('https://kolosok.onrender.com/login', {
-//         //const response = await fetch('https://kolosok.onrender.com/login', {
+//        const response = await fetch('/login', {
+//         //const response = await fetch('/login', {
 
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -58,21 +58,21 @@ registerForm.addEventListener('submit', async (e) => {
 
   if(document.getElementById('checkboxPrivace').checked) {
   const email = document.getElementById('register-email').value;
-  const username = document.getElementById('register-username').value;
+  //const username = document.getElementById('register-username').value;
   const password = document.getElementById('register-password').value;
   const name = document.getElementById('register-name').value;
   const surname = document.getElementById('register-surname').value;
-  const patronymic = document.getElementById('register-patronymic').value;
+  //const patronymic = document.getElementById('register-patronymic').value;
   const birthDate = document.getElementById('register-birthdate').value;
-  const stateEducationalInstitution = document.getElementById('register-state-educational-institution').value;
-  const faculty = document.getElementById('register-faculty').value;
-  const group = document.getElementById('register-group').value;
+  //const stateEducationalInstitution = document.getElementById('register-state-educational-institution').value;
+  //const faculty = document.getElementById('register-faculty').value;
+  //const group = document.getElementById('register-group').value;
   const isAdmin = false;
-  const response = await fetch('https://kolosok.onrender.com/register', {
- // const response = await fetch('https://kolosok.onrender.com/register', {
+  const response = await fetch('/register', {
+ // const response = await fetch('/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password, isAdmin, email, name, surname, patronymic, birthDate, stateEducationalInstitution, faculty, group }),
+    body: JSON.stringify({ password, isAdmin, email, name, surname, birthDate}),
   });
   const data = await response.json();
   if (data.msg) {
@@ -83,7 +83,7 @@ registerForm.addEventListener('submit', async (e) => {
       adminSetting = document.getElementById("admin-setting");
       adminSetting.style.display = 'block';
     } else {
-      location.assign("https://kolosok.onrender.com/main");
+      location.assign("/main");
     }
 
     if (data.email) {

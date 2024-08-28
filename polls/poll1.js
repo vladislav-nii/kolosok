@@ -189,7 +189,7 @@ var json = {
     },
   ],
   showTitle: false,
-  navigateToUrl: "https://kolosok.onrender.com/polls",
+  navigateToUrl: "/polls",
   widthMode: "responsive",
 };
 
@@ -238,7 +238,7 @@ survey.onComplete.add(async (e) => {
   //console.log(survey.getPlainData());
   const name = "Опрос 1";
   const result = JSON.stringify(getResult(survey));
-  const response = await fetch("https://kolosok.onrender.com/poll-result", {
+  const response = await fetch("/poll-result", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, questions: survey.getPlainData() }),

@@ -12,17 +12,17 @@ const cookieEmail = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*)
 
 
 async function fillFields(){
-    const response = await fetch(`https://kolosok.onrender.com/account-data/${cookieEmail}`);
+    const response = await fetch(`/account-data/${cookieEmail}`);
     response.json().then(result => {
         name.innerText = result.name;
         surname.innerText = result.surname;
-        patronymic.innerText = result.patronymic;
+        //patronymic.innerText = result.patronymic;
         birthDate.innerText = result.birthDate;
-        stateEducationalInstitution.innerText = result.stateEducationalInstitution;
-        faculty.innerText = result.faculty;
-        group.innerText = result.group;
+        //stateEducationalInstitution.innerText = result.stateEducationalInstitution;
+        //faculty.innerText = result.faculty;
+        //group.innerText = result.group;
         email.innerText = result.email;
-        username.innerText = result.username;
+        //username.innerText = result.username;
     });
 }
 

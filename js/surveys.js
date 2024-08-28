@@ -19,22 +19,22 @@ setInterval(() => {
 // });
 
 async function test(number) {
-    //window.location.href = `https://kolosok.onrender.com/surveys/survey${number}`;
+    //window.location.href = `/surveys/survey${number}`;
     category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    window.location.href = `https://kolosok.onrender.com/categories/category${category_id}/survey${number}`;
+    window.location.href = `/categories/category${category_id}/survey${number}`;
 }
 
 resultsBtn.addEventListener('click', () => {
-    location.assign("https://kolosok.onrender.com/user-results");  
+    location.assign("/user-results");  
 })
 
 backBtn.addEventListener('click', () => {
-    location.assign("https://kolosok.onrender.com/categories");  
+    location.assign("/categories");  
 })
 
 async function applyStyle(){
-    const response = await fetch('https://kolosok.onrender.com/is-available');
-    const response2 = await fetch('https://kolosok.onrender.com/opening-time');
+    const response = await fetch('/is-available');
+    const response2 = await fetch('/opening-time');
     const isAvailable = await response.json();
     const openingTime = await response2.json();
     Array.from(surveysBtns).forEach((surveyBtn) => {
