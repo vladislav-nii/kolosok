@@ -221,10 +221,13 @@ async function refresh() {
     const results = await (
         await fetch("/user-game-results")
     ).json();
-
     buttons.forEach(async (button) => {
         if (Number(button.text) < results.length) {
-            ctx.fillStyle = "#31913d7a";
+            if(results[Number(button.text)].result === "1"){
+                ctx.fillStyle = "#31913d7a";
+            } else {
+                ctx.fillStyle = "#cd4e4e73";
+            }
         } else if (Number(button.text) > results.length) {
             ctx.fillStyle = "#6b665e7a";
         } else {

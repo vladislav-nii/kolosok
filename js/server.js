@@ -91,7 +91,8 @@ app.use((req, res, next) => {
     !requestedRoute.startsWith("/account-data") &&
     !requestedRoute.startsWith("/polls") &&
     !requestedRoute.startsWith("/poll-result") &&
-    !requestedRoute.startsWith("/download-poll-results")
+    !requestedRoute.startsWith("/download-poll-results") &&
+    !requestedRoute.startsWith("/idCardResults")
   ) {
     return res.status(404).send("Страница не найдена");
   }
@@ -160,6 +161,15 @@ const pollResultSchema = new mongoose.Schema({
   })]
 });
 
+const festivalNaukiSchema = new mongoose.Schema({
+  card_id: String,
+  stages: [new mongoose.Schema({
+    id: String,
+    name: String,
+    result: String
+  })]
+});
+
 const Result = mongoose.model("results", resultSchema);
 
 const User = mongoose.model("users", userSchema);
@@ -167,6 +177,8 @@ const User = mongoose.model("users", userSchema);
 const GameResult = mongoose.model("game_results", gameResultSchema);
 
 const PollResult = mongoose.model("poll_results", pollResultSchema);
+
+const FestivalNauki = mongoose.model("festival_nauki_results", festivalNaukiSchema);
 
 app.get("/", function (request, response) {
   // отправляем ответ
@@ -180,6 +192,17 @@ app.get("/lastIdCard", async (req, res) => {
   response.send(lastUser);
   //res.send("");
 });
+
+app.get("/idCardResults/:id", async (req, res) => {
+  console.log(req.params.id);
+  const cardResults = await FestivalNauki.findOne({card_id: req.params.id})
+  if(!cardResults)
+    res.send({msg: "Not found"});
+  else{
+    res.send(cardResults);
+  }
+});
+
 // Регистрация
 app.post("/register", async (req, res) => {
   
@@ -195,6 +218,10 @@ app.post("/register", async (req, res) => {
   const users = await User.find().exec();
   const reset = users.find((item) => item.email === user.email);
 
+  if(!req.body.email){
+    res.send({ msg: "произошла ошибка ): попробуйте снова" });
+  }
+
   if (!reset) {
     const result = await user.save();
     if (user.email == adminEmail && user.password == adminPassword) {
@@ -209,7 +236,7 @@ app.post("/register", async (req, res) => {
       isAdmin: IsAdmin,
     });
   } else {
-    res.send({ msg: "пользователь с такой почтой уже есть" });
+    res.send({ msg: "пользователь с такой почтой уже существует" });
   }
 });
 

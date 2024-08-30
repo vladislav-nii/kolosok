@@ -1,5 +1,5 @@
-//const { response } = require("express");
-//const XLSX = require('xlsx');
+const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
 const fetchUsersBtn = document.getElementById('fetch-users');
 const userList = document.getElementById('user-list');
 const allowTest1Btn = document.getElementById('start-test1');
@@ -23,8 +23,24 @@ const settedTime8 = document.getElementById('time-set8');
 const settedTime9 = document.getElementById('time-set9');
 const settedTime10 = document.getElementById('time-set10');
 
+const idCardForm = document.getElementById('id-card-form');
+const idCard = document.getElementById('id-card');
+const stageList = document.getElementById('stage-list')
 
+idCard.value = 'value';
 
+idCardForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  console.log(idCard.value);
+  const response = await fetch(`/idCardResults/${idCard.value}`);
+  const idCardResults = await response.json();
+  console.log(idCardResults);
+  idCardResults.stages.forEach(stage => {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(stage.name + ": " + stage.result));
+    stageList.append(li)
+  });
+});
 
 async function setTime(id, thisValue) {
 
@@ -48,9 +64,11 @@ async function close_test(number) {
   refreshStatusList();
 }
 
-setInterval(() => {
-  location.reload();
-}, 1 * 60 * 1000); // 5 минут
+if(email === "reloader@refor.by"){
+  setInterval(() => {
+    location.reload();
+  }, 1 * 60 * 1000);
+}
 
 fetchUsersBtn.addEventListener('click', async () => {
   const response = await fetch('/users');
