@@ -269,11 +269,10 @@ async function showResults() {
         const response = await fetch(`/idCardResults/milo${email}`);
         const resp = await response.json();
         const id_card = resp.id_card;
-        console.log(resp.id_card);
         const response2 = await fetch("/stages/updateEvery", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({id_card_results: id_card, stage_id: "3", newResult: score.toString()})
+            body: JSON.stringify({id_card_results: id_card, stage_id: "4", newResult: score.toString()})
         });
 
 

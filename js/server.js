@@ -40,6 +40,7 @@ const cookieParser = require("cookie-parser");
 
 const ExcelJS = require("exceljs");
 const { randomUUID } = require("crypto");
+const e = require("express");
 
 const app = express();
 
@@ -93,6 +94,8 @@ app.use((req, res, next) => {
     !requestedRoute.startsWith("/poll-result") &&
     !requestedRoute.startsWith("/download-poll-results") &&
     !requestedRoute.startsWith("/stages") &&
+    !requestedRoute.startsWith("/getStageResult") &&
+    !requestedRoute.startsWith("/stage") &&
     !requestedRoute.startsWith("/idCardResults")
   ) {
     return res.status(404).send("Страница не найдена");
@@ -204,13 +207,31 @@ app.get("/idCardResults/card:id", async (req, res) => {
 });
 
 app.get("/idCardResults/milo:email", async (req, res) => {
-  console.log(req.params);
+  //console.log(req.params);
   const cardResults = await User.findOne({email: req.params.email})
   if(!cardResults)
     res.send({msg: "Not found"});
   else{
     res.send(cardResults);
   }
+});
+
+
+app.get("/getStageResult/card-id:cardId/stage-id:stageId", async (req, res) => {
+
+  const userStageResult = await FestivalNauki.findOne({ card_id: req.params.cardId, "stages.id": req.params.stageId.toString()}).exec();
+
+  bool = false;
+  
+  userStageResult.stages.forEach(stage => {
+    if(stage.id === req.params.stageId.toString()) {
+      if(stage.result !== "0") {
+        res.send(true);
+        bool = true;
+      }
+    }
+  });
+  if(!bool) res.send(bool);  
 });
 
 // Регистрация
@@ -404,10 +425,7 @@ app.post("/stages/update", async (req, res) => {
 
 app.post("/stages/updateEvery", async (req, res) => {
 
-  console.log(req.body);
-  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-  const fnd = await FestivalNauki.findOne({ card_id: req.body.id_card_results, "stages.id": req.body.stage_id}).exec();
-  console.log(fnd);
+  console.log(req.body);пше
 
   const find = await FestivalNauki.updateOne(
     { card_id: req.body.id_card_results, "stages.id": req.body.stage_id},
@@ -502,13 +520,43 @@ app.get("/stages/category:num", async (req, res) => {
   }
 });
 
-app.get("/stages/results", (req, res) => {
+app.get("/stages/stage:num", async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect("/login");
+  }
+  const userEmail = req.headers.cookie.replace(
+    /(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+  searchUser = await Result.findOne({
+    email: userEmail,
+    test_id: req.params.num,
+  }).exec();
+  surveysPath = path.join(__dirname, `stage${req.params.num}.html`);
+  if(!searchUser) {
+    res.sendFile(surveysPath);
+  } else {
+    res.redirect(`/stages`);
+  }
+});
+
+
+
+app.get("/stages/results", async (req, res) => {
   const stageResultsPath = path.join(
     __dirname,
     `../stages/results.html`
   );
   res.sendFile(stageResultsPath);
 });
+
+app.get("/stage/opros:id", async (req,res) => {
+  console.log("server");
+  stageResultsPath = path.join(__dirname, `../stages/stage${req.params.id}.html`);
+  res.sendFile(stageResultsPath);
+});
+
+
 
 /////////////
 
