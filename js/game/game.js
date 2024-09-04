@@ -1,5 +1,6 @@
 // import { conductSurvey as conductSurvey1 } from "./question1.js";
 // import { conductSurvey as conductSurvey2 } from "./question2.js";
+const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
 const userGameResults = await(
     await fetch("/user-game-results")
@@ -108,10 +109,6 @@ bg.onload = () => {
                     e.timestamps["dif"] =
                         (e.timestamps["finished"] - e.timestamps["started"]) / 1000;
                     const time = e.timestamps["dif"];
-                    const email = document.cookie.replace(
-                        /(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/,
-                        "$1"
-                    );
                     const result = JSON.stringify(+getResult(survey) * multiplier);
                     const game_id = 1;
                     const question_id = button.text;
@@ -269,6 +266,18 @@ async function showResults() {
         // .getElementById("resultContainer")
         //     .innerHTML =
         //     `<p>Вы набрали ${score} ${scklonenie(score)}</p>`;
+        const response = await fetch(`/idCardResults/milo${email}`);
+        const resp = await response.json();
+        const id_card = resp.id_card;
+        console.log(resp.id_card);
+        const response2 = await fetch("/stages/updateEvery", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id_card_results: id_card, stage_id: "3", newResult: score.toString()})
+        });
+
+
+
 
         const resultsArr = Array.from(results);
 
@@ -284,12 +293,13 @@ async function showResults() {
             <p> Вопрос 5: ${Number(resultsArr[5].result) ? "Верно" : "Неверно"}</p>
             <p> Вопрос 6: ${Number(resultsArr[6].result) ? "Верно" : "Неверно"}</p>
             <p> Вопрос 7: ${Number(resultsArr[7].result) ? "Верно" : "Неверно"}</p>
-            <p> Вопрос 8: ${Number(resultsArr[8].result) ? "Верно" : "Неверно"}</p>`;
+            <p> Вопрос 8: ${Number(resultsArr[8].result) ? "Верно" : "Неверно"}</p>
+            <p> Вопрос 9: ${Number(resultsArr[9].result) ? "Верно" : "Неверно"}</p>`;
+
         const btn = document.createElement("button");
         btn.textContent = "Сбросить результаты";
         resultContainer.appendChild(btn);
         btn.addEventListener("click", async (ev) => {
-            const email = document.cookie.replace(/(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             console.log(email);
             await fetch(`/gameResults/${email}`, { method: 'DELETE' });
             location.reload();

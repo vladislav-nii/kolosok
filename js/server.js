@@ -10,7 +10,6 @@ const adminPassword = "admin";
 const { PythonShell } = require("python-shell");
 const fs = require("fs");
 const path = require("path");
-var XLSXChart = require ("xlsx-chart");
 
 var isLoggined = false;
 var isAvailable = [
@@ -71,6 +70,7 @@ app.use((req, res, next) => {
     "/opening-time",
     "/education",
     "/excursion",
+    "/stages",
   ]; // Список допустимых маршрутов
   const requestedRoute = req.path;
 
@@ -92,6 +92,7 @@ app.use((req, res, next) => {
     !requestedRoute.startsWith("/polls") &&
     !requestedRoute.startsWith("/poll-result") &&
     !requestedRoute.startsWith("/download-poll-results") &&
+    !requestedRoute.startsWith("/stages") &&
     !requestedRoute.startsWith("/idCardResults")
   ) {
     return res.status(404).send("Страница не найдена");
@@ -193,9 +194,18 @@ app.get("/lastIdCard", async (req, res) => {
   //res.send("");
 });
 
-app.get("/idCardResults/:id", async (req, res) => {
-  console.log(req.params.id);
+app.get("/idCardResults/card:id", async (req, res) => {
   const cardResults = await FestivalNauki.findOne({card_id: req.params.id})
+  if(!cardResults)
+    res.send({msg: "Not found"});
+  else{
+    res.send(cardResults);
+  }
+});
+
+app.get("/idCardResults/milo:email", async (req, res) => {
+  console.log(req.params);
+  const cardResults = await User.findOne({email: req.params.email})
   if(!cardResults)
     res.send({msg: "Not found"});
   else{
@@ -217,6 +227,40 @@ app.post("/register", async (req, res) => {
   const user = new User(req.body);
   const users = await User.find().exec();
   const reset = users.find((item) => item.email === user.email);
+  const festivalNauki = new FestivalNauki({
+    card_id: req.body.id_card,
+    stages: [{
+      id: '1',
+      name: 'Этап1',
+      result: '0'
+    },
+    {
+      id: '2',
+      name: 'Этап2',
+      result: '0'
+    },
+    {
+      id: '3',
+      name: 'Этап3',
+      result: '0'
+    },
+    {
+      id: '4',
+      name: 'Этап4',
+      result: '0'
+    },
+    {
+      id: '5',
+      name: 'Этап5',
+      result: '0'
+    },
+    {
+      id: '6',
+      name: 'Этап6',
+      result: '0'
+    }]
+
+  });
 
   if(!req.body.email){
     res.send({ msg: "произошла ошибка ): попробуйте снова" });
@@ -224,6 +268,7 @@ app.post("/register", async (req, res) => {
 
   if (!reset) {
     const result = await user.save();
+    await festivalNauki.save();
     if (user.email == adminEmail && user.password == adminPassword) {
       IsAdmin = true;
     } else {
@@ -343,6 +388,37 @@ app.delete("/users/:id", async (req, res) => {
   res.send(result);
 });
 
+app.post("/stages/update", async (req, res) => {
+
+  console.log(req.body);
+  const find = await FestivalNauki.updateOne(
+    { _id: req.body.id_card_results, "stages._id": req.body.stage_id},
+    { $set: {
+      "stages.$.result": req.body.newResult
+    }}
+  );
+
+  res.send({ msg: "успешно" });
+});
+
+
+app.post("/stages/updateEvery", async (req, res) => {
+
+  console.log(req.body);
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  const fnd = await FestivalNauki.findOne({ card_id: req.body.id_card_results, "stages.id": req.body.stage_id}).exec();
+  console.log(fnd);
+
+  const find = await FestivalNauki.updateOne(
+    { card_id: req.body.id_card_results, "stages.id": req.body.stage_id},
+    { $set: {
+      "stages.$.result": req.body.newResult
+    }}
+  );
+
+  res.send({ msg: "успешно" });
+});
+
 app.delete("/gameResults/:user", async (req, res) => {
   console.log("delete");
 
@@ -391,6 +467,52 @@ app.get("/categories/", (req, res) => {
     res.redirect("/login");
   }
 });
+
+
+//server stages process
+app.get("/stages/", (req, res) => {
+  const cookieValue = req.cookies.email;
+
+  if (cookieValue) {
+    //surveysPath = path.join(__dirname, '../surveys/.ejs');
+    surveysPath = path.join(__dirname, "../stages/stages.ejs");
+    res.render(surveysPath);
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/stages/category:num", async (req, res) => {
+  if (!req.headers.cookie) {
+    return res.redirect("/login");
+  }
+  const userEmail = req.headers.cookie.replace(
+    /(?:(?:^|.*;\s*)email\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+  searchUser = await Result.findOne({
+    email: userEmail,
+    test_id: req.params.num,
+  }).exec();
+  surveysPath = path.join(__dirname, `stage${req.params.num}.html`);
+  if(!searchUser) {
+    res.sendFile(surveysPath);
+  } else {
+    res.redirect(`/stages`);
+  }
+});
+
+app.get("/stages/results", (req, res) => {
+  const stageResultsPath = path.join(
+    __dirname,
+    `../stages/results.html`
+  );
+  res.sendFile(stageResultsPath);
+});
+
+/////////////
+
+
 
 app.get("/categories/category:id", async (req, res) => {
   if (!req.headers.cookie) {

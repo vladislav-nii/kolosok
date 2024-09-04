@@ -3,10 +3,10 @@ const excursionButton = document.getElementById("excursion_btn");
 const agrotestsButton = document.getElementById("agrotests_btn");
 const pollsButton = document.getElementById("polls_btn");
 const gamesButton = document.getElementById("games_btn");
-const statsButton = document.getElementById("stats_btn");
+const stagesButton = document.getElementById("stages_btn");
 const settingButton = document.getElementById("settings_btn");
 const aboutButton = document.getElementById("about_btn");
-const logoutButton = document.getElementById("logout_btn"); 
+const logoutButton = document.getElementById("logout_btn");
 
 
 educationButton.addEventListener("click", (ev) => {
@@ -38,13 +38,19 @@ logoutButton.addEventListener("click", (ev) => {
     location.assign("/login");
 });
 
+
+//stages go
+stagesButton.addEventListener("click", (ev) => {
+    location.assign("/stages/");
+});
+
 async function applyStyle() {
-    statsButton.style.backgroundImage = 'url(../img/lock3.png)';
-    statsButton.style.backgroundRepeat = 'no-repeat';
-    statsButton.style.backgroundPosition = 'center center';
-    statsButton.style.backgroundAttachments = 'fixed';
-    statsButton.style.backgroundSize = 'contain';
-    statsButton.style.color = 'rgba(66, 66, 66, 0.4)';
+    //style.backgroundImage = 'url(../img/lock3.png)';
+    stagesButton.style.backgroundRepeat = 'no-repeat';
+    stagesButton.style.backgroundPosition = 'center center';
+    stagesButton.style.backgroundAttachments = 'fixed';
+    stagesButton.style.backgroundSize = 'contain';
+    //stagesButton.style.color = 'rgba(66, 66, 66, 0.4)';
     settingButton.style.backgroundImage = 'url(../img/lock3.png)';
     settingButton.style.backgroundRepeat = 'no-repeat';
     settingButton.style.backgroundPosition = 'center center';

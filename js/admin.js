@@ -32,13 +32,54 @@ idCard.value = 'value';
 idCardForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log(idCard.value);
-  const response = await fetch(`/idCardResults/${idCard.value}`);
+  const response = await fetch(`/idCardResults/card${idCard.value}`);
   const idCardResults = await response.json();
-  console.log(idCardResults);
+  stageList.innerHTML = '';
+
   idCardResults.stages.forEach(stage => {
+
+    const form = document.createElement('form');
     const li = document.createElement('li');
-    li.appendChild(document.createTextNode(stage.name + ": " + stage.result));
-    stageList.append(li)
+
+    const updateResult = document.createElement('input');
+    updateResult.setAttribute('id', "update-button");
+    updateResult.setAttribute('type', "text");
+    form.onsubmit = async function(e) {
+      e.preventDefault();
+      console.log("change");
+      await fetch(`/stages/update`, { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({id_card_results: idCardResults._id, stage_id: stage._id, newResult: updateResult.value})
+      });
+      idCardForm.submit();
+    }
+    li.textContent = stage.name + ": " + stage.result;
+    //li.appendChild(document.createTextNode(stage.name + ": " + stage.result));
+    form.appendChild(updateResult);
+    li.appendChild(form);
+    stageList.append(li);
+  });
+});
+
+
+fetchUsersBtn.addEventListener('click', async () => {
+  const response = await fetch('/users');
+  const users = await response.json();
+  userList.innerHTML = '';
+  users.forEach((user) => {
+    const li = document.createElement('li');
+    li.textContent = `${user.username} E-mail: ${user.email} (Админ: ${user.isAdmin})`;
+    li.setAttribute('id', 'eachUser');
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Удалить';
+    deleteBtn.setAttribute('id', "delete-button");
+    deleteBtn.addEventListener('click', async () => {
+      await fetch(`/users/${user._id}`, { method: 'DELETE' });
+      li.remove();
+    });
+    li.appendChild(deleteBtn);
+    userList.appendChild(li);
   });
 });
 
