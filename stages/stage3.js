@@ -1,5 +1,6 @@
 var category_id = document.cookie.replace(/(?:(?:^|.*;\s*)category_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 var json = {
+  locale: "ru",
  "pages": [
   {
    "name": "page1",
@@ -317,4 +318,5 @@ survey.onComplete.add(async (e) => {
         body: JSON.stringify({ email, result, time,  test_id}),
     });
 
+    window.location.href = `/stages`;
 });

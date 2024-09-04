@@ -425,7 +425,7 @@ app.post("/stages/update", async (req, res) => {
 
 app.post("/stages/updateEvery", async (req, res) => {
 
-  console.log(req.body);пше
+  console.log(req.body);
 
   const find = await FestivalNauki.updateOne(
     { card_id: req.body.id_card_results, "stages.id": req.body.stage_id},
