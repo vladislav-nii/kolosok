@@ -32,7 +32,24 @@ idCardForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const response = await fetch(`/idCardResults/card${idCard.value}`);
   const idCardResults = await response.json();
+  const userResponce = await fetch(`/users/id${idCard.value}`);
+  const user = await userResponce.json();
+  const email = user.email;
+  const name = user.name;
+  const surname = user.surname;
+
   stageList.innerHTML = '';
+
+  const idLi = document.createElement('li');
+  idLi.textContent = "ID: " + idCard.value;
+  const emailLi = document.createElement('li');
+  emailLi.textContent = "Email: " + email;
+  const nameLi = document.createElement('li');
+
+  nameLi.textContent = "Имя: " + name + " " + surname;
+  stageList.appendChild(idLi);
+  stageList.appendChild(emailLi);
+  stageList.appendChild(nameLi);
 
   idCardResults.stages.forEach(stage => {
 

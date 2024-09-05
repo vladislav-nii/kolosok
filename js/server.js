@@ -86,6 +86,7 @@ app.use((req, res, next) => {
     !requestedRoute.startsWith("/getStageResult") &&
     !requestedRoute.startsWith("/stage") &&
     !requestedRoute.startsWith("/download-excel-festival") &&
+    !requestedRoute.startsWith("/users") &&
     !requestedRoute.startsWith("/idCardResults")
   ) {
     return res.status(404).send("Страница не найдена");
@@ -210,6 +211,15 @@ app.get("/idCardResults/milo:email", async (req, res) => {
   if (!cardResults) res.send({ msg: "Not found" });
   else {
     res.send(cardResults);
+  }
+});
+
+app.get("/users/id:id", async (req, res) => {
+  //console.log(req.params);
+  const user = await User.findOne({ id_card: req.params.id });
+  if (!user) res.send({ msg: "Not found" });
+  else {
+    res.send(user);
   }
 });
 
