@@ -3,28 +3,27 @@
 
 <head>
     <title>Колосок</title>
-    <link href="../../../css/results.css" rel="stylesheet" />
+    <link href="../../../stages/results.css" rel="stylesheet" />
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/avdira-textfonts" type="text/css" />
 </head>
 
 <body>
     <div id="back-nav">
-        <button id="back-to-surveys">Назад к тестам</button>
+        <button id="back-to-surveys">Назад к этапам фестиваля</button>
+    </div> 
+    <div id="table-container">
+        <table role="table" id="result-table">
+            <thead role="rowgroup">
+                <tr role="row">
+                    <th role="columnheader">Название станции</th>
+                    <th role="columnheader">Результат</th>
+                </tr>
+            </thead>
+            <tbody role="rowgroup" id="table-body">
+            </tbody>
+            <script src="results.js"></script>
+        </table>
     </div>
-    <table role="table" id="result-table">
-        <thead role="rowgroup">
-            <tr role="row">
-                <th role="columnheader">Номер теста</th>
-                <th role="columnheader">Правильных ответов</th>
-                <th role="columnheader">Всего отвечено</th>
-                <th role="columnheader">Всего вопросов</th>
-                <th role="columnheader">Затрачено времени</th>
-            </tr>
-        </thead>
-        <tbody role="rowgroup" id="table-body">
-        </tbody>
-        <script src="results.js"></script>
-    </table>
 </body>
 
 </html>

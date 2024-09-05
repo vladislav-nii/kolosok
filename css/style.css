@@ -5,6 +5,15 @@ body {
     font-family: 'Space Mono', monospace;
 }
 
+input {
+    height: 25px;
+    margin-right: 20px;
+}
+
+ul {
+    margin-left: -40px;
+}
+
 
 #fetch-users {
     font-size: 12px;

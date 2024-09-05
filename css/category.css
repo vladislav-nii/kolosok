@@ -6,6 +6,7 @@
 
 #btn-holder {
   display: flex;
+  align-items: center;
   width: 100%;
   text-align: center;
   padding-top: 20px;
@@ -51,7 +52,7 @@ button{
 .back {
   position: static;
   width: 20%;
-  height: 200px;
+  height: 130px;
   border: 0px;
   color: rgba(0, 255, 255, 0);
   background-image: url('../img/backArrow.png');

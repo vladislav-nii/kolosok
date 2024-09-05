@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const mongodb = require('mongodb');
+const mongodb = require("mongodb");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 5500;
 const cors = require("cors");
@@ -12,18 +12,7 @@ const fs = require("fs");
 const path = require("path");
 
 var isLoggined = false;
-var isAvailable = [
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-];
+var isAvailable = [true, true, true, true, true, true, true, true, true, true];
 var openingTime = [
   "11:00",
   "12:00",
@@ -96,6 +85,7 @@ app.use((req, res, next) => {
     !requestedRoute.startsWith("/stages") &&
     !requestedRoute.startsWith("/getStageResult") &&
     !requestedRoute.startsWith("/stage") &&
+    !requestedRoute.startsWith("/download-excel-festival") &&
     !requestedRoute.startsWith("/idCardResults")
   ) {
     return res.status(404).send("Страница не найдена");
@@ -151,27 +141,33 @@ const gameResultSchema = new mongoose.Schema({
 const pollResultSchema = new mongoose.Schema({
   name: String,
   email: String,
-  questions: [new mongoose.Schema({
-    title: String,
-    name: String,
-    value: [String],
-    displayValue: String,
-    data: [new mongoose.Schema({
-      name: String,
+  questions: [
+    new mongoose.Schema({
       title: String,
-      value: String,
+      name: String,
+      value: [String],
       displayValue: String,
-    })]
-  })]
+      data: [
+        new mongoose.Schema({
+          name: String,
+          title: String,
+          value: String,
+          displayValue: String,
+        }),
+      ],
+    }),
+  ],
 });
 
 const festivalNaukiSchema = new mongoose.Schema({
   card_id: String,
-  stages: [new mongoose.Schema({
-    id: String,
-    name: String,
-    result: String
-  })]
+  stages: [
+    new mongoose.Schema({
+      id: String,
+      name: String,
+      result: String,
+    }),
+  ],
 });
 
 const Result = mongoose.model("results", resultSchema);
@@ -182,7 +178,10 @@ const GameResult = mongoose.model("game_results", gameResultSchema);
 
 const PollResult = mongoose.model("poll_results", pollResultSchema);
 
-const FestivalNauki = mongoose.model("festival_nauki_results", festivalNaukiSchema);
+const FestivalNauki = mongoose.model(
+  "festival_nauki_results",
+  festivalNaukiSchema
+);
 
 app.get("/", function (request, response) {
   // отправляем ответ
@@ -198,51 +197,50 @@ app.get("/lastIdCard", async (req, res) => {
 });
 
 app.get("/idCardResults/card:id", async (req, res) => {
-  const cardResults = await FestivalNauki.findOne({card_id: req.params.id})
-  if(!cardResults)
-    res.send({msg: "Not found"});
-  else{
+  const cardResults = await FestivalNauki.findOne({ card_id: req.params.id });
+  if (!cardResults) res.send({ msg: "Not found" });
+  else {
     res.send(cardResults);
   }
 });
 
 app.get("/idCardResults/milo:email", async (req, res) => {
   //console.log(req.params);
-  const cardResults = await User.findOne({email: req.params.email})
-  if(!cardResults)
-    res.send({msg: "Not found"});
-  else{
+  const cardResults = await User.findOne({ email: req.params.email });
+  if (!cardResults) res.send({ msg: "Not found" });
+  else {
     res.send(cardResults);
   }
 });
 
-
 app.get("/getStageResult/card-id:cardId/stage-id:stageId", async (req, res) => {
-
-  const userStageResult = await FestivalNauki.findOne({ card_id: req.params.cardId, "stages.id": req.params.stageId.toString()}).exec();
+  const userStageResult = await FestivalNauki.findOne({
+    card_id: req.params.cardId,
+    "stages.id": req.params.stageId.toString(),
+  }).exec();
 
   bool = false;
-  
-  userStageResult.stages.forEach(stage => {
-    if(stage.id === req.params.stageId.toString()) {
-      if(stage.result !== "0") {
+
+  userStageResult.stages.forEach((stage) => {
+    if (stage.id === req.params.stageId.toString()) {
+      if (stage.result !== "0") {
         res.send(true);
         bool = true;
       }
     }
   });
-  if(!bool) res.send(bool);  
+  if (!bool) res.send(bool);
 });
 
 // Регистрация
 app.post("/register", async (req, res) => {
-  
-  const lastIdCard = (await User.find().sort({_id:-1}).limit(1)).at(0).id_card;
-  if(lastIdCard){
-    const new_str  = (parseInt(lastIdCard.substring(2)) + 1).toString();
+  const lastIdCard = (await User.find().sort({ _id: -1 }).limit(1)).at(
+    0
+  ).id_card;
+  if (lastIdCard) {
+    const new_str = (parseInt(lastIdCard.substring(2)) + 1).toString();
     req.body.id_card = "fn" + new_str.padStart(3, "0");
-  }
-  else{
+  } else {
     req.body.id_card = "fn001";
   }
   const user = new User(req.body);
@@ -250,40 +248,41 @@ app.post("/register", async (req, res) => {
   const reset = users.find((item) => item.email === user.email);
   const festivalNauki = new FestivalNauki({
     card_id: req.body.id_card,
-    stages: [{
-      id: '1',
-      name: 'Этап1',
-      result: '0'
-    },
-    {
-      id: '2',
-      name: 'Этап2',
-      result: '0'
-    },
-    {
-      id: '3',
-      name: 'Этап3',
-      result: '0'
-    },
-    {
-      id: '4',
-      name: 'Этап4',
-      result: '0'
-    },
-    {
-      id: '5',
-      name: 'Этап5',
-      result: '0'
-    },
-    {
-      id: '6',
-      name: 'Этап6',
-      result: '0'
-    }]
-
+    stages: [
+      {
+        id: "1",
+        name: "Этап1",
+        result: "0",
+      },
+      {
+        id: "2",
+        name: "Этап2",
+        result: "0",
+      },
+      {
+        id: "3",
+        name: "Этап3",
+        result: "0",
+      },
+      {
+        id: "4",
+        name: "Этап4",
+        result: "0",
+      },
+      {
+        id: "5",
+        name: "Этап5",
+        result: "0",
+      },
+      {
+        id: "6",
+        name: "Этап6",
+        result: "0",
+      },
+    ],
   });
 
-  if(!req.body.email){
+  if (!req.body.email) {
     res.send({ msg: "произошла ошибка ): попробуйте снова" });
   }
 
@@ -352,7 +351,7 @@ app.post("/poll-result", async (req, res) => {
   //   console.log(question.data);
   // });
   var pollResult = req.body;
-  for (var i = 0; i < pollResult.questions.length; ++i){
+  for (var i = 0; i < pollResult.questions.length; ++i) {
     //delete pollResult.poll[i].name;
     //delete pollResult.poll[i].value;
     delete pollResult.questions[i].isNode;
@@ -367,7 +366,7 @@ app.post("/poll-result", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Ошибка при записи');
+    res.status(500).send("Ошибка при записи");
   }
 });
 
@@ -410,28 +409,29 @@ app.delete("/users/:id", async (req, res) => {
 });
 
 app.post("/stages/update", async (req, res) => {
-
   console.log(req.body);
   const find = await FestivalNauki.updateOne(
-    { _id: req.body.id_card_results, "stages._id": req.body.stage_id},
-    { $set: {
-      "stages.$.result": req.body.newResult
-    }}
+    { _id: req.body.id_card_results, "stages._id": req.body.stage_id },
+    {
+      $set: {
+        "stages.$.result": req.body.newResult,
+      },
+    }
   );
 
   res.send({ msg: "успешно" });
 });
 
-
 app.post("/stages/updateEvery", async (req, res) => {
-
   console.log(req.body);
 
   const find = await FestivalNauki.updateOne(
-    { card_id: req.body.id_card_results, "stages.id": req.body.stage_id},
-    { $set: {
-      "stages.$.result": req.body.newResult
-    }}
+    { card_id: req.body.id_card_results, "stages.id": req.body.stage_id },
+    {
+      $set: {
+        "stages.$.result": req.body.newResult,
+      },
+    }
   );
 
   res.send({ msg: "успешно" });
@@ -486,7 +486,6 @@ app.get("/categories/", (req, res) => {
   }
 });
 
-
 //server stages process
 app.get("/stages/", (req, res) => {
   const cookieValue = req.cookies.email;
@@ -513,7 +512,7 @@ app.get("/stages/category:num", async (req, res) => {
     test_id: req.params.num,
   }).exec();
   surveysPath = path.join(__dirname, `stage${req.params.num}.html`);
-  if(!searchUser) {
+  if (!searchUser) {
     res.sendFile(surveysPath);
   } else {
     res.redirect(`/stages`);
@@ -533,34 +532,28 @@ app.get("/stages/stage:num", async (req, res) => {
     test_id: req.params.num,
   }).exec();
   surveysPath = path.join(__dirname, `stage${req.params.num}.html`);
-  if(!searchUser) {
+  if (!searchUser) {
     res.sendFile(surveysPath);
   } else {
     res.redirect(`/stages`);
   }
 });
 
-
-
 app.get("/stages/results", async (req, res) => {
-  const stageResultsPath = path.join(
+  const stageResultsPath = path.join(__dirname, `../stages/results.html`);
+  res.sendFile(stageResultsPath);
+});
+
+app.get("/stage/opros:id", async (req, res) => {
+  console.log("server");
+  stageResultsPath = path.join(
     __dirname,
-    `../stages/results.html`
+    `../stages/stage${req.params.id}.html`
   );
   res.sendFile(stageResultsPath);
 });
 
-app.get("/stage/opros:id", async (req,res) => {
-  console.log("server");
-  stageResultsPath = path.join(__dirname, `../stages/stage${req.params.id}.html`);
-  res.sendFile(stageResultsPath);
-});
-
-
-
 /////////////
-
-
 
 app.get("/categories/category:id", async (req, res) => {
   if (!req.headers.cookie) {
@@ -665,7 +658,7 @@ app.get("/polls/poll:id", async (req, res) => {
   // if (!req.headers.cookie) {
   //   return res.redirect("/login");
   // }
-  if(req.params.id === '1'){
+  if (req.params.id === "1") {
     res.redirect(`https:///polls`);
   }
   pollPath = path.join(__dirname, `../polls/poll${req.params.id}.html`);
@@ -743,57 +736,60 @@ app.get("/user-game-results", async (req, res) => {
 });
 
 app.get("/download-poll-results", async (req, res) => {
-
-  const agg = [ 
-    { 
-      '$unwind': { 
-        'path': '$questions' 
-      } 
-    }, { 
-      '$unwind': { 
-        'path': '$questions.data' 
-      } 
-    }, { 
-      '$group': { 
-        '_id': { 
-          'name': '$name',  
-          'question_title': '$questions.title',  
-          'value': '$questions.data.displayValue' 
-        },  
-        'count': { 
-          '$count': {} 
-        } 
-      } 
-    }, { 
-      '$group': { 
-        '_id': { 
-          'name': '$_id.name',  
-          'question_title': '$_id.question_title' 
-        },  
-        'answers': { 
-          '$push': { 
-            'item': '$_id.value',  
-            'count': '$count' 
-          } 
-        } 
-      } 
-    }, { 
-      '$group': { 
-        '_id': '$_id.name',  
-        'questions': { 
-          '$push': { 
-            'title': '$_id.question_title',  
-            'answers': '$answers' 
-          } 
-        } 
-      } 
-    } 
+  const agg = [
+    {
+      $unwind: {
+        path: "$questions",
+      },
+    },
+    {
+      $unwind: {
+        path: "$questions.data",
+      },
+    },
+    {
+      $group: {
+        _id: {
+          name: "$name",
+          question_title: "$questions.title",
+          value: "$questions.data.displayValue",
+        },
+        count: {
+          $count: {},
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          name: "$_id.name",
+          question_title: "$_id.question_title",
+        },
+        answers: {
+          $push: {
+            item: "$_id.value",
+            count: "$count",
+          },
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id.name",
+        questions: {
+          $push: {
+            title: "$_id.question_title",
+            answers: "$answers",
+          },
+        },
+      },
+    },
   ];
-  
+
   const client = await mongodb.MongoClient.connect(
-    "mongodb+srv://NIIinAPK:nii123@survey.yvbwk8s.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://NIIinAPK:nii123@survey.yvbwk8s.mongodb.net/?retryWrites=true&w=majority"
   );
-  const coll = client.db('test').collection('poll_results');
+  const coll = client.db("test").collection("poll_results");
   const cursor = coll.aggregate(agg);
   const results = await cursor.toArray();
   await client.close();
@@ -808,27 +804,27 @@ app.get("/download-poll-results", async (req, res) => {
     { header: "", key: "col4" },
   ];
 
-  var opts = {charts: []};
+  var opts = { charts: [] };
   let i = 1;
   results.forEach((result) => {
     worksheet.getRow(i).values = {
       col1: `${result._id}`,
     };
     ++i;
-    result.questions.forEach(question => {
+    result.questions.forEach((question) => {
       const fields = [];
       const values = [];
       const values2 = [];
       worksheet.getRow(i).values = {
         col2: `${question.title}`,
       };
-      i+=2;
-      question.answers.forEach(answer => {
+      i += 2;
+      question.answers.forEach((answer) => {
         fields.push(answer.item);
         values.push(Number.parseInt(answer.count));
         worksheet.getRow(i).values = {
           col2: `${answer.item}`,
-          col3: `${answer.count}`
+          col3: `${answer.count}`,
         };
         ++i;
       });
@@ -837,15 +833,15 @@ app.get("/download-poll-results", async (req, res) => {
       //   return a + b;
       // }, 0);
       var sum = 0;
-      values.forEach(value => {
-        sum+=value;
+      values.forEach((value) => {
+        sum += value;
       });
-      for(var j = 0; j < values.length; ++j){
+      for (var j = 0; j < values.length; ++j) {
         values2.push(values[j]);
-        values[j] = ((values[j]/sum)*100).toFixed(2);
+        values[j] = ((values[j] / sum) * 100).toFixed(2);
       }
       console.log(__dirname);
-      console.log(__dirname + "/mult.xlsx")
+      console.log(__dirname + "/mult.xlsx");
       opts.charts.push({
         chart: "bar",
         templatePath: __dirname + "/mult.xlsx",
@@ -858,20 +854,20 @@ app.get("/download-poll-results", async (req, res) => {
           "%": Object.assign({}, ...fields.map((n, i) => ({ [n]: values[i] }))),
           //"количество": Object.assign({}, ...fields.map((n, i) => ({ [n]: values2[i] }))),
         },
-        chartTitle: `${question.title}`
+        chartTitle: `${question.title}`,
       });
     });
     ++i;
   });
 
-  var xlsxChart = new XLSXChart ();
-  xlsxChart.generate (opts, function (err, data) {
-    res.set ({
+  var xlsxChart = new XLSXChart();
+  xlsxChart.generate(opts, function (err, data) {
+    res.set({
       "Content-Type": "application/vnd.ms-excel",
       "Content-Disposition": "attachment; filename=char.xlsx",
-      "Content-Length": data.length
+      "Content-Length": data.length,
     });
-    res.status (200).send (data);
+    res.status(200).send(data);
   });
 
   //const users = await User.find().exec();
@@ -977,6 +973,88 @@ app.get("/download-excel", async (req, res) => {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   );
   res.setHeader("Content-Disposition", "attachment; filename=results.xlsx");
+
+  //worksheet.autoFitColumns();
+  worksheet.columns.forEach(function (column, i) {
+    let maxLength = 0;
+    column["eachCell"]({ includeEmpty: true }, function (cell) {
+      var columnLength = cell.value ? cell.value.toString().length + 2 : 10;
+      if (columnLength > maxLength) {
+        maxLength = columnLength;
+      }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength;
+  });
+
+  // Сохранение книги в поток ответа
+  workbook.xlsx
+    .write(res)
+    .then(() => {
+      res.end();
+    })
+    .catch((error) => {
+      console.log("Ошибка при сохранении данных:", error);
+      res.status(500).send("Произошла ошибка");
+    });
+});
+
+app.get("/download-excel-festival", async (req, res) => {
+  // Создание книги Excel и добавление данных
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Sheet 1");
+  worksheet.columns = [
+    { header: "id", key: "id" },
+    { header: "Имя", key: "name" },
+    { header: "email", key: "email" },
+    { header: "Этап 1", key: "stage_1" },
+    { header: "Этап 2", key: "stage_2" },
+    { header: "Этап 3", key: "stage_3" },
+    { header: "Этап 4", key: "stage_4" },
+    { header: "Этап 5", key: "stage_5" },
+    { header: "Этап 6", key: "stage_6" },
+    { header: "Всего баллов", key: "total" },
+  ];
+
+  const users = await User.find().exec();
+  const results = await FestivalNauki.find().exec();
+  let i = 2;
+  users.forEach((user) => {
+    results.forEach((result) => {
+      if (result.card_id === user.id_card) {
+        console.log(result);
+        worksheet.getRow(i).values = {
+          id: `${user.id_card}`,
+          name: `${user.name} ${user.surname}`,
+          email: `${user.email}`,
+          stage_1: `${result.stages[0].result}`,
+          stage_2: `${result.stages[1].result}`,
+          stage_3: `${result.stages[2].result}`,
+          stage_4: `${result.stages[3].result}`,
+          stage_5: `${result.stages[4].result}`,
+          stage_6: `${result.stages[5].result}`,
+          total: `${
+            Number(result.stages[0].result) +
+            Number(result.stages[1].result) +
+            Number(result.stages[2].result) +
+            Number(result.stages[3].result) +
+            Number(result.stages[4].result) +
+            Number(result.stages[5].result)
+          }`,
+        };
+        ++i;
+      }
+    });
+  });
+
+  // Установка HTTP-заголовков для скачивания файла
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader(
+    "Content-Disposition",
+    "attachment; filename=festival_results.xlsx"
+  );
 
   //worksheet.autoFitColumns();
   worksheet.columns.forEach(function (column, i) {
