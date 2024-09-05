@@ -29,6 +29,7 @@ const idCard = document.getElementById('id-card');
 const stageList = document.getElementById('stage-list')
 
 idCardForm.addEventListener("submit", async (e) => {
+  idCard.value = idCard.value.toLowerCase();
   e.preventDefault();
   const response = await fetch(`/idCardResults/card${idCard.value}`);
   const idCardResults = await response.json();
@@ -67,7 +68,7 @@ idCardForm.addEventListener("submit", async (e) => {
     updateResult.setAttribute('type', "text");
     form.onsubmit = async function(e) {
       e.preventDefault();
-      if(Number(updateResult.value) || Number(updateResult.value) === 0){
+      if((updateResult.value != "") && (Number(updateResult.value) || Number(updateResult.value) === 0)){
         console.log("change");
       await fetch(`/stages/update`, { 
         method: 'POST',
