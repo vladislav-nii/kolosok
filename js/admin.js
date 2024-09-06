@@ -81,7 +81,7 @@ idCardForm.addEventListener("submit", async (e) => {
       }
     }
     li.textContent = stage.name + ": " + stage.result;
-    if(stage.id === "5"){
+    if(stage.id === "6"){
       li.textContent = li.textContent + "\r\n" + "Ответы пользователя: " + stage.raw_answers;
     }
     //li.appendChild(document.createTextNode(stage.name + ": " + stage.result));

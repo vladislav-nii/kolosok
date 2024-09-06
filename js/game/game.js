@@ -272,7 +272,7 @@ async function showResults() {
         const response2 = await fetch("/stages/updateEvery", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({id_card_results: id_card, stage_id: "4", newResult: score.toString()})
+            body: JSON.stringify({id_card_results: id_card, stage_id: "5", newResult: score.toString()})
         });
 
 

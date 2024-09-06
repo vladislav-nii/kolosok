@@ -169,7 +169,7 @@ var json = {
       }
     ],
     "showTitle": false,
-    "maxTimeToFinish": 300,
+    "maxTimeToFinish": 240,
     "showTimerPanel": "top",
     // "navigateToUrl": `/stages`,
     "widthMode": "responsive"
@@ -231,7 +231,7 @@ survey.onComplete.add(async (e) => {
     const response3 = await fetch('/stages/updateEvery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_card_results: id_card, newResult: JSON.parse(result)['correct_answers'].toString(), stage_id: "5", raw_answers: JSON.parse(result)['raw_answers'].toString()}),
+        body: JSON.stringify({ id_card_results: id_card, newResult: JSON.parse(result)['correct_answers'].toString(), stage_id: "6", raw_answers: JSON.parse(result)['raw_answers'].toString()}),
     });
 
 
