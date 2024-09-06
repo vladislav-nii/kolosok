@@ -10,6 +10,7 @@ var json = {
         "name": "question1",
         "title": "С какого зерна производят геркулес?",
         "correctAnswer": "Item 4",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1Пшеница",
@@ -34,6 +35,7 @@ var json = {
         "name": "question2",
         "title": "Из какого растения получают пшённую крупу?",
         "correctAnswer": "Item 1",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -58,6 +60,7 @@ var json = {
         "name": "question3",
         "title": "Из каких семян в Беларуси производят биотопливо?",
         "correctAnswer": "Item 3",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -82,6 +85,7 @@ var json = {
         "name": "question4",
         "title": "Из муки какого зерна в основном производят макаронные изделия?",
         "correctAnswer": "Item 1",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -106,6 +110,7 @@ var json = {
         "name": "question5",
         "title": "Какие вещества являются красящими веществами свеклы?",
         "correctAnswer": "Item 4",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -130,6 +135,7 @@ var json = {
         "name": "question6",
         "title": "Из какого зерна делают перловую крупу?",
         "correctAnswer": "Item 1",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -154,6 +160,7 @@ var json = {
         "name": "question7",
         "title": "Манную крупу получают из…",
         "correctAnswer": "Item 4",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -178,6 +185,7 @@ var json = {
         "name": "question8",
         "title": "Как называется сушеный абрикос без косточки?",
         "correctAnswer": "Item 3",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -202,6 +210,7 @@ var json = {
         "name": "question9",
         "title": "Какая сельскохозяйственная культура может содержать в себе высокую концентрацию соланина?",
         "correctAnswer": "Item 3",
+        "isRequired": true,
         "choices": [
          {
           "value": "Item 1",
@@ -226,6 +235,7 @@ var json = {
      "name": "question10",
      "title": "Какие вещества являются красящими веществами моркови?",
      "correctAnswer": "Item 4",
+     "isRequired": true,
      "choices": [
       {
        "value": "Item 1",

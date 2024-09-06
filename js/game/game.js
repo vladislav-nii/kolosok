@@ -282,9 +282,9 @@ async function showResults() {
 
         const resultContainer = document.getElementById("resultContainer");
         resultContainer.innerHTML =
-            `<p>Ваш урожай составил ${Math.round(score * 7.86 * 100) / 100} цейнтнеров с га по сорту "Дарья"</p>
-            <p>---------------------</p>
-            <p> Вопрос 0: ${Number(resultsArr[0].result) ? "Верно" : "Неверно"}</p>
+            // `<p>Ваш урожай составил ${Math.round(score * 7.86 * 100) / 100} цейнтнеров с га по сорту "Дарья"</p>
+            // <p>---------------------</p>
+            `<p> Вопрос 0: ${Number(resultsArr[0].result) ? "Верно" : "Неверно"}</p>
             <p> Вопрос 1: ${Number(resultsArr[1].result) ? "Верно" : "Неверно"}</p>
             <p> Вопрос 2: ${Number(resultsArr[2].result) ? "Верно" : "Неверно"}</p>
             <p> Вопрос 3: ${Number(resultsArr[3].result) ? "Верно" : "Неверно"}</p>
@@ -296,13 +296,13 @@ async function showResults() {
             <p> Вопрос 9: ${Number(resultsArr[9].result) ? "Верно" : "Неверно"}</p>`;
 
         const btn = document.createElement("button");
-        btn.textContent = "Сбросить результаты";
-        resultContainer.appendChild(btn);
-        btn.addEventListener("click", async (ev) => {
-            console.log(email);
-            await fetch(`/gameResults/${email}`, { method: 'DELETE' });
-            location.reload();
-        })
+        // btn.textContent = "Сбросить результаты";
+        // resultContainer.appendChild(btn);
+        // btn.addEventListener("click", async (ev) => {
+        //     console.log(email);
+        //     await fetch(`/gameResults/${email}`, { method: 'DELETE' });
+        //     location.reload();
+        // })
         resultContainer.style.display = 'block';
         cvs.style.display = 'none';
     }
