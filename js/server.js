@@ -167,6 +167,7 @@ const festivalNaukiSchema = new mongoose.Schema({
       id: String,
       name: String,
       result: String,
+      raw_answers: {type: String, default:'none'},
     }),
   ],
 });
@@ -440,6 +441,7 @@ app.post("/stages/updateEvery", async (req, res) => {
     {
       $set: {
         "stages.$.result": req.body.newResult,
+        "stages.$.raw_answers": req.body.raw_answers ? req.body.raw_answers : "none",
       },
     }
   );

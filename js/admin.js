@@ -59,6 +59,8 @@ idCardForm.addEventListener("submit", async (e) => {
     const button = document.createElement('button');
     const br = document.createElement('br');
 
+    li.setAttribute('style', 'white-space: pre-line;');
+
     button.setAttribute('type', 'submit');
     button.setAttribute('class', 'admin-btn');
     button.textContent = "Изменить";
@@ -79,6 +81,9 @@ idCardForm.addEventListener("submit", async (e) => {
       }
     }
     li.textContent = stage.name + ": " + stage.result;
+    if(stage.id === "5"){
+      li.textContent = li.textContent + "\r\n" + "Ответы пользователя: " + stage.raw_answers;
+    }
     //li.appendChild(document.createTextNode(stage.name + ": " + stage.result));
     form.appendChild(updateResult);
     form.appendChild(button);

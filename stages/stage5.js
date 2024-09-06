@@ -183,7 +183,10 @@ function getResult(survey) {
     var correct = 0;
     var numberOfQuestions = 0;
     var total = 0;
+    var rawAnswers = '';
     questions.forEach(function (question) {
+        rawAnswers += question.value + "; "
+        //rawAnswers += question.answer;
         total++;
         if (!question.isEmpty()) {
             numberOfQuestions++;
@@ -195,7 +198,7 @@ function getResult(survey) {
     result["correct_answers"] = correct;
     result["no_of_questions"] = numberOfQuestions;
     result["total"] = total;
-
+    result["raw_answers"] = rawAnswers;
     return result;
 }
 
@@ -228,7 +231,7 @@ survey.onComplete.add(async (e) => {
     const response3 = await fetch('/stages/updateEvery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_card_results: id_card, newResult: JSON.parse(result)['correct_answers'].toString(), stage_id: "5"}),
+        body: JSON.stringify({ id_card_results: id_card, newResult: JSON.parse(result)['correct_answers'].toString(), stage_id: "5", raw_answers: JSON.parse(result)['raw_answers'].toString()}),
     });
 
 
@@ -238,5 +241,5 @@ survey.onComplete.add(async (e) => {
         body: JSON.stringify({ email, result, time,  test_id}),
     });
 
-    window.location.href = `/stages`;
+    //window.location.href = `/stages`;
 });
