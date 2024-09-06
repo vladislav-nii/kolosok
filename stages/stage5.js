@@ -241,5 +241,5 @@ survey.onComplete.add(async (e) => {
         body: JSON.stringify({ email, result, time,  test_id}),
     });
 
-    //window.location.href = `/stages`;
+    window.location.href = `/stages`;
 });
