@@ -30,7 +30,6 @@ export const json = {
       ]
     }
   ],
-  maxTimeToFinish: 15,
   showTimerPanel: "top",
   widthMode: "responsive",
 };
