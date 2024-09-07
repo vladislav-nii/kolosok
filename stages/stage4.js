@@ -259,7 +259,6 @@ var json = {
   }
  ],
     "showTitle": false,
-    "maxTimeToFinish": 45,
     "showTimerPanel": "top",
     // "navigateToUrl": `/stages`,
     "widthMode": "responsive"
