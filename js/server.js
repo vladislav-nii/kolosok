@@ -232,7 +232,7 @@ app.get("/getStageResult/card-id:cardId/stage-id:stageId", async (req, res) => {
 
   bool = false;
 
-  userStageResult.stages.forEach((stage) => {
+  userStageResult?.stages.forEach((stage) => {
     if (stage.id === req.params.stageId.toString()) {
       if (stage.result !== "0") {
         res.send(true);
