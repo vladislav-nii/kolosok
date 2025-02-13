@@ -262,22 +262,22 @@ app.post("/register", async (req, res) => {
     stages: [
       {
         id: "0",
-        name: "Тест 1",
+        name: "Растениеводство",
         result: "0",
       },
       {
         id: "1",
-        name: "Тест 2",
+        name: "Техника",
         result: "0",
       },
       {
         id: "2",
-        name: "Тест 3",
+        name: "Животноводство",
         result: "0",
       },
       {
         id: "3",
-        name: "Тест 4",
+        name: "Переработка",
         result: "0",
       },
       {

@@ -307,7 +307,6 @@ var json = {
      }
     ],
     "showTitle": false,
-    "navigateToUrl": `/stages`,
     "maxTimeToFinish": 600,
     "showTimerPanel": "top",
     "widthMode": "responsive"
@@ -376,5 +375,5 @@ survey.onComplete.add(async (e) => {
         body: JSON.stringify({ email, result, time,  test_id}),
     });
 
-    window.location.href = `/stages`;
+    window.location.href = `/stage/category_1`;
 });
