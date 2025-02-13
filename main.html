@@ -105,6 +105,19 @@
     
     <script src="./js/main.js"></script>
     <script src="./js/account.js"></script>
+    <script>
+        const buttons = document.getElementsByClassName("grid-item");
+        Array.from(buttons).forEach((button) => {
+            if(button.id === "education_btn" || button.id === "excursion_btn" || button.id === "polls_btn"){
+                button.style.backgroundImage = 'url(../img/lock3.png)';
+                button.style.backgroundRepeat = 'no-repeat';
+                button.style.backgroundPosition = 'center center';
+                button.style.backgroundAttachments = 'fixed';
+                button.style.backgroundSize = 'contain';
+                button.style.color = 'rgba(66, 66, 66, 0.4)';
+            }
+        });
+    </script>
     <script type="module">(function(){'use strict';document.addEventListener('click',EasyTogglerHandler);function EasyTogglerHandler(event){const EY_BTN=event.target.closest('[data-easy-toggle]');
         if(EY_BTN){event.preventDefault();let ey_target=EY_BTN.getAttribute('data-easy-toggle');let ey_class=EY_BTN.getAttribute('data-easy-class');
         try{document.querySelector(ey_target).classList.toggle(ey_class)}catch(ey_error){console.warn('EasyToggler.js : Блок '+ey_target+' не существует')}}
