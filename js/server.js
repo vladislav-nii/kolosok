@@ -277,17 +277,17 @@ app.post("/register", async (req, res) => {
       },
       {
         id: "4",
-        name: "Этап4",
+        name: "тест БГСХА",
         result: "0",
       },
       {
         id: "5",
-        name: "Этап5",
+        name: "Собери урожай",
         result: "0",
       },
       {
         id: "6",
-        name: "Этап6",
+        name: "Экономика в ребусах",
         result: "0",
       },
     ],
