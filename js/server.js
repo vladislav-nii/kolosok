@@ -261,18 +261,23 @@ app.post("/register", async (req, res) => {
     card_id: req.body.id_card,
     stages: [
       {
+        id: "0",
+        name: "Тест 1",
+        result: "0",
+      },
+      {
         id: "1",
-        name: "Этап1",
+        name: "Тест 2",
         result: "0",
       },
       {
         id: "2",
-        name: "Этап2",
+        name: "Тест 3",
         result: "0",
       },
       {
         id: "3",
-        name: "Этап3",
+        name: "Тест 4",
         result: "0",
       },
       {
