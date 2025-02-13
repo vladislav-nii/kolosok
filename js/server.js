@@ -565,6 +565,14 @@ app.get("/stage/opros:id", async (req, res) => {
   res.sendFile(stageResultsPath);
 });
 
+app.get("/stage/category_:id", async (req, res) => {
+  stageResultsPath = path.join(
+    __dirname,
+    `../stages/stage_category${req.params.id}.ejs`
+  );
+  res.render(stageResultsPath);
+});
+
 /////////////
 
 app.get("/categories/category:id", async (req, res) => {
